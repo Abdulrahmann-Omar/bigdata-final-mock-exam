@@ -1,0 +1,2474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Big Data Final Exam Prep - DSAI 427</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #2c3e50;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 14px;
+    padding: 30px 40px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+  }
+  h1 {
+    text-align: center;
+    color: #0f2027;
+    margin-bottom: 6px;
+    font-size: 2.2em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 22px;
+    font-size: 0.98em;
+  }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+    background: #f7f9fb;
+    border-radius: 8px;
+  }
+  .filter-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .filter-label { font-weight: 600; font-size: 0.85em; color: #34495e; margin-right: 4px; }
+  .filter-btn {
+    padding: 6px 12px;
+    background: #ecf0f1;
+    border: 2px solid #bdc3c7;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85em;
+  }
+  .filter-btn:hover { background: #d5dbdb; }
+  .filter-btn.active {
+    background: #2980b9;
+    color: white;
+    border-color: #2980b9;
+  }
+  .score-box {
+    background: #16a085;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  .lecture-section {
+    margin-bottom: 28px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-left: 5px solid #2980b9;
+    border-radius: 6px;
+  }
+  .lecture-title {
+    font-size: 1.5em;
+    color: #0f2027;
+    margin-bottom: 14px;
+    font-weight: bold;
+    border-bottom: 2px solid #d4dde2;
+    padding-bottom: 8px;
+  }
+  .qtype-tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 4px;
+    color: white;
+    font-size: 0.74em;
+    font-weight: bold;
+    margin-right: 6px;
+    text-transform: uppercase;
+  }
+  .qtype-MCQ { background: #2980b9; }
+  .qtype-TF { background: #8e44ad; }
+  .qtype-EXPLAIN { background: #27ae60; }
+  .qtype-DIFF { background: #d35400; }
+  .qtype-FILL { background: #c0392b; }
+  .qtype-FLOW { background: #16a085; }
+  .qtype-SCENARIO { background: #2c3e50; }
+  .qtype-MATCH { background: #c0a020; }
+  .qtype-ARCH { background: #6a1b9a; }
+  .question {
+    background: white;
+    border: 1px solid #e0e6ed;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+  .question-text {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    line-height: 1.5;
+  }
+  .q-num {
+    color: #2980b9;
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  .options { list-style: none; }
+  .options li {
+    padding: 8px 13px;
+    margin: 5px 0;
+    background: #f4f6f8;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.15s;
+    line-height: 1.4;
+  }
+  .options li:hover { background: #e8f4fd; border-color: #aed6f1; }
+  .options li.correct {
+    background: #d4edda;
+    border-color: #27ae60;
+    color: #155724;
+    font-weight: 600;
+  }
+  .options li.wrong {
+    background: #f8d7da;
+    border-color: #c0392b;
+    color: #721c24;
+  }
+  .options li.disabled { cursor: default; }
+  textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 2px solid #bdc3c7;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95em;
+    resize: vertical;
+    min-height: 60px;
+  }
+  textarea:focus { outline: none; border-color: #2980b9; }
+  input[type="text"] {
+    padding: 7px 11px;
+    border: 2px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 0.95em;
+    width: 250px;
+  }
+  input[type="text"]:focus { outline: none; border-color: #2980b9; }
+  .reveal-btn-small {
+    padding: 6px 14px;
+    background: #16a085;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+  .reveal-btn-small:hover { background: #117864; }
+  .answer-box {
+    margin-top: 10px;
+    padding: 11px 14px;
+    background: #e8f8f5;
+    border-left: 4px solid #16a085;
+    border-radius: 4px;
+    color: #0e6655;
+    font-size: 0.93em;
+    line-height: 1.55;
+    display: none;
+    white-space: pre-wrap;
+  }
+  .answer-box.show { display: block; }
+  .answer-box strong { color: #117864; }
+  .explanation {
+    margin-top: 9px;
+    padding: 9px 13px;
+    background: #fffbea;
+    border-left: 4px solid #f1c40f;
+    border-radius: 4px;
+    color: #5d4e16;
+    font-size: 0.9em;
+    line-height: 1.5;
+    display: none;
+  }
+  .explanation.show { display: block; }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  .compare-table th, .compare-table td {
+    border: 1px solid #d4dde2;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .compare-table th {
+    background: #34495e;
+    color: white;
+    font-weight: 600;
+  }
+  .compare-table td:first-child {
+    background: #ecf0f1;
+    font-weight: 600;
+    width: 25%;
+  }
+  .flow-step {
+    padding: 8px 12px;
+    background: #f4f6f8;
+    border-left: 4px solid #2980b9;
+    margin: 6px 0;
+    border-radius: 4px;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e6ed;
+  }
+  .footer button {
+    padding: 10px 22px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: white;
+  }
+  .reset-btn { background: #c0392b; }
+  .reset-btn:hover { background: #962d22; }
+  .reveal-btn { background: #16a085; }
+  .reveal-btn:hover { background: #117864; }
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #ecf0f1;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #16a085, #1abc9c);
+    transition: width 0.3s;
+  }
+  .fill-blank-input {
+    display: inline-block;
+    margin: 0 4px;
+  }
+  ul.bullet-list { padding-left: 22px; margin-top: 5px; }
+  ul.bullet-list li { margin: 4px 0; }
+  .hint { font-size: 0.85em; color: #7f8c8d; font-style: italic; margin-top: 5px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎓 Big Data Final Exam Preparation</h1>
+<p class="subtitle">DSAI 427 — Comprehensive Quiz | All Lectures | Every Detail | All Question Types</p>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<div class="controls">
+  <div class="filter-group">
+    <span class="filter-label">Lecture:</span>
+    <button class="filter-btn active" data-filter-lec="all">All</button>
+    <button class="filter-btn" data-filter-lec="L1">L1</button>
+    <button class="filter-btn" data-filter-lec="L2H">L2-HDFS</button>
+    <button class="filter-btn" data-filter-lec="L2M">L2-MR</button>
+    <button class="filter-btn" data-filter-lec="L5">L5-YARN</button>
+    <button class="filter-btn" data-filter-lec="L7">L7-Spark</button>
+    <button class="filter-btn" data-filter-lec="L8">L8-SparkSQL</button>
+    <button class="filter-btn" data-filter-lec="L9">L9-ML/Graph</button>
+    <button class="filter-btn" data-filter-lec="L10">L10-Streaming</button>
+    <button class="filter-btn" data-filter-lec="L11">L11-DW/Lakes</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Type:</span>
+    <button class="filter-btn active" data-filter-type="all">All</button>
+    <button class="filter-btn" data-filter-type="MCQ">MCQ</button>
+    <button class="filter-btn" data-filter-type="TF">T/F</button>
+    <button class="filter-btn" data-filter-type="EXPLAIN">Explain</button>
+    <button class="filter-btn" data-filter-type="DIFF">Compare</button>
+    <button class="filter-btn" data-filter-type="FILL">Fill</button>
+    <button class="filter-btn" data-filter-type="FLOW">Flow</button>
+    <button class="filter-btn" data-filter-type="SCENARIO">Scenario</button>
+    <button class="filter-btn" data-filter-type="ARCH">Architecture</button>
+    <button class="filter-btn" data-filter-type="MATCH">Match</button>
+  </div>
+  <div class="score-box" id="scoreBox">MCQ Score: 0/0</div>
+</div>
+
+<div id="quizContainer"></div>
+
+<div class="footer">
+  <button class="reveal-btn" onclick="revealAll()">Reveal All Answers</button>
+  <button class="reset-btn" onclick="resetQuiz()">Reset Quiz</button>
+</div>
+
+</div>
+
+<script>
+const questions = [
+/* ================================================================
+   L1 — BIG DATA INTRODUCTION
+================================================================ */
+// MCQ
+{ lec:"L1", type:"MCQ", q:"What are the 5 V's of Big Data?",
+  options:["Volume, Velocity, Variety, Veracity, Value","Volume, Velocity, Visibility, Variation, Value","Volume, Variety, Veracity, Visualization, Validity","Volume, Value, Velocity, Vision, Variation"],
+  answer:0, exp:"The 5 Vs = Volume (size), Velocity (speed), Variety (formats), Veracity (accuracy), Value (insights)." },
+
+{ lec:"L1", type:"MCQ", q:"Which V refers to BUSINESS INSIGHTS derived from data?",
+  options:["Volume","Veracity","Value","Variety"], answer:2,
+  exp:"Value = the business insights that can be extracted from data." },
+
+{ lec:"L1", type:"MCQ", q:"Which V refers to MULTIPLE data formats and sources?",
+  options:["Variety","Volume","Velocity","Veracity"], answer:0,
+  exp:"Variety = multiple formats (structured, semi, unstructured) and sources." },
+
+{ lec:"L1", type:"MCQ", q:"Data that is highly organized with rows and columns is:",
+  options:["Unstructured","Semi-Structured","Structured","Hybrid"], answer:2,
+  exp:"Structured: fixed schema, rows & columns. Examples: bank transactions, ERP." },
+
+{ lec:"L1", type:"MCQ", q:"Web/application logs are typically classified as:",
+  options:["Structured","Semi-Structured","Unstructured","Binary"], answer:1,
+  exp:"Web/app logs are semi-structured. They have flexible structure (often JSON/XML)." },
+
+{ lec:"L1", type:"MCQ", q:"Schema-on-Read is used in which approach?",
+  options:["Data Warehouse","Data Lake","RDBMS","Schema-defined storage"], answer:1,
+  exp:"Schema-on-Read → Data Lake. Schema-on-Write → Data Warehouse." },
+
+{ lec:"L1", type:"MCQ", q:"In Schema-on-Write, when is the schema defined?",
+  options:["At query time","Before ingestion","Never","Only when accessed"], answer:1,
+  exp:"Schema-on-Write: schema defined before data is stored (used in traditional analytics)." },
+
+{ lec:"L1", type:"MCQ", q:"Stream processing focuses on:",
+  options:["Throughput","Immediate response","Storage","Compression"], answer:1,
+  exp:"Stream = immediate response. Batch = throughput." },
+
+{ lec:"L1", type:"MCQ", q:"A platform processes 10,000 events/sec on one node. To reach 35,000 events/sec, vertical scaling reaches 18,000. Horizontal needs how many 10,000-event nodes?",
+  options:["3","4","5","6"], answer:1,
+  exp:"4 nodes × 10,000 = 40,000 events/sec ≥ 35,000 (vertical insufficient at 18,000)." },
+
+{ lec:"L1", type:"MCQ", q:"To guarantee 30,000 events/sec even if 1 node fails (each node = 10,000), minimum nodes?",
+  options:["3","4","5","6"], answer:1,
+  exp:"3 active = 30,000 + 1 backup = 4 nodes minimum." },
+
+{ lec:"L1", type:"MCQ", q:"Which load balancing algorithm uses 'hash of client IP → server'?",
+  options:["Round Robin","Least Connections","Resource-Based","IP Hash"], answer:3,
+  exp:"IP Hash maps client IP to a fixed server for session affinity." },
+
+{ lec:"L1", type:"MCQ", q:"Which is NOT something Big Data load balancing distributes?",
+  options:["Data (storage)","Computation (processing)","Resources (infrastructure)","Application binaries"], answer:3,
+  exp:"In Big Data, we balance Data, Computation, and Resources — NOT app binaries." },
+
+{ lec:"L1", type:"MCQ", q:"Which is NOT a NoSQL category?",
+  options:["Key-Value","Document","Column-Family","Schema-Strict"], answer:3,
+  exp:"NoSQL types: Key-Value, Document, Column-Family, Graph. 'Schema-Strict' is not a NoSQL category." },
+
+{ lec:"L1", type:"MCQ", q:"Hierarchical JSON data is best stored in which NoSQL type?",
+  options:["Key-Value","Document","Column-Family","Graph"], answer:1,
+  exp:"Document NoSQL stores JSON/XML with flexible, hierarchical structure." },
+
+{ lec:"L1", type:"MCQ", q:"Fraud detection and social networks fit best with:",
+  options:["Key-Value","Document","Column-Family","Graph"], answer:3,
+  exp:"Graph NoSQL is best for relationship-heavy data (fraud, social networks)." },
+
+{ lec:"L1", type:"MCQ", q:"In Master-Slave replication, who handles writes?",
+  options:["All nodes","Only the Master","Only Slaves","Round Robin between nodes"], answer:1,
+  exp:"Master handles writes; slaves handle reads. Best for read-intensive workloads." },
+
+{ lec:"L1", type:"MCQ", q:"6 TB dataset sharded across 6 nodes, replication factor 2 → total storage?",
+  options:["6 TB","12 TB","24 TB","36 TB"], answer:1,
+  exp:"6 × 2 = 12 TB total. Each node stores 12/6 = 2 TB." },
+
+{ lec:"L1", type:"MCQ", q:"CAP theorem: in distributed systems, which property is NON-negotiable?",
+  options:["Consistency","Availability","Partition Tolerance","All three"], answer:2,
+  exp:"P is non-negotiable in distributed systems → choice is CP vs AP." },
+
+{ lec:"L1", type:"MCQ", q:"Banking systems are typically:",
+  options:["AP (Available + Partition tolerant)","CP (Consistent + Partition tolerant)","CA only","AP with eventual consistency"], answer:1,
+  exp:"Banking → CP. Better to be correct than available; reject transactions during partitions." },
+
+{ lec:"L1", type:"MCQ", q:"During a 5-second network partition with 10,000 req/sec in CP mode, how many requests are rejected?",
+  options:["10,000","25,000","50,000","100,000"], answer:2,
+  exp:"10,000 × 5 = 50,000 rejected (blocks/rejects to preserve consistency)." },
+
+{ lec:"L1", type:"MCQ", q:"Data locality means:",
+  options:["Storing all data in one location","Moving computation to where data is stored","Moving data to compute","Encrypting data locally"], answer:1,
+  exp:"Data locality = move computation to the data; reduces network traffic. Local reads ~10× faster." },
+
+{ lec:"L1", type:"MCQ", q:"Round Robin LB Example: 4 nodes (each 5,000 evt/sec), input 16,000 evt/sec. Per node?",
+  options:["4,000 evt/sec — no overload","4,500 — slight overload","5,000 — saturated","8,000 — overloaded"], answer:0,
+  exp:"Round Robin: 16,000 ÷ 4 = 4,000 per node. Each node has capacity 5,000, so NO overload. If rate becomes 22,000 → 5,500 per node > 5,000 capacity = overloaded." },
+
+// True/False
+{ lec:"L1", type:"TF", q:"True or False: Big Data is defined ONLY by the massive size of data.",
+  answer:"FALSE", exp:"Big Data is also defined by COMPLEXITY and the SPEED at which it is generated and processed — not just size." },
+
+{ lec:"L1", type:"TF", q:"True or False: Vertical scaling adds many cheap servers to a cluster.",
+  answer:"FALSE", exp:"Vertical scaling = upgrade ONE server (more CPU/RAM). Horizontal scaling adds many cheap servers." },
+
+{ lec:"L1", type:"TF", q:"True or False: A distributed system can guarantee Consistency, Availability, and Partition Tolerance all simultaneously.",
+  answer:"FALSE", exp:"CAP theorem: at most 2 of 3. Since P is non-negotiable, choose between CP and AP." },
+
+{ lec:"L1", type:"TF", q:"True or False: HDFS and GFS are examples of distributed file systems.",
+  answer:"TRUE", exp:"Google File System (GFS) and Hadoop Distributed File System (HDFS) are both distributed file systems." },
+
+{ lec:"L1", type:"TF", q:"True or False: In-memory storage is mainly used for batch processing.",
+  answer:"FALSE", exp:"In-memory storage is for real-time/streaming analytics. On-disk is for batch." },
+
+{ lec:"L1", type:"TF", q:"True or False: Horizontal scaling combined with load balancing prevents node bottlenecks.",
+  answer:"TRUE", exp:"Horizontal scaling adds servers; load balancing distributes work so none becomes a bottleneck." },
+
+// Explain
+{ lec:"L1", type:"EXPLAIN", q:"Explain what Big Data is and why traditional systems fail.",
+  answer:"Big Data refers to huge AND complex datasets that traditional tools find difficult to process. It's defined by 5 V's: Volume, Velocity, Variety, Veracity, Value. Traditional systems fail because they cannot handle all 5 dimensions together — they're built for structured data in relational databases, processed centrally, with limited scalability.\n\nBig Data solutions provide tools, methodologies, and technologies to capture, store, search, and analyze data in seconds to find relationships and insights." },
+
+{ lec:"L1", type:"EXPLAIN", q:"Explain the Schema-on-Read approach and when to use it.",
+  answer:"Schema-on-Read:\n• Data is stored WITHOUT defining a schema upfront.\n• Schema is applied WHEN data is read for analysis (query time).\n• Flow: Raw Data → Data Lake → Schema → Analytics.\n• 'Store everything first, think later.'\n\nUse it when:\n• Working with unstructured/semi-structured data\n• Data requirements may evolve\n• You need flexibility and massive volumes at low cost\n• Building data lakes for diverse data types\n\nHigher compute cost but maximum flexibility." },
+
+{ lec:"L1", type:"EXPLAIN", q:"Explain the 5-layer Big Data Ecosystem Architecture.",
+  answer:"L1 — Data Source Layer: identify origin, type, format; decide push vs pull; data volume\nL2 — Data Ingestion Layer: ETL, preprocessing, real-time or batch ingestion\nL3 — Data Storage Layer: store reliably (HDFS, HBase, Cassandra, MongoDB); fault tolerance\nL4 — Data Processing Layer: MapReduce, Hive, Pig, Spark, Spark Streaming; batch/real-time/hybrid\nL5 — Data Consumption Layer: reporting, visualization, real-time/near real-time analytics, export to cloud\n\nData flows top-down: Sources → Ingestion → Storage → Processing → Consumption." },
+
+{ lec:"L1", type:"EXPLAIN", q:"Explain CAP Theorem with examples of CP and AP systems.",
+  answer:"CAP Theorem: A distributed system can guarantee AT MOST 2 of 3:\n• Consistency (C): every node returns same most-recent data\n• Availability (A): every request gets success/failure response\n• Partition Tolerance (P): system operates despite network outages\n\nSince distributed systems must tolerate partitions, P is non-negotiable. Choice = CP vs AP.\n\nCP Example (Banking): During network partition, system REJECTS requests to ensure consistency. Better correct than available. Example: 10,000 req/sec × 5 sec partition = 50,000 rejected requests.\n\nAP Example: During partition, system stays available but may return stale data — like social media feeds. Better available than correct (temporarily)." },
+
+{ lec:"L1", type:"EXPLAIN", q:"Explain Data Locality and why it matters in Big Data.",
+  answer:"Data Locality = moving computation to where the data is stored, instead of moving large amounts of data across the network.\n\nWhy it matters:\n• Network is the slowest resource in a cluster\n• Moving computation is cheaper than moving data\n• Local reads can be ~10× faster than remote reads\n\nHow it works: job schedulers place tasks on DataNodes that already hold the required data blocks.\n\nBenefits: faster job execution, reduced network traffic, better cluster utilization. It's a core optimization in HDFS/YARN/Spark to achieve high performance at scale." },
+
+// DIFF (Compare)
+{ lec:"L1", type:"DIFF", q:"Compare Structured, Semi-Structured, and Unstructured Data.",
+  answer:[
+    ["Aspect","Structured","Semi-Structured","Unstructured"],
+    ["Schema","Fixed, defined BEFORE insertion","Partial/flexible, self-describing, applied at READ time","No predefined structure"],
+    ["Examples","Bank transactions, ERP, CRM, employee records","JSON, XML, web/app logs","Social posts, images, videos, audio, emails"],
+    ["Storage","RDBMS, Data Warehouses (Snowflake, Redshift)","HDFS, NoSQL","HDFS, Data Lakes, ML frameworks"],
+    ["Query","SQL easily","Possible with effort","Cannot SQL directly"],
+    ["Flexibility","Low","Medium","High"]
+  ] },
+
+{ lec:"L1", type:"DIFF", q:"Compare Schema-on-Read vs Schema-on-Write.",
+  answer:[
+    ["Aspect","Schema-on-Read","Schema-on-Write"],
+    ["Schema Timing","At query time","Before ingestion"],
+    ["Flexibility","Very high; supports unstructured/semi","Low; structured only"],
+    ["Storage","Data Lake","Data Warehouse"],
+    ["Modeling Effort","Low initially, more during analysis","High upfront"],
+    ["Processing Cost","Higher","Lower"],
+    ["Best Use","Big Data analytics, exploratory","BI, reporting, traditional analytics"],
+    ["Motto","Store everything first, think later","Think first, store later"]
+  ] },
+
+{ lec:"L1", type:"DIFF", q:"Compare Traditional Data Analytics vs Big Data Analytics.",
+  answer:[
+    ["Aspect","Traditional","Big Data"],
+    ["Data Type","Structured only","Structured + Semi + Unstructured"],
+    ["Data Size","Small to medium","Massive"],
+    ["Storage","Relational databases","Distributed storage systems"],
+    ["Tools","Mainly SQL","ML, data mining, AI"],
+    ["Sources","Transactional systems","Social media, sensors, logs"],
+    ["Processing","Centralized","Distributed"],
+    ["Modeling","Schema-on-Write","Schema-on-Read"]
+  ] },
+
+{ lec:"L1", type:"DIFF", q:"Compare Vertical Scaling vs Horizontal Scaling.",
+  answer:[
+    ["Aspect","Vertical (Traditional)","Horizontal (Big Data)"],
+    ["How","Upgrade single server (more CPU/RAM/storage)","Add many cheap commodity machines"],
+    ["Architecture","Centralized; fewer, more powerful machines","Distributed; many interconnected nodes"],
+    ["Philosophy","Power concentration","Divide and conquer"],
+    ["Cost","Expensive specialized hardware","Cheap commodity hardware"],
+    ["Scalability Limit","Hardware ceiling","Virtually unlimited"],
+    ["Fault Tolerance","Single point of failure","Built-in redundancy"]
+  ] },
+
+{ lec:"L1", type:"DIFF", q:"Compare Sharding vs Replication.",
+  answer:[
+    ["Aspect","Sharding","Replication"],
+    ["What","Horizontal partitioning of data","Multiple copies of same data"],
+    ["Goal","Performance & scalability (spread load)","Fault tolerance & availability"],
+    ["Each Node Stores","DIFFERENT portion of data","COPY of the data"],
+    ["If Node Fails","Data on that node is LOST (unless combined)","Other replicas continue"],
+    ["Improves","Write & read performance, capacity","Read performance, availability"],
+    ["Combined","Often used together: shard then replicate each shard","-"]
+  ] },
+
+{ lec:"L1", type:"DIFF", q:"Compare Master-Slave vs Peer-to-Peer Replication.",
+  answer:[
+    ["Aspect","Master-Slave","Peer-to-Peer"],
+    ["Writes","Master only","All nodes"],
+    ["Reads","Slaves","All nodes"],
+    ["Node Roles","Asymmetric","Equal"],
+    ["Best For","Read-intensive workloads","Highly distributed, write-heavy"],
+    ["Complexity","Simple","More complex (conflict handling)"]
+  ] },
+
+{ lec:"L1", type:"DIFF", q:"Compare On-Disk vs In-Memory Big Data Storage.",
+  answer:[
+    ["Aspect","On-Disk (Capacity)","In-Memory (Speed)"],
+    ["Medium","HDDs or SSDs","RAM"],
+    ["Speed","Slower","Much faster"],
+    ["Persistence","Persists after crash","May lose data unless backed by disk"],
+    ["Cost","Cheaper","More expensive"],
+    ["Use Case","Batch, historical, long-term","Real-time/streaming analytics"],
+    ["Used Together?","Yes — they complement, not compete","Yes"]
+  ] },
+
+// FILL
+{ lec:"L1", type:"FILL", q:"The five characteristics of Big Data (5 V's) are: ______, ______, ______, ______, ______.",
+  blanks:["Volume","Velocity","Variety","Veracity","Value"],
+  exp:"5 V's: Volume (size), Velocity (speed), Variety (formats), Veracity (accuracy), Value (insights)." },
+
+{ lec:"L1", type:"FILL", q:"In CAP theorem, the three properties are ______, ______, and ______.",
+  blanks:["Consistency","Availability","Partition Tolerance"],
+  exp:"CAP: pick at most 2. P is non-negotiable in distributed systems." },
+
+{ lec:"L1", type:"FILL", q:"The four load balancing algorithms are ______, ______, ______, and ______.",
+  blanks:["Round Robin","Least Connections","Resource-Based","IP Hash"],
+  exp:"Round Robin (equal order), Least Connections (fewest active), Resource-Based (highest CPU/RAM available), IP Hash (client IP→fixed server)." },
+
+{ lec:"L1", type:"FILL", q:"The four NoSQL types are ______, ______, ______, and ______.",
+  blanks:["Key-Value","Document","Column-Family","Graph"],
+  exp:"Key-Value (caching), Document (JSON/XML), Column-Family (analytics), Graph (relationships)." },
+
+// FLOW
+{ lec:"L1", type:"FLOW", q:"Describe the FLOW of data through the 5 layers of Big Data Architecture.",
+  answer:["L1: DATA SOURCE — identify origins (databases, files, web, sensors), formats, push/pull mechanism, decide volume.",
+    "L2: DATA INGESTION — collect data (batch or real-time), perform ETL, apply preprocessing/cleaning.",
+    "L3: DATA STORAGE — store reliably with fault tolerance (HDFS for files, NoSQL like HBase/Cassandra/MongoDB for structured/semi).",
+    "L4: DATA PROCESSING — process using MapReduce, Hive, Pig, Spark, Spark Streaming; batch or real-time.",
+    "L5: DATA CONSUMPTION — turn processed data into insights via reporting, visualization, analytics; export to cloud/web."] },
+
+{ lec:"L1", type:"FLOW", q:"Describe how Load Balancing works step-by-step.",
+  answer:["Step 1: Client sends a request to the system.",
+    "Step 2: Request first reaches the LOAD BALANCER.",
+    "Step 3: Load balancer selects an appropriate server (based on algorithm: Round Robin / Least Connections / Resource-Based / IP Hash).",
+    "Step 4: Request is forwarded to that server.",
+    "Step 5: Server processes the request and sends the response.",
+    "Note: Clients are unaware of which server actually handled the request — system appears as a single logical service."] },
+
+// SCENARIO
+{ lec:"L1", type:"SCENARIO", q:"Scenario: A Big Data analytics platform uses 4 ingestion nodes (each 5,000 events/sec) with Round Robin. Incoming rate = 16,000 events/sec. (a) Events per node? (b) Overloaded? (c) What if rate → 22,000?",
+  answer:"(a) 16,000 / 4 = 4,000 events/sec per node.\n(b) NO — each node handles 4,000 < its 5,000 capacity.\n(c) 22,000 / 4 = 5,500 events/sec per node > 5,000 capacity → ALL nodes overloaded. Solution: add more nodes (need at least 5 nodes: 22,000/5 = 4,400 per node)." },
+
+{ lec:"L1", type:"SCENARIO", q:"Scenario: A distributed financial transaction system processes 10,000 req/sec in CP mode, partition lasts 5 seconds. Calculate rejected requests and explain why banking prefers CP.",
+  answer:"Rejected = 10,000 × 5 = 50,000 requests rejected.\n\nWhy banking prefers CP:\n• Financial accuracy is critical — incorrect balance is disastrous (e.g., double-spending)\n• Better to TEMPORARILY reject requests than accept inconsistent data\n• Regulatory and compliance requirements demand consistency\n• Users expect financial systems to be CORRECT first, available second\n• In AP mode, two users could withdraw the same money from different replicas → would not be allowed in banking" },
+
+{ lec:"L1", type:"SCENARIO", q:"Scenario: 6 TB dataset, sharded evenly across 6 nodes, replication factor = 2. Calculate: (a) Total physical storage. (b) Data per node.",
+  answer:"(a) Total physical = 6 TB × 2 = 12 TB.\n(b) Per node = 12 TB / 6 nodes = 2 TB per node.\n\nEach shard is 1 TB (6 TB / 6 shards). With RF=2, each shard has 2 copies → distributed for fault tolerance." },
+
+/* ================================================================
+   L2 — HADOOP ECOSYSTEM & HDFS
+================================================================ */
+// MCQ
+{ lec:"L2H", type:"MCQ", q:"Which is NOT a Hadoop CORE component?",
+  options:["HDFS","MapReduce","YARN","Hive"], answer:3,
+  exp:"Core: HDFS, MapReduce, YARN. Hive is an ecosystem tool (data warehouse on HDFS)." },
+
+{ lec:"L2H", type:"MCQ", q:"HBase is best described as:",
+  options:["Workflow scheduler","Column-oriented NoSQL on HDFS","SQL engine","Coordination service"], answer:1,
+  exp:"HBase = column-oriented NoSQL DB on HDFS supporting random real-time read/write." },
+
+{ lec:"L2H", type:"MCQ", q:"Sqoop is used for:",
+  options:["Real-time log ingestion","Bulk data transfer between Hadoop and RDBMS","ML algorithms","Workflow scheduling"], answer:1,
+  exp:"Sqoop bulk-transfers data between Hadoop and RDBMS. Flume = real-time log ingestion." },
+
+{ lec:"L2H", type:"MCQ", q:"Flume is used for:",
+  options:["RDBMS-to-Hadoop bulk transfer","Real-time log/event ingestion to HDFS or HBase","SQL queries","Coordination"], answer:1,
+  exp:"Flume = real-time log/event ingestion. Sqoop = RDBMS bulk transfer." },
+
+{ lec:"L2H", type:"MCQ", q:"Default HDFS block size?",
+  options:["64 MB","128 MB","256 MB","1 GB"], answer:1,
+  exp:"Default = 128 MB (configurable)." },
+
+{ lec:"L2H", type:"MCQ", q:"Per-block metadata stored on NameNode is approximately:",
+  options:["50 bytes","100 bytes","150 bytes","1 KB"], answer:2,
+  exp:"~150 bytes per block in NameNode memory." },
+
+{ lec:"L2H", type:"MCQ", q:"DataNode heartbeats sent to NameNode every:",
+  options:["1 sec","3 sec","10 sec","60 sec"], answer:1,
+  exp:"Every ~3 seconds — 'I am alive' signal." },
+
+{ lec:"L2H", type:"MCQ", q:"Secondary NameNode is:",
+  options:["A backup that fails over automatically","A helper that checkpoints FsImage + EditLog","Identical to primary NameNode","A storage node"], answer:1,
+  exp:"Secondary NN is NOT a backup. It periodically merges FsImage with Edit Log (checkpointing) and sends updated FsImage back." },
+
+{ lec:"L2H", type:"MCQ", q:"With rack awareness and RF=3, where are replicas placed?",
+  options:["All on same rack","1 local rack + 2 different racks","1 local rack, 1 same rack, 1 different rack","All on different racks"], answer:2,
+  exp:"1st: local rack; 2nd: another node in same local rack; 3rd: different rack." },
+
+{ lec:"L2H", type:"MCQ", q:"In EC policy RS-6-3, what are the numbers?",
+  options:["6 parity, 3 data","6 data, 3 parity","6 replicas, 3 nodes","6 racks, 3 nodes"], answer:1,
+  exp:"RS-k-m: k=data, m=parity. RS-6-3 = 6 data + 3 parity = 9 total blocks (~50% overhead)." },
+
+{ lec:"L2H", type:"MCQ", q:"During HDFS write, the data is replicated via:",
+  options:["Parallel send to all DataNodes","A pipeline through DataNodes","Secondary NameNode","Erasure coding only"], answer:1,
+  exp:"Client writes to first DataNode; data flows in pipeline to other replicas." },
+
+{ lec:"L2H", type:"MCQ", q:"A 256 MB log file needs how many HDFS blocks (default block size)?",
+  options:["1","2","3","4"], answer:1,
+  exp:"256 / 128 = 2 blocks." },
+
+{ lec:"L2H", type:"MCQ", q:"HDFS HA uses:",
+  options:["Multiple independent NameNodes","Active + Standby NameNodes synchronized","Only secondary NameNode","Federation"], answer:1,
+  exp:"HA = Active + Standby NN with synced metadata. Federation = multiple INDEPENDENT NameNodes (different purpose: scalability)." },
+
+{ lec:"L2H", type:"MCQ", q:"HDFS Block Caching means:",
+  options:["Caching ALL blocks in RAM","Selected hot blocks stored in DataNode memory","Caching only on disk","Caching by NameNode only"], answer:1,
+  exp:"Block Caching stores frequently accessed (hot) blocks in DataNode RAM. Reduces disk I/O." },
+
+{ lec:"L2H", type:"MCQ", q:"HDFS is NOT good for:",
+  options:["Very large files","Streaming reads","Low-latency millisecond access","Batch analytics"], answer:2,
+  exp:"HDFS = high throughput, NOT low latency. Use HBase for millisecond access." },
+
+{ lec:"L2H", type:"MCQ", q:"Which is the smallest unit of storage in a file system?",
+  options:["A directory","A file","A block","A drive"], answer:1,
+  exp:"A FILE is the smallest unit a file system manages. A BLOCK is the smallest physical unit." },
+
+// TF
+{ lec:"L2H", type:"TF", q:"True or False: Hadoop is designed to run on expensive specialized hardware.",
+  answer:"FALSE", exp:"Hadoop is designed to run on COMMODITY (low-cost) hardware and tolerate frequent failures." },
+
+{ lec:"L2H", type:"TF", q:"True or False: HDFS supports concurrent multiple writers to a single file.",
+  answer:"FALSE", exp:"HDFS supports ONLY single-writer, append-only files. No concurrent writes or arbitrary modifications." },
+
+{ lec:"L2H", type:"TF", q:"True or False: If the NameNode fails, the Secondary NameNode automatically takes over.",
+  answer:"FALSE", exp:"Secondary NameNode is a HELPER (checkpointing), NOT a failover backup. To get failover, use HA (Active/Standby NameNodes)." },
+
+{ lec:"L2H", type:"TF", q:"True or False: HDFS automatically rebalances data when new DataNodes are added.",
+  answer:"FALSE", exp:"HDFS does NOT auto-move old data. Admin must run the HDFS Balancer tool to redistribute blocks." },
+
+{ lec:"L2H", type:"TF", q:"True or False: Block reports from DataNodes contain a complete list of all blocks they store.",
+  answer:"TRUE", exp:"Block reports = complete list, sent periodically; help NameNode track locations and detect under-replication." },
+
+{ lec:"L2H", type:"TF", q:"True or False: With replication factor 3, a 128 MB block takes 384 MB total storage.",
+  answer:"TRUE", exp:"128 × 3 = 384 MB. Trade-off: high availability costs 3× the storage." },
+
+{ lec:"L2H", type:"TF", q:"True or False: Erasure Coding has more storage overhead than 3× replication.",
+  answer:"FALSE", exp:"Erasure Coding has MUCH LESS storage overhead. EC RS-6-3 uses ~50% overhead vs 200% for 3× replication." },
+
+// EXPLAIN
+{ lec:"L2H", type:"EXPLAIN", q:"Explain why HDFS uses LARGE block sizes (128 MB) by default.",
+  answer:"HDFS uses large blocks (128 MB default) for two main reasons:\n\n1. REDUCE DISK SEEK OVERHEAD: Larger blocks mean fewer seeks per file, since the disk arm moves less. Most time is spent reading data, not positioning.\n\n2. MAXIMIZE DATA TRANSFER THROUGHPUT: Designed for high-throughput batch processing.\n\nTrade-off:\n• TOO LARGE → fewer blocks → fewer tasks → idle cluster nodes → slow job\n• TOO SMALL → too many tasks → high scheduling overhead → task startup overhead\n\nExample (1 TB, 100 nodes):\n• 128 MB → ~8,000 blocks → ~8,000 parallel tasks → good\n• 10 GB → 100 blocks → 100 tasks → poor parallelism\n\nLarge blocks must still allow enough parallelism for MapReduce/Spark." },
+
+{ lec:"L2H", type:"EXPLAIN", q:"Explain the role and benefits of Block Abstraction in HDFS.",
+  answer:"Block Abstraction is the architectural foundation enabling HDFS to achieve scalability, manageability, and fault tolerance.\n\nThe benefits:\n\n1. SUPPORTS MASSIVE FILES: Files split into independent blocks across many disks/machines → file sizes can exceed single-disk capacity.\n\n2. SIMPLIFIES STORAGE MANAGEMENT: Uniform block sizes simplify data placement, load balancing, replication, and recovery. NameNode manages metadata separately from data.\n\n3. ENABLES FAULT TOLERANCE: Blocks are replicated across multiple DataNodes. Failures are handled without losing data — if one DataNode fails, replicas on others remain available." },
+
+{ lec:"L2H", type:"EXPLAIN", q:"Explain why the Secondary NameNode is needed (NOT a backup).",
+  answer:"Why it exists:\n• NameNode stores file system metadata in two files: FsImage (snapshot) + Edit Log (changes).\n• Since NameNode runs continuously, Edit Log keeps growing.\n• Growing log causes: slow NameNode restart, high memory/processing overhead during recovery.\n\nWhat Secondary NameNode does:\n• Periodically COPIES FsImage and Edit Logs from NN.\n• MERGES Edit Logs into FsImage (checkpointing).\n• Creates a new updated FsImage.\n• Sends updated FsImage BACK to NameNode.\n\nKey point: Secondary NN does NOT take over if NN fails. It only HELPS recovery by providing a recent checkpoint. For automatic failover, use HDFS HA (Active/Standby)." },
+
+{ lec:"L2H", type:"EXPLAIN", q:"Explain Heartbeats and Block Reports in HDFS — how does the NameNode know a node failed?",
+  answer:"HEARTBEATS:\n• Each DataNode sends regular heartbeats to NameNode (~every 3 seconds).\n• Acts as an 'I am alive' signal.\n• NameNode records the last heartbeat time per DataNode.\n• If no heartbeat within timeout → DataNode marked DEAD.\n• Once marked dead, NameNode initiates replication of that node's blocks to other DataNodes to maintain replication factor.\n\nBLOCK REPORTS:\n• DataNodes periodically send block reports = complete list of all blocks stored on them.\n• Helps NameNode maintain accurate map of block locations across cluster.\n• Used to: track block locations, detect under-replication.\n• Failed blocks are automatically re-replicated.\n\nTogether: heartbeats detect node failures; block reports keep the block→location map current." },
+
+{ lec:"L2H", type:"EXPLAIN", q:"Explain Erasure Coding (EC) and how it differs from replication.",
+  answer:"Erasure Coding (introduced in Hadoop 3):\n• Provides fault tolerance like replication but with MUCH LESS storage overhead.\n• Instead of storing many full replicas, stores DATA blocks + PARITY blocks (RAID-like encoding).\n\nPolicy notation RS-k-m: k = data blocks, m = parity blocks.\n• RS-6-3 = 6 data + 3 parity = 9 total (≈50% overhead).\n• Compare to RF=3: 3× storage (200% overhead).\n\nHow it works:\n1. STRIPE: file split into data blocks/stripes.\n2. ENCODE: parity blocks computed from data via encoding (Reed-Solomon).\n3. DISTRIBUTE: all blocks spread across DataNodes and racks.\n4. RECONSTRUCT: if blocks fail, decode using surviving data + parity.\n\nBest for WARM/COLD data (less frequently accessed). For HOT data, replication may still be preferred due to faster reads (no decoding)." },
+
+{ lec:"L2H", type:"EXPLAIN", q:"Explain the HDFS Balancer — why is it needed and how does it work?",
+  answer:"Why needed:\n• HDFS clusters grow over time. When new DataNodes are added:\n  - Existing nodes already store large amounts of data\n  - New nodes start completely empty\n  - HDFS does NOT automatically move old data to new nodes\n• This creates DATA SKEW: some nodes 90% full, others 10% full.\n• Jobs become slower: busy nodes serve most reads, their network/disks overload.\n\nHow the Balancer works:\n• Admin background tool.\n• Monitors disk usage across DataNodes.\n• Identifies imbalances:\n  - Over-utilized nodes (too full)\n  - Under-utilized nodes (too empty)\n• Gradually moves blocks from full to empty nodes.\n\nKey properties:\n• Balancing happens WITHOUT downtime.\n• Data integrity and replication rules preserved.\n• Movement is THROTTLED to avoid network congestion.\n• Uses a THRESHOLD (e.g., 10% deviation from cluster average)." },
+
+// DIFF
+{ lec:"L2H", type:"DIFF", q:"Compare NameNode vs DataNode roles in HDFS.",
+  answer:[
+    ["Aspect","NameNode (Master)","DataNode (Slave)"],
+    ["Role","Coordinator","Worker"],
+    ["Stores","Metadata (namespace, file→block, permissions)","Actual data blocks"],
+    ["Quantity","One per cluster (or HA pair)","Many in cluster"],
+    ["Memory","Holds metadata in RAM (~150 bytes/block)","Stores blocks on local disk"],
+    ["Communication","Receives heartbeats & block reports","Sends heartbeats & block reports"],
+    ["Hardware","Reliable hardware","Commodity hardware"],
+    ["Tasks","Coordinate client access, monitor health","Read/write requests, serve blocks"]
+  ] },
+
+{ lec:"L2H", type:"DIFF", q:"Compare HDFS Federation vs HDFS High Availability (HA).",
+  answer:[
+    ["Aspect","Federation","High Availability (HA)"],
+    ["Purpose","Namespace scalability & performance","NameNode fault tolerance & uptime"],
+    ["# NameNodes","Multiple INDEPENDENT","Two (Active + Standby)"],
+    ["Relationship","Independent (no sync)","Synchronized metadata"],
+    ["If One Fails","One NN fails, others continue","Standby takes over Active"],
+    ["Namespace","Separate per NN","Shared between Active & Standby"],
+    ["Solves","Scalability bottleneck","SPOF problem"]
+  ] },
+
+{ lec:"L2H", type:"DIFF", q:"Compare Replication vs Erasure Coding.",
+  answer:[
+    ["Aspect","Replication","Erasure Coding"],
+    ["Storage Overhead","High (RF=3 → 200%)","Low (RS-6-3 → 50%)"],
+    ["Fault Tolerance","Strong (multiple full copies)","Strong (parity-based reconstruction)"],
+    ["Read Speed","Fast (direct reads)","Slower for failed reads (needs decoding)"],
+    ["Write Cost","Low computation","Higher (parity computation)"],
+    ["Best For","Hot, frequently accessed data","Warm/cold, less frequently accessed data"],
+    ["Hadoop Version","Always available","Introduced in Hadoop 3"]
+  ] },
+
+{ lec:"L2H", type:"DIFF", q:"Compare FsImage vs Edit Log.",
+  answer:[
+    ["Aspect","FsImage","Edit Log"],
+    ["What","Snapshot of file system state","Sequential record of all recent changes"],
+    ["Updated","Periodically (checkpoint)","Continuously on every change"],
+    ["Used For","Loading initial state at startup","Replaying changes after FsImage"],
+    ["Problem","-","Grows unboundedly → slow restart"],
+    ["Solution","Secondary NN merges Edit Log into FsImage","Reset after each checkpoint"]
+  ] },
+
+// FILL
+{ lec:"L2H", type:"FILL", q:"HDFS follows a ______ - ______ architecture with a ______ (master) and multiple ______ (workers).",
+  blanks:["master","worker","NameNode","DataNodes"],
+  exp:"HDFS = master-worker. NameNode is master; DataNodes are workers." },
+
+{ lec:"L2H", type:"FILL", q:"NameNode metadata is stored as ______ (snapshot) and ______ (recent changes).",
+  blanks:["FsImage","Edit Log"], exp:"FsImage = snapshot, Edit Log = changes. Secondary NN merges them periodically." },
+
+{ lec:"L2H", type:"FILL", q:"With Erasure Coding RS-6-3, there are ______ data blocks and ______ parity blocks (total ______).",
+  blanks:["6","3","9"], exp:"RS-k-m: k=data, m=parity. RS-6-3 → 6+3=9 blocks (~50% overhead vs 200% for RF=3)." },
+
+// FLOW
+{ lec:"L2H", type:"FLOW", q:"Describe the HDFS READ operation flow step-by-step.",
+  answer:["Step 1: Client contacts the NameNode to get file and block information.",
+    "Step 2: NameNode returns a list of DataNodes for each block (B1, B2, ...).",
+    "Step 3: Client connects DIRECTLY to DataNodes (NOT through NameNode).",
+    "Step 4: Blocks are read in PARALLEL from multiple DataNodes for higher throughput.",
+    "Step 5: If a DataNode fails or a block is corrupted, client automatically reads from the next DataNode replica in the list."] },
+
+{ lec:"L2H", type:"FLOW", q:"Describe the HDFS WRITE operation flow step-by-step.",
+  answer:["Step 1: Client contacts NameNode to create a new file and request metadata.",
+    "Step 2: NameNode verifies file existence, permissions, and client authorization.",
+    "Step 3: NameNode returns Block ID + a list of DataNodes for replicas.",
+    "Step 4: Client writes data directly to the FIRST DataNode.",
+    "Step 5: Data is replicated in a PIPELINE to other DataNodes.",
+    "Step 6: If a DataNode fails, write continues to remaining nodes; NameNode detects under-replication and selects a new DataNode.",
+    "Step 7: After required replicas created, SUCCESS ACK is sent to client. Note: HDFS commits the write ONLY after ALL ACKs received."] },
+
+// SCENARIO
+{ lec:"L2H", type:"SCENARIO", q:"Scenario: Dataset has 2M log files (256 MB each), 1M images (300 MB each), 500K data files (512 MB each). Default block = 128 MB, metadata = 150 bytes/block. Calculate: (a) blocks per file type, (b) total blocks before adding small files, (c) effect of adding 3M small files of 1 MB each.",
+  answer:"BLOCKS PER FILE TYPE:\n• Log file (256 MB) → 256/128 = 2 blocks per file\n• Image file (300 MB) → ⌈300/128⌉ = 3 blocks per file (236 MB unused space in last block but still 3 blocks)\n• Data file (512 MB) → 512/128 = 4 blocks per file\n\nTOTAL BLOCKS BEFORE SMALL FILES:\n• Logs: 2M × 2 = 4,000,000\n• Images: 1M × 3 = 3,000,000\n• Data: 500K × 4 = 2,000,000\n• TOTAL = 9,000,000 blocks\n• Metadata = 9,000,000 × 150 bytes = 1.35 GB on NameNode\n\nAFTER ADDING SMALL FILES:\n• 3M files × 1 MB each = 3M blocks (each 1 MB file = 1 block, even though much smaller than 128 MB)\n• New total = 9M + 3M = 12,000,000 blocks\n• Metadata = 12M × 150 bytes = 1.8 GB on NameNode\n\nIMPACT: Many small files dramatically increase NameNode memory load (+33%) without efficient storage use. The 'small files problem' overwhelms NameNode scalability." },
+
+{ lec:"L2H", type:"SCENARIO", q:"Scenario: 3 DataNodes, 100 GB each. Used: Node1=90, Node2=60, Node3=50 GB. Balancer threshold=10%. Calculate: (a) usage %, (b) cluster average, (c) deviation, (d) unbalanced nodes, (e) balancing action.",
+  answer:"(a) USAGE %:\n• Node1: 90/100 = 90%\n• Node2: 60/100 = 60%\n• Node3: 50/100 = 50%\n\n(b) CLUSTER AVERAGE: (90+60+50)/3 = 200/3 = 66.67%\n\n(c) DEVIATION (from 66.67%):\n• Node1: 90 - 66.67 = +23.33%\n• Node2: 60 - 66.67 = -6.67%\n• Node3: 50 - 66.67 = -16.67%\n\n(d) UNBALANCED NODES (|deviation| > 10%):\n• Node1: 23.33% > 10% → OVER-utilized\n• Node2: 6.67% < 10% → within threshold (balanced)\n• Node3: 16.67% > 10% → UNDER-utilized\n\n(e) BALANCING ACTION:\n• Node1 SENDS blocks (it's over-utilized)\n• Node3 RECEIVES blocks (it's under-utilized)\n• Node2 stays (within threshold)\n• Target: bring all within 10% of 66.67% (i.e., between 56.67% and 76.67%)" },
+
+{ lec:"L2H", type:"SCENARIO", q:"Scenario: Cluster has 3 racks × 5 DataNodes = 15 nodes. Block size = 128 MB, RF=3. Upload 2 TB dataset. Calculate: (a) # blocks, (b) physical storage, (c) replica placement.",
+  answer:"(a) # BLOCKS: 2 TB = 2,097,152 MB ÷ 128 MB = 16,384 blocks (approximate using 2*1024*1024/128 = 16,384).\n\n(b) PHYSICAL STORAGE WITH REPLICATION:\n• 16,384 blocks × 3 replicas × 128 MB = 6,291,456 MB ≈ 6 TB total storage.\n\n(c) REPLICA PLACEMENT (rack-aware, RF=3):\nFor each block:\n• 1st replica → local rack (e.g., Rack A, on a DataNode)\n• 2nd replica → ANOTHER DataNode on the SAME rack (Rack A, different node)\n• 3rd replica → a DIFFERENT rack (Rack B or C)\n\nThis ensures: fault tolerance at both NODE level (two replicas on same rack) AND RACK level (one replica on a different rack survives rack failure)." },
+
+{ lec:"L2H", type:"SCENARIO", q:"Scenario: 900 TB log data. Compare storage: (a) Replication RF=3, (b) Erasure Coding RS-6-3, (c) savings.",
+  answer:"(a) REPLICATION RF=3:\n• Total = 900 × 3 = 2,700 TB physical storage.\n\n(b) ERASURE CODING RS-6-3:\n• Ratio = (6+3)/6 = 9/6 = 1.5\n• Total = 900 × 1.5 = 1,350 TB physical storage.\n\n(c) SAVINGS:\n• Saved = 2,700 - 1,350 = 1,350 TB\n• 50% storage saved by using EC vs replication.\n\nBest for warm/cold log data where read latency is less critical." },
+
+/* ================================================================
+   L2 — MAPREDUCE
+================================================================ */
+// MCQ
+{ lec:"L2M", type:"MCQ", q:"OpenMP and Pthreads are examples of:",
+  options:["Shared Memory Model","Message Passing Model","Data Parallel Model","Task Parallel"], answer:0,
+  exp:"Shared Memory: multiple threads access common global memory. Examples: OpenMP, POSIX Threads." },
+
+{ lec:"L2M", type:"MCQ", q:"MPI is an example of:",
+  options:["Shared Memory","Message Passing Model","Data Parallel Model","Hybrid Model"], answer:1,
+  exp:"MPI = Message Passing Interface. Private memory, explicit send/receive." },
+
+{ lec:"L2M", type:"MCQ", q:"MapReduce is an example of:",
+  options:["Shared Memory","Message Passing","Data Parallel","Task Parallel"], answer:2,
+  exp:"MapReduce applies same operation to different data partitions = Data Parallel model." },
+
+{ lec:"L2M", type:"MCQ", q:"MapReduce was developed by:",
+  options:["Apache","Yahoo","Google (2008)","Facebook"], answer:2,
+  exp:"Developed by Google in 2008." },
+
+{ lec:"L2M", type:"MCQ", q:"The Map function signature:",
+  options:["(key1, value1) → list(key2, value2)","(key2, list(value2)) → list(value3)","(key, value) → key","list(value) → value"], answer:0,
+  exp:"Map: (k1, v1) → list(k2, v2). Reduce: (k2, list(v2)) → list(v3)." },
+
+{ lec:"L2M", type:"MCQ", q:"InputSplit is:",
+  options:["Physical split of file","Logical division of input data","Same as block","Output of Reducer"], answer:1,
+  exp:"InputSplit is LOGICAL. Does not physically split file. 1 InputSplit → 1 Map task." },
+
+{ lec:"L2M", type:"MCQ", q:"Default RecordReader produces Key = ?, Value = ?",
+  options:["Key=line, Value=offset","Key=byte offset, Value=line content","Key=filename, Value=content","Key=hash, Value=line"], answer:1,
+  exp:"Default: Key = byte offset, Value = line content." },
+
+{ lec:"L2M", type:"MCQ", q:"A Combiner safely works ONLY when reduce is:",
+  options:["Idempotent","Associative AND commutative","Distributive","Linear"], answer:1,
+  exp:"Combiner needs reduce to be associative AND commutative (sum, count, min, max safe; average is NOT safe)." },
+
+{ lec:"L2M", type:"MCQ", q:"Default Partitioner uses:",
+  options:["Random distribution","hash(key) % number_of_reducers","Round Robin","Range partitioning"], answer:1,
+  exp:"Default = hash(key) % number_of_reducers." },
+
+{ lec:"L2M", type:"MCQ", q:"Data skew problem in MR is when:",
+  options:["Reducers are too fast","One key dominates, overloading one reducer","Mappers fail","Network is slow"], answer:1,
+  exp:"Data skew = one heavy key sends most data to a single reducer." },
+
+{ lec:"L2M", type:"MCQ", q:"The shuffle phase involves:",
+  options:["Only local sorting","Network transfer of intermediate (k,v) from Mappers to Reducers","Only disk reads","Output to HDFS"], answer:1,
+  exp:"Shuffle = physical network transfer from Mappers to Reducers; usually the most expensive phase." },
+
+{ lec:"L2M", type:"MCQ", q:"Default number of reducers in MapReduce:",
+  options:["0","1","Equal to mappers","Equal to InputSplits"], answer:1,
+  exp:"Default = 1 reducer. User can configure." },
+
+{ lec:"L2M", type:"MCQ", q:"In MRv1, the master scheduling jobs is:",
+  options:["NameNode","JobTracker","ResourceManager","TaskTracker"], answer:1,
+  exp:"JobTracker (MRv1). YARN's ResourceManager replaced it in MRv2." },
+
+{ lec:"L2M", type:"MCQ", q:"Speculative execution helps with:",
+  options:["Failed nodes","Slow stragglers — duplicate task, use fastest result","Network bandwidth","Memory leaks"], answer:1,
+  exp:"Speculative: launch duplicate of slow task on another node; first to finish wins." },
+
+{ lec:"L2M", type:"MCQ", q:"MapReduce is NOT suitable for:",
+  options:["Large-scale batch","Iterative ML algorithms","Word count","Inverted index"], answer:1,
+  exp:"MR poorly handles iterative algorithms (reloads data each iteration). Spark is better." },
+
+// TF
+{ lec:"L2M", type:"TF", q:"True or False: An InputSplit physically splits the file into chunks.",
+  answer:"FALSE", exp:"InputSplit is LOGICAL — it defines which portion each Map task processes WITHOUT physically splitting the file." },
+
+{ lec:"L2M", type:"TF", q:"True or False: A Combiner is required for MapReduce correctness.",
+  answer:"FALSE", exp:"Combiner is OPTIONAL — purely an optimization to reduce network traffic during shuffle." },
+
+{ lec:"L2M", type:"TF", q:"True or False: The Reducer's logic must always be the same as the Combiner's.",
+  answer:"FALSE", exp:"Reducer can be different. But IF a Combiner is used, it must use the SAME logic as Reduce (and Reduce must be associative + commutative)." },
+
+{ lec:"L2M", type:"TF", q:"True or False: Shuffle starts only after ALL mappers finish.",
+  answer:"FALSE", exp:"Shuffle starts BEFORE all mappers finish — overlapping execution improves performance." },
+
+{ lec:"L2M", type:"TF", q:"True or False: Map output keys must be unique.",
+  answer:"FALSE", exp:"Map output keys do NOT have to be unique. Duplicate (key, value) pairs are permitted." },
+
+{ lec:"L2M", type:"TF", q:"True or False: Reducers run in parallel and are independent of each other.",
+  answer:"TRUE", exp:"Reducers run in parallel since they handle different keys independently." },
+
+// EXPLAIN
+{ lec:"L2M", type:"EXPLAIN", q:"Explain the core idea of MapReduce and what the framework handles vs the programmer.",
+  answer:"Core idea: MOVE the burden of managing distributed systems FROM the developer TO the library.\n\nThe programmer expresses computation as just two functions (Map and Reduce), and the framework handles everything else.\n\nProgrammer responsibility:\n• Map logic\n• Reduce logic\n• Combiner (optional)\n\nFramework responsibility:\n• Parallel execution\n• Data partitioning\n• Shuffle & sort\n• Fault tolerance\n• Worker coordination\n\nThis simple abstraction hides the 'messy details' of parallelization, fault tolerance, data distribution, and load balancing — allowing programmers without parallel systems experience to utilize large-scale distributed resources." },
+
+{ lec:"L2M", type:"EXPLAIN", q:"Explain the role of the Combiner and when it can be safely used.",
+  answer:"Combiner = mini-Reducer that performs PARTIAL MERGING of intermediate data ON THE MAP MACHINE before the data is sent over the network.\n\nPURPOSE: Reduce network traffic during shuffle (saves bandwidth).\n\nKEY RULES:\n• Optional (not required for correctness)\n• Must use the SAME LOGIC as Reduce\n• Runs LOCALLY on mapper output\n\nSAFETY CONDITIONS:\nCombiner works ONLY when Reduce is ASSOCIATIVE AND COMMUTATIVE.\n\nWorks safely:\n• Sum, Count, Min, Max\n\nDoes NOT safely work:\n• Average (unless rewritten to track sum + count separately)\n• Median\n• Order-dependent operations\n\nExample: in WordCount, Mapper Split 1 outputs (big,1),(big,1) → Combiner outputs (big,2) → less data transferred to Reducer." },
+
+{ lec:"L2M", type:"EXPLAIN", q:"Explain the Partitioner, how it works, and the Data Skew problem.",
+  answer:"PARTITIONER: After the Map phase, the Partitioner determines WHICH REDUCER will receive each key.\n\nDEFAULT BEHAVIOR (Hash Partitioner):\n  hash(key) % number_of_reducers\n\nUSE: Needed when working with multiple reducers to ensure load balancing.\n\nDATA SKEW PROBLEM:\n• If one key appears very frequently → it ALL goes to one reducer (because hash is deterministic).\n• That one reducer becomes overloaded.\n• Job becomes slow — others finish quickly while one struggles.\n\nMITIGATION STRATEGIES:\n• Key Salting: split heavy keys (low complexity). Good for WordCount skew.\n• Range Partition: by key range (medium complexity). Good for ordered data.\n• Frequency-Aware: manually assign heavy keys (high complexity). Used in production." },
+
+{ lec:"L2M", type:"EXPLAIN", q:"Explain Shuffle & Sort phases — why are they important?",
+  answer:"SHUFFLE PHASE (Data Transfer & Grouping):\n• Transfers intermediate (k,v) pairs from Mappers → Reducers.\n• Groups records by key — all values for the same key go to the same reducer.\n• PHYSICAL movement of data over the NETWORK.\n• Starts BEFORE all mappers finish (overlapping = better performance).\n• Most expensive phase (network + disk operations).\n\nSORT PHASE (Automatic Key Ordering):\n• Sorts intermediate keys BEFORE they reach the reducer.\n• Combines multiple sorted lists from Mappers into a single globally sorted stream per Reducer.\n• Ensures reducer receives data in SORTED KEY ORDER.\n• Groups identical keys together: K → [V1, V2, V3, ...].\n\nWHY IMPORTANT?\n• Enables EFFICIENT AGGREGATION: reducer doesn't have to search the whole dataset; identical keys are already adjacent.\n• Ensures DETERMINISTIC processing.\n• Makes REDUCER LOGIC SIMPLER." },
+
+{ lec:"L2M", type:"EXPLAIN", q:"Explain WHY MapReduce is NOT suitable for iterative algorithms, real-time, or interactive queries.",
+  answer:"MapReduce has a RIGID Map → Shuffle → Reduce structure.\n\n1. ITERATIVE ALGORITHMS (ML, Graph):\n• Each iteration writes results to HDFS and reads them back next iteration.\n• Reloads data EVERY pass → expensive disk I/O.\n• 100 iterations = 100× full disk read/write cycle.\n• Spark keeps data in memory across iterations → much better.\n\n2. REAL-TIME / LOW-LATENCY PROCESSING:\n• MR is a HIGH-LATENCY model (jobs take minutes).\n• Cannot handle streaming data continuously.\n• Use Spark Streaming, Flink, Kafka instead.\n\n3. INTERACTIVE QUERIES:\n• High latency → minutes per query.\n• Use Hive/Presto for SQL.\n• Use Spark for general interactive.\n\n4. HIGHLY SEQUENTIAL/DEPENDENT TASKS:\n• Tasks needing chain-of-thought style processing don't fit the rigid pipeline.\n\nGeneral rule: If many iterations or real-time responses are needed → MapReduce is the WRONG tool." },
+
+// DIFF
+{ lec:"L2M", type:"DIFF", q:"Compare Data Parallelism vs Task Parallelism.",
+  answer:[
+    ["Aspect","Data Parallelism","Task Parallelism"],
+    ["Code","Same code","Different code"],
+    ["Data","Different partitions of dataset","Same or different data"],
+    ["Decomposition","Data decomposition","Task decomposition"],
+    ["Best For","Large datasets","Complex workflows"],
+    ["Used In","Hadoop, Spark","Spark, Threads, microservices"],
+    ["Scalability","Very high for Big Data","Depends on task independence"],
+    ["Example","Apply function to each chunk","Different functions on different processors"]
+  ] },
+
+{ lec:"L2M", type:"DIFF", q:"Compare InputSplit vs HDFS Block.",
+  answer:[
+    ["Aspect","InputSplit","HDFS Block"],
+    ["Nature","Logical division","Physical division"],
+    ["Purpose","Determines task workload","Determines data storage unit"],
+    ["Size","Configurable, can match block or differ","Default 128 MB"],
+    ["Effect","1 InputSplit → 1 Map task","Data physically on disk"],
+    ["Relationship","Usually aligned with block boundary","-"]
+  ] },
+
+{ lec:"L2M", type:"DIFF", q:"Compare Combiner vs Reducer.",
+  answer:[
+    ["Aspect","Combiner","Reducer"],
+    ["Location","On Map machine (local)","On Reducer node (after shuffle)"],
+    ["Required","Optional optimization","Required (default 1)"],
+    ["Logic","Same as Reducer","User-defined"],
+    ["Input","Map output (local)","Shuffled & sorted intermediate data"],
+    ["Purpose","Reduce network traffic","Final aggregation"],
+    ["Constraint","Needs associative + commutative","No such constraint"]
+  ] },
+
+{ lec:"L2M", type:"DIFF", q:"Compare Map Phase vs Reduce Phase.",
+  answer:[
+    ["Aspect","Map Phase","Reduce Phase"],
+    ["Input","(key1, value1) input record","(key2, list of value2)"],
+    ["Output","list of (key2, value2)","list of value3"],
+    ["Operation","Transform raw records","Aggregate values per key"],
+    ["Parallelism","One task per InputSplit","User-configurable; runs in parallel"],
+    ["Keys","Don't have to be unique","Each reducer gets a partition of keys"]
+  ] },
+
+// FILL
+{ lec:"L2M", type:"FILL", q:"MapReduce phases: Input → ______ → Map → ______ → Partition → ______ → ______ → Reduce → Output.",
+  blanks:["InputSplit","Combiner","Shuffle","Sort"],
+  exp:"Full pipeline: Input → InputSplit → Map → Combiner (optional) → Partition → Shuffle → Sort → Reduce → Output." },
+
+{ lec:"L2M", type:"FILL", q:"Default RecordReader produces Key = ______, Value = ______.",
+  blanks:["byte offset","line content"], exp:"Standard line-based input." },
+
+{ lec:"L2M", type:"FILL", q:"Default partitioner formula: ______ ( key ) % ______.",
+  blanks:["hash","number_of_reducers"], exp:"hash(key) % number_of_reducers." },
+
+{ lec:"L2M", type:"FILL", q:"Combiner is safe when Reduce is ______ AND ______.",
+  blanks:["associative","commutative"], exp:"Required for Combiner correctness." },
+
+// FLOW
+{ lec:"L2M", type:"FLOW", q:"Describe the FULL MapReduce job execution workflow.",
+  answer:["Step 1 — Job Submission (Client): Client submits MR job with Mapper class, Reducer class, input/output paths (HDFS), and config.",
+    "Step 2 — Job Coordination (Master): JobTracker (MRv1) receives job, splits into Map/Reduce tasks, schedules on TaskTrackers, uses data locality to assign Map tasks near data blocks.",
+    "Step 3 — Map Phase (Parallel): TaskTrackers execute Map tasks on local InputSplits. Each Map task reads data, processes records, produces intermediate (k,v) pairs.",
+    "Step 4 — Shuffle & Sort: Intermediate data is partitioned by key, transferred over network, grouped by identical keys, sorted before reaching Reducers.",
+    "Step 5 — Reduce Phase: Reduce tasks receive grouped (key, list of values), apply aggregation logic, generate final records.",
+    "Step 6 — Output Storage: Final results written to HDFS via OutputFormat. Each Reduce task produces one output file."] },
+
+{ lec:"L2M", type:"FLOW", q:"Describe the Word Count example step-by-step.",
+  answer:["Step 1 — Input Splitting: split text file into 3 splits, each going to a separate Mapper.",
+    "Step 2 — Map Phase: each Mapper splits lines into words, emits (word.lower(), 1) for each occurrence. E.g., (big,1), (data,1), ...",
+    "Step 3 — Combiner Phase (optional, on map machine): aggregates locally. E.g., Split 1: (big,2), (data,2) instead of (big,1),(big,1),(data,1),(data,1).",
+    "Step 4 — Shuffle & Sort: identical words from all mappers grouped together. (big, [2,1,2]), (data, [2,2,2]), etc.",
+    "Step 5 — Reduce Phase: sum the values per key. emit(word, sum(values)). E.g., big→5, data→6, etc.",
+    "Final Output: word→count pairs written to HDFS."] },
+
+{ lec:"L2M", type:"FLOW", q:"Describe the Inverted Index example step-by-step.",
+  answer:["Step 1 — Input Splitting: each Mapper receives (docID, document_text).",
+    "Step 2 — Map Phase: for each word in document, emit (word.lower(), docID).",
+    "Step 3 — Shuffle & Sort: groups all identical words together, sends to same reducer. E.g., (data, [Doc1, Doc2, Doc2, Doc3]) — duplicates possible.",
+    "Step 4 — Reduce Phase: convert list to SET to remove duplicate docIDs; emit (word, unique doc list). E.g., (data, [Doc1, Doc2, Doc3])."] },
+
+// SCENARIO
+{ lec:"L2M", type:"SCENARIO", q:"Scenario: Natural join R(A,B) ⋈ S(B,C) using MapReduce. Describe Map and Reduce tasks.",
+  answer:"MAP TASKS (turn each tuple into key-value pair keyed by join column B):\n• For each R(a,b) → emit (b, (a, R))  — key=B, value=(A, source-tag R)\n• For each S(b,c) → emit (b, (c, S))  — key=B, value=(C, source-tag S)\n\nSHUFFLE & SORT: pairs with same b go to same reducer.\n\nREDUCE TASK (matches by B):\n• For each B value, the reducer gets a list of pairs.\n• MATCHES all (a, R) entries with all (c, S) entries.\n• OUTPUTS (a, b, c) — the joined tuple.\n\nNote: the 'source tag' (R or S) lets the reducer know which side each value came from, since they share the same key b. The join is the cartesian product across all matching pairs for each b." },
+
+{ lec:"L2M", type:"SCENARIO", q:"Scenario: Counting 5-word sequences in a corpus of documents. Describe Map, Shuffle, Reduce phases.",
+  answer:"5-WORD SEQUENCE (5-gram) = any 5 consecutive words.\nExample sentence 'The quick brown fox jumps over the lazy dog':\n  • 'The quick brown fox jumps'\n  • 'quick brown fox jumps over'\n  • 'brown fox jumps over the'\n  • 'fox jumps over the lazy'\n  • 'jumps over the lazy dog'\n(5 sequences from 9 words.)\n\nMAP PHASE:\n• Extract ALL 5-word sequences from each document.\n• Emit (sequence, 1) for each occurrence.\n\nSHUFFLE & SORT:\n• Group all emitted pairs by sequence.\n• Prepare for aggregation.\n\nREDUCE PHASE:\n• Sum the counts for each unique sequence.\n• Output (sequence, total_count)." },
+
+/* ================================================================
+   L5 — YARN
+================================================================ */
+// MCQ
+{ lec:"L5", type:"MCQ", q:"YARN stands for:",
+  options:["Yet Another Resource Negotiator","YARN Application Resource Network","Yarn All Resource Network","Yarn Architectural Resource Node"],
+  answer:0, exp:"YARN = Yet Another Resource Negotiator." },
+
+{ lec:"L5", type:"MCQ", q:"YARN was introduced in:",
+  options:["Hadoop 1.0","Hadoop 2.0","Hadoop 3.0","Spark"], answer:1,
+  exp:"YARN introduced in Hadoop 2.0 to fix the JobTracker bottleneck of Hadoop 1.x." },
+
+{ lec:"L5", type:"MCQ", q:"The fundamental idea of YARN:",
+  options:["Speed up MapReduce","Split resource management from job scheduling/monitoring","Replace HDFS","Unify all engines"], answer:1,
+  exp:"YARN splits resource mgmt from job scheduling/monitoring into separate daemons." },
+
+{ lec:"L5", type:"MCQ", q:"JobTracker in Hadoop 1.x had which limitation?",
+  options:["Only ran on Linux","Did both resource mgmt AND job execution → bottleneck","Was too small","Could not run Java"], answer:1,
+  exp:"JobTracker managed BOTH resources AND job execution → overwhelming bottleneck as clusters grew." },
+
+{ lec:"L5", type:"MCQ", q:"YARN scales to:",
+  options:["~4,000 nodes","~10,000+ nodes","~1,000 nodes","Unlimited only theoretically"], answer:1,
+  exp:"YARN scales to 10,000+ nodes; JobTracker bottlenecked at ~4,000." },
+
+{ lec:"L5", type:"MCQ", q:"YARN's resource unit:",
+  options:["Fixed Slots","Dynamic Containers (CPU/RAM)","Disk blocks","Threads"], answer:1,
+  exp:"Dynamic Containers (CPU/RAM). MRv1 used rigid Map/Reduce slots." },
+
+{ lec:"L5", type:"MCQ", q:"Resource Manager has two sub-components:",
+  options:["Driver + Executor","Scheduler + Application Manager","Master + Slave","NN + DN"], answer:1,
+  exp:"RM = Scheduler (pure scheduler) + Application Manager (accepts submissions, starts AM)." },
+
+{ lec:"L5", type:"MCQ", q:"How many Application Masters does each job have?",
+  options:["One per cluster","One per node","One per application/job","One per task"], answer:2,
+  exp:"Each application/job has its own dedicated AM." },
+
+{ lec:"L5", type:"MCQ", q:"Container is:",
+  options:["A physical machine","A logical bundle of resources (RAM/CPU/disk) on a single node","A Docker container","A VM"], answer:1,
+  exp:"Container = logical bundle of resources on a node. Not physical." },
+
+{ lec:"L5", type:"MCQ", q:"Container Launch Context (CLC) includes:",
+  options:["Only environment variables","Env vars, dependencies (JARs/scripts), security tokens","Only the JAR file","User credentials only"], answer:1,
+  exp:"CLC = env variables + dependencies + security tokens." },
+
+{ lec:"L5", type:"MCQ", q:"FIFO Scheduler's biggest disadvantage:",
+  options:["Complex config","Starvation risk (large job blocks small ones)","No fault tolerance","High latency"], answer:1,
+  exp:"FIFO has starvation risk: large job submitted first hogs all resources." },
+
+{ lec:"L5", type:"MCQ", q:"Capacity Scheduler hierarchy: levels?",
+  options:["Root only","Root → Leaf","Root → Parent → Leaf (only Leaf accepts submissions)","Master → Slave"], answer:2,
+  exp:"Root → Parent Queues (departments) → Leaf Queues. Only Leaf queues accept submissions." },
+
+{ lec:"L5", type:"MCQ", q:"Resource Elasticity in Capacity Scheduler means:",
+  options:["Queues grow physically","Idle resources from one queue can be borrowed by others","Resources are infinite","Queues are deleted dynamically"], answer:1,
+  exp:"Elastic sharing: idle queue resources reassigned to busy queues below capacity." },
+
+{ lec:"L5", type:"MCQ", q:"Fair Scheduler by default calculates fairness based on:",
+  options:["CPU","Memory","Disk","Network"], answer:1,
+  exp:"Default = Memory; can be configured to consider Memory and CPU." },
+
+{ lec:"L5", type:"MCQ", q:"For enterprise production with strict resource guarantees:",
+  options:["FIFO","Fair","Capacity","Round Robin"], answer:2,
+  exp:"Capacity Scheduler is the production standard for enterprises." },
+
+{ lec:"L5", type:"MCQ", q:"Default container failure retry count:",
+  options:["1","2","4","10"], answer:2,
+  exp:"AM retries failed containers up to 4 times by default." },
+
+{ lec:"L5", type:"MCQ", q:"When a Node Manager stops sending heartbeats, YARN:",
+  options:["Restarts the cluster","Marks the node BLACKLISTED and reschedules its containers","Ignores it","Calls Secondary NameNode"], answer:1,
+  exp:"RM marks node BLACKLISTED; reschedules containers." },
+
+{ lec:"L5", type:"MCQ", q:"ZooKeeper's role in YARN HA:",
+  options:["Stores all logs","Leader election, state storage, cluster coordination","Replaces NameNode","Runs containers"], answer:1,
+  exp:"ZK: (1) Leader election RM HA, (2) State storage, (3) Cluster coordination." },
+
+{ lec:"L5", type:"MCQ", q:"Log Aggregation moves logs to:",
+  options:["Local disk only","Centralized HDFS location","Cloud storage","Memory"], answer:1,
+  exp:"After app completes, NM moves logs from local nodes to HDFS for centralized debugging and persistence." },
+
+// TF
+{ lec:"L5", type:"TF", q:"True or False: In YARN, the Resource Manager directly launches containers.",
+  answer:"FALSE", exp:"RM ALLOCATES resources but does NOT launch containers. The Application Master tells NodeManagers to launch containers using a CLC." },
+
+{ lec:"L5", type:"TF", q:"True or False: YARN supports multiple processing engines (Spark, Flink, MapReduce) concurrently.",
+  answer:"TRUE", exp:"Multi-tenancy is a key feature: YARN supports Spark, Flink, MR, Tez, etc., concurrently on the same cluster." },
+
+{ lec:"L5", type:"TF", q:"True or False: The Application Master takes over the Resource Manager's job if RM fails.",
+  answer:"FALSE", exp:"AM doesn't replace RM. Instead, ZooKeeper triggers failover to the Standby RM." },
+
+{ lec:"L5", type:"TF", q:"True or False: YARN uses data locality to assign containers near the data blocks.",
+  answer:"TRUE", exp:"YARN talks to HDFS to know block locations; AM requests containers with locality preferences." },
+
+{ lec:"L5", type:"TF", q:"True or False: The Node Manager runs on only one machine in the cluster.",
+  answer:"FALSE", exp:"Node Manager runs on EVERY machine (worker node) in the cluster — like a 'building supervisor' per floor." },
+
+// EXPLAIN
+{ lec:"L5", type:"EXPLAIN", q:"Explain why YARN was needed — what were Hadoop 1's limitations?",
+  answer:"Hadoop 1 LIMITATIONS:\n\n1. SINGLE POINT OF FAILURE: JobTracker managed all jobs. If it failed, ALL running jobs lost; cluster couldn't accept new jobs.\n\n2. RIGID PROCESSING: Only MapReduce supported. Blocked using modern engines like Spark.\n\n3. OVERLOADED ARCHITECTURE: JobTracker had to manage BOTH:\n   - Resource tracking (node capacity)\n   - Job execution (scheduling, monitoring tasks)\n   This single component became an overwhelming bottleneck as clusters grew (bottleneck at ~4,000 nodes).\n\n4. INEFFICIENT RESOURCE USE: MRv1 used a rigid 'slot' system — each node had fixed map and reduce slots. If all map slots busy but reduce free (or vice versa), resources sat idle → poor utilization.\n\nYARN's SOLUTION:\n• Splits resource management from job scheduling into separate daemons.\n• Introduces dynamic containers (CPU/RAM) instead of fixed slots.\n• Adds HA (Active/Standby RM).\n• Supports multi-tenancy (Spark, Flink, MR, Tez, etc.)." },
+
+{ lec:"L5", type:"EXPLAIN", q:"Explain the role and responsibilities of each YARN component.",
+  answer:"1. CLIENT:\n• Submits a job (Spark/MR) to YARN.\n• Talks to RM to request execution.\n• Monitors job status; interacts with AM for progress.\n\n2. RESOURCE MANAGER (RM) — Master, Cluster Boss:\n• Arbitrates resources among all applications.\n• Two sub-components:\n  - SCHEDULER: pure scheduler (Capacity, Fair).\n  - APPLICATION MANAGER: accepts submissions, starts first container for AM, restarts AM on failure.\n\n3. NODE MANAGER (NM) — Slave, Building Supervisor:\n• Runs on every machine.\n• Registers with RM, sends heartbeats.\n• Tracks CPU/memory/disk usage.\n• Creates, launches, kills containers as directed.\n\n4. APPLICATION MASTER (AM) — Job-specific Manager:\n• ONE per application.\n• Negotiates containers from RM.\n• Schedules and coordinates task execution.\n• Monitors tasks, handles failures.\n• Launches containers via Container Launch Context (CLC).\n\n5. CONTAINER — Logical resource bundle:\n• RAM + CPU cores + disk on a single node.\n• Invoked by CLC.\n• Provides isolation between applications." },
+
+{ lec:"L5", type:"EXPLAIN", q:"Explain Container Launch Context (CLC) and the Resource Request.",
+  answer:"RESOURCE REQUEST (AM → RM Scheduler):\nThe AM doesn't just ask for 'help' — it sends a formal Resource Request.\nComponents:\n• RESOURCE NAME: specific Hostname, Rackname, or * (anywhere).\n• PRIORITY: rank tasks within the same job.\n• CAPABILITY: specific MB of RAM and number of cores.\n\nCONTAINER LAUNCH CONTEXT (CLC) (AM → NM):\nOnce a container is granted, the AM sends a CLC to the Node Manager.\nIncludes:\n• Environment variables\n• Dependencies (JAR files, scripts)\n• Security tokens\n\nFlow: AM negotiates → RM allocates a container → AM sends CLC to NM → NM launches the container with all needed context." },
+
+{ lec:"L5", type:"EXPLAIN", q:"Explain ZooKeeper's role in YARN.",
+  answer:"ZooKeeper provides the critical backbone making YARN reliable and fault-tolerant.\n\n3 KEY ROLES:\n\n1. LEADER ELECTION (RM HA):\n• YARN's RM can have multiple instances (Active & Standby).\n• ZooKeeper manages the election process — ensures only ONE Active RM runs.\n• If Active RM fails, ZK automatically promotes a Standby.\n\n2. STATE STORAGE:\n• Active RM writes application state and metadata to ZooKeeper.\n• If failover occurs, the new Active RM READS this data from ZK to recover running applications WITHOUT DATA LOSS.\n\n3. CLUSTER COORDINATION:\n• Stores configuration information.\n• Helps manage the health of nodes in the YARN architecture." },
+
+// DIFF
+{ lec:"L5", type:"DIFF", q:"Compare JobTracker (Hadoop 1) vs YARN (Hadoop 2/3).",
+  answer:[
+    ["Aspect","JobTracker","YARN"],
+    ["Role","Resource Manager + Job Coordinator (combined)","Pure Resource Manager (separated)"],
+    ["Scalability","Bottlenecked at ~4,000 nodes","Scales to 10,000+ nodes"],
+    ["Resource Unit","Fixed Slots (Map or Reduce)","Dynamic Containers (CPU/RAM)"],
+    ["Fault Tolerance","Single Point of Failure (SPOF)","High Availability (Active/Standby)"],
+    ["Multi-tenancy","No (MR only)","Yes (Spark, Tez, Flink, etc.)"]
+  ] },
+
+{ lec:"L5", type:"DIFF", q:"Compare FIFO vs Capacity vs Fair Scheduler.",
+  answer:[
+    ["Aspect","FIFO","Capacity","Fair"],
+    ["Order","Strict submission order","Hierarchical queues with %","Equal share over time"],
+    ["Multi-tenancy","No","Yes (organizations)","Yes (users)"],
+    ["Starvation","Yes — risk","Mitigated by limits","Prevented by design"],
+    ["Config","Zero (simple)","Complex (hierarchies/percentages)","Moderate"],
+    ["Elasticity","No","Yes (queues borrow idle resources)","Dynamic balancing"],
+    ["Use Case","Single-user/test","Enterprise production","Shared interactive"]
+  ] },
+
+{ lec:"L5", type:"DIFF", q:"Compare Resource Manager vs Node Manager.",
+  answer:[
+    ["Aspect","Resource Manager","Node Manager"],
+    ["Role","Master, cluster-wide","Slave, per-node"],
+    ["Quantity","One (HA: Active + Standby)","One per worker node"],
+    ["Manages","Cluster resources, scheduling","Containers on its node"],
+    ["Sub-Components","Scheduler + Application Manager","-"],
+    ["Allocates Resources?","Yes","No, only manages container lifecycle"],
+    ["Analogy","City planner","Building supervisor"]
+  ] },
+
+// FILL
+{ lec:"L5", type:"FILL", q:"YARN core architecture has 5 components: ______, ______, ______, ______, and ______.",
+  blanks:["Client","Resource Manager","Node Manager","Application Master","Container"],
+  exp:"5 components: Client (submits), RM (master), NM (per-node), AM (per-job), Container (resource bundle)." },
+
+{ lec:"L5", type:"FILL", q:"The three YARN schedulers are: ______, ______, and ______.",
+  blanks:["FIFO","Capacity","Fair"], exp:"FIFO (default/simple), Capacity (production), Fair (equal share)." },
+
+{ lec:"L5", type:"FILL", q:"Resource Manager has two sub-components: ______ and ______.",
+  blanks:["Scheduler","Application Manager"], exp:"Scheduler = pure scheduling. Application Manager = accepts submissions, starts AM, restarts AM on failure." },
+
+{ lec:"L5", type:"FILL", q:"Container Launch Context (CLC) includes: ______, ______, and ______.",
+  blanks:["environment variables","dependencies","security tokens"], exp:"CLC = env vars + dependencies (JARs/scripts) + security tokens." },
+
+// FLOW
+{ lec:"L5", type:"FLOW", q:"Describe the complete YARN Application Workflow step-by-step.",
+  answer:["Step 1 — SUBMIT: The Client submits an application to the Resource Manager.",
+    "Step 2 — LAUNCH AM: The RM allocates a container on a Node Manager to start the Application Master (AM).",
+    "Step 3 — REGISTER: The Application Master registers itself with the RM.",
+    "Step 4 — NEGOTIATE: The AM negotiates resource containers from the RM (Resource Requests with name/priority/capability).",
+    "Step 5 — LAUNCH CONTAINERS: The AM notifies the Node Managers to launch the assigned containers using CLC.",
+    "Step 6 — EXECUTE: The application code (tasks) executes inside the containers on worker nodes.",
+    "Step 7 — MONITOR: The Client checks status by contacting RM or AM directly.",
+    "Step 8 — COMPLETE: Once processing finished, AM unregisters with RM and shuts down."] },
+
+{ lec:"L5", type:"FLOW", q:"Describe YARN's failure handling for the 4 failure types.",
+  answer:["Container Failure → AM RETRIES the container (default: 4 attempts).",
+    "Node Manager Failure → RM marks node BLACKLISTED; containers on that node rescheduled on other healthy nodes.",
+    "Application Master Failure → RM (Application Manager) restarts AM in a new container.",
+    "Resource Manager Failure → ZooKeeper triggers failover to Standby RM; new Active RM reads state from ZK to resume operations."] },
+
+// SCENARIO
+{ lec:"L5", type:"SCENARIO", q:"Scenario: A user submits a Spark job to YARN. Walk through what happens from submission to completion.",
+  answer:"1. Client submits Spark job to YARN's Resource Manager.\n2. RM's Application Manager allocates a container on a Node Manager and starts the Spark Application Master (driver) inside it.\n3. Spark AM registers with the RM.\n4. Spark AM sends a Resource Request to the RM Scheduler asking for containers (RAM/CPU) with locality preferences (near data blocks in HDFS).\n5. RM Scheduler grants containers based on Capacity/Fair Scheduler policies. AM receives container allocations.\n6. AM sends Container Launch Context (CLC) to the relevant Node Managers — includes env vars, dependencies (Spark JARs), security tokens.\n7. NMs launch Spark Executors inside containers. Executors run tasks in parallel, store RDDs in memory, handle shuffle.\n8. AM monitors task progress, handles failures (retries up to 4 attempts per container).\n9. Client may check status via RM or AM directly.\n10. When all tasks complete, Spark AM unregisters with RM. Containers released. Logs aggregated to HDFS (centralized debugging)." },
+
+/* ================================================================
+   L7 — SPARK
+================================================================ */
+// MCQ
+{ lec:"L7", type:"MCQ", q:"Apache Spark is up to how many times faster than MapReduce in memory?",
+  options:["10×","50×","100×","1000×"], answer:2,
+  exp:"Up to 100× faster in memory; 10× faster even on disk." },
+
+{ lec:"L7", type:"MCQ", q:"Spark's data is primarily stored in:",
+  options:["Disk","Memory (RAM)","HDFS","Distributed cache only"], answer:1,
+  exp:"Spark is in-memory. Intermediate data in RAM avoids disk I/O." },
+
+{ lec:"L7", type:"MCQ", q:"The two main abstractions in Spark:",
+  options:["Maps & Reduces","RDDs and DAGs","Tables & Queries","Mappers & Drivers"], answer:1,
+  exp:"Spark relies on RDDs and DAGs." },
+
+{ lec:"L7", type:"MCQ", q:"RDD stands for:",
+  options:["Resilient Distributed Dataset","Reduced Data Distribution","Rapid Distributed Disk","Replicated Data Driver"], answer:0,
+  exp:"RDD = Resilient Distributed Dataset." },
+
+{ lec:"L7", type:"MCQ", q:"The three pillars of RDD:",
+  options:["Resilient, Replicated, Reduced","Resilient, Distributed, Datasets","Real-time, Distributed, Durable","Resilient, Dynamic, Distributed"], answer:1,
+  exp:"R-D-D: Resilient (lineage), Distributed (partitions), Datasets (immutable container)." },
+
+{ lec:"L7", type:"MCQ", q:"Why are RDDs immutable?",
+  options:["To save memory","To prevent race conditions and enable lineage-based recovery","To allow concurrent writes","Because of network limits"], answer:1,
+  exp:"Immutability prevents race conditions in distributed systems and enables lineage tracking." },
+
+{ lec:"L7", type:"MCQ", q:"Spark Transformations are:",
+  options:["Eager","Lazy","Synchronous","Always shuffle"], answer:1,
+  exp:"Transformations are LAZY — nothing runs until an Action is called." },
+
+{ lec:"L7", type:"MCQ", q:"Which is an ACTION in Spark?",
+  options:["map","filter","flatMap","collect"], answer:3,
+  exp:"collect is an action. map/filter/flatMap are transformations." },
+
+{ lec:"L7", type:"MCQ", q:"Which is a TRANSFORMATION in Spark?",
+  options:["count","collect","filter","saveAsTextFile"], answer:2,
+  exp:"filter is a transformation. count, collect, saveAsTextFile are actions." },
+
+{ lec:"L7", type:"MCQ", q:"A NARROW transformation:",
+  options:["Requires shuffle","Each input partition → 1 output partition; no shuffle","Sends data to driver","Always uses reduceByKey"], answer:1,
+  exp:"Narrow: no data movement. Examples: map, filter." },
+
+{ lec:"L7", type:"MCQ", q:"A WIDE transformation:",
+  options:["Has no data movement","Requires data shuffle across nodes","Is faster than narrow","Doesn't create a new RDD"], answer:1,
+  exp:"Wide: input partitions contribute to multiple output partitions → requires shuffle. Examples: reduceByKey, groupByKey." },
+
+{ lec:"L7", type:"MCQ", q:"When is the DAG created in Spark?",
+  options:["When the RDD is defined","When an Action is called","After each transformation","On every shuffle"], answer:1,
+  exp:"DAG built/executed when an Action triggers the computation." },
+
+{ lec:"L7", type:"MCQ", q:"Stages in Spark are divided based on:",
+  options:["Number of executors","Shuffle boundaries","File sizes","User configuration"], answer:1,
+  exp:"DAG Scheduler breaks job into stages by shuffle boundaries." },
+
+{ lec:"L7", type:"MCQ", q:"The Spark Driver is responsible for:",
+  options:["Storing all data","Creating DAG, scheduling, monitoring","Running tasks","Replacing cluster manager"], answer:1,
+  exp:"Driver = Brain. Runs main app, creates DAG, schedules tasks, monitors execution." },
+
+{ lec:"L7", type:"MCQ", q:"Spark Executors:",
+  options:["Plan the DAG","Run tasks, cache RDDs, handle shuffle, return results","Replace the Driver","Manage HDFS"], answer:1,
+  exp:"Executors are workers: execute tasks in parallel, store data in memory, handle shuffle." },
+
+{ lec:"L7", type:"MCQ", q:"Which is NOT part of the Spark ecosystem?",
+  options:["Spark Core","Spark SQL","MLlib","Spark Sqoop"], answer:3,
+  exp:"Ecosystem: Core, SQL, Streaming, MLlib, GraphX. No 'Spark Sqoop'." },
+
+{ lec:"L7", type:"MCQ", q:"Spark Streaming is for:",
+  options:["Batch analysis","Real-time stream processing","ML algorithms","Graph computation"], answer:1,
+  exp:"Spark Streaming = fault-tolerant real-time stream processing." },
+
+{ lec:"L7", type:"MCQ", q:"GraphX is for:",
+  options:["SQL queries","Graph computation","ML","Stream processing"], answer:1,
+  exp:"GraphX = Spark's graph computation library." },
+
+{ lec:"L7", type:"MCQ", q:"Spark optimization includes:",
+  options:["Lazy evaluation, data locality, in-memory computing, speculative execution","Always writing to disk","Manual scheduling","Static plans"], answer:0,
+  exp:"All four: lazy eval, data locality, in-memory, speculative." },
+
+// TF
+{ lec:"L7", type:"TF", q:"True or False: An RDD can be modified after creation.",
+  answer:"FALSE", exp:"RDDs are IMMUTABLE. To 'modify', you apply a transformation which creates a NEW RDD." },
+
+{ lec:"L7", type:"TF", q:"True or False: Spark always runs all transformations immediately.",
+  answer:"FALSE", exp:"Transformations are LAZY. Nothing runs until an Action is called." },
+
+{ lec:"L7", type:"TF", q:"True or False: Spark requires Hadoop YARN to run.",
+  answer:"FALSE", exp:"Spark can run STANDALONE, on YARN, Mesos, Kubernetes, etc. YARN is just one option." },
+
+{ lec:"L7", type:"TF", q:"True or False: Spark's fault tolerance relies on HDFS data replication.",
+  answer:"FALSE", exp:"Spark uses RDD LINEAGE GRAPH for fault tolerance — recomputes lost partitions from the lineage. Hadoop uses HDFS replication." },
+
+{ lec:"L7", type:"TF", q:"True or False: reduceByKey is a wide transformation.",
+  answer:"TRUE", exp:"reduceByKey groups data by key → triggers shuffle → wide transformation." },
+
+{ lec:"L7", type:"TF", q:"True or False: In Spark, disk I/O happens for all operations.",
+  answer:"FALSE", exp:"Disk used only when data doesn't fit memory or during shuffle. Otherwise data stays in RAM." },
+
+// EXPLAIN
+{ lec:"L7", type:"EXPLAIN", q:"Explain what an RDD is and its three pillars.",
+  answer:"RDD = Resilient Distributed Dataset — the fundamental data abstraction in Spark.\n\nIt represents a DISTRIBUTED COLLECTION OF ELEMENTS that can be PROCESSED IN PARALLEL across a cluster. An RDD is not stored as a single contiguous file — it's divided into multiple PARTITIONS.\n\nThree Pillars:\n\n1. RESILIENT: via a LINEAGE GRAPH (DAG). Spark 'remembers' the steps (transformations) used to create an RDD. If a partition is lost, it can be MATHEMATICALLY RECOMPUTED using its lineage. No need to copy data — just replay the transformations.\n\n2. DISTRIBUTED: RDD is automatically split into PARTITIONS distributed across different nodes in the cluster.\n\n3. DATASETS: a generic container for any type of Scala, Java, or Python object.\n\nAdditional Property — IMMUTABLE: Once created, RDD cannot be changed. Modification creates a new RDD (preserves predictability, prevents race conditions, enables lineage tracking)." },
+
+{ lec:"L7", type:"EXPLAIN", q:"Explain Lazy Execution in Spark and why it's important.",
+  answer:"Main idea: Nothing runs until an ACTION is called.\n\nHow it works:\n• When you write transformations in Spark, it does NOT execute them immediately.\n• Instead, Spark builds a LOGICAL EXECUTION PLAN internally.\n• It records all transformations you want to perform on the data WITHOUT actually computing them yet.\n• When an Action (collect, count, save) is finally called → Spark executes the plan.\n\nWhy important?\n\n1. OPTIMIZATION: Spark can analyze the WHOLE logical plan before executing anything. It can:\n  - Combine transformations\n  - Eliminate unnecessary steps\n  - Choose the most efficient execution strategy\n\n2. EFFICIENCY: Avoids unnecessary computations. If some data is never used in an action, Spark never computes it — saving resources.\n\n3. FAULT TOLERANCE: Spark can RE-COMPUTE ONLY THE REQUIRED PARTITIONS in case of failures, since it knows the full lineage of operations." },
+
+{ lec:"L7", type:"EXPLAIN", q:"Explain the DAG Execution Model in Spark.",
+  answer:"DAG = Directed Acyclic Graph. Spark uses it to represent data processing workflow and transformations. Allows optimization of complex chains of operations.\n\nThe DAG execution model is CREATED WHEN AN ACTION IS CALLED.\n\nFlow:\n1. User writes transformations (lazy) → Spark builds LINEAGE GRAPH = logical plan.\n2. When an Action is called:\n   • A JOB is created.\n   • DAG Scheduler splits the job into STAGES based on SHUFFLE BOUNDARIES.\n   • Each Stage is divided into multiple TASKS.\n   • Tasks are distributed to EXECUTORS.\n\nKey terms:\n• Lineage graph → Logical plan\n• DAG Execution Model → Physical plan\n\nSchedulers:\n• DAG Scheduler: breaks the complex DAG into Stages.\n• Task Scheduler: assigns parallel Tasks to Executors per stage." },
+
+{ lec:"L7", type:"EXPLAIN", q:"Explain the Spark Architecture's main components.",
+  answer:"A Spark application has a CENTRAL COORDINATOR (Driver) and multiple WORKERS (Executors) distributed across the cluster.\n\n1. DRIVER PROGRAM (Brain of Spark):\n• Runs the main application.\n• Creates execution plan (DAG).\n• Divides work into stages & tasks.\n• Schedules and monitors execution.\n\n2. CLUSTER MANAGER (Resource Manager):\n• Allocates CPU & memory.\n• Decides which nodes run the job.\n• Examples: YARN, Mesos, Standalone, Kubernetes.\n\n3. WORKER NODES:\n• Machines in the cluster.\n• Host Executors.\n\n4. EXECUTORS (Workers):\n• Execute tasks in parallel.\n• Store data in memory (RDD caching).\n• Handle shuffle operations.\n• Send results back to Driver." },
+
+{ lec:"L7", type:"EXPLAIN", q:"Explain WHY Spark is faster than Hadoop MapReduce (give 4 reasons).",
+  answer:"1. IN-MEMORY PROCESSING:\n• Spark stores intermediate data in RAM.\n• Allows processing much faster than disk-based systems.\n• MapReduce writes ALL intermediate results to disk (HDFS).\n\n2. DAG OPTIMIZATION:\n• Spark does NOT execute operations immediately.\n• It builds a DAG and OPTIMIZES it before execution.\n• Can combine operations, eliminate redundancy, choose efficient plans.\n\n3. REDUCED DISK I/O:\n• Disk used only when data doesn't fit memory or during shuffle.\n• MapReduce writes between every Map and Reduce stage.\n\n4. BETTER TASK SCHEDULING:\n• Smart scheduling with data locality awareness.\n• Speculative execution for stragglers.\n\nResult: Up to 100× faster in memory, 10× faster on disk." },
+
+// DIFF
+{ lec:"L7", type:"DIFF", q:"Compare Transformations vs Actions in Spark.",
+  answer:[
+    ["Aspect","Transformations","Actions"],
+    ["Execution","Lazy (don't run immediately)","Eager (trigger execution)"],
+    ["Returns","New RDD","Value to driver or writes to storage"],
+    ["Triggers DAG?","No (just records steps)","Yes (executes the DAG)"],
+    ["Examples","map, filter, flatMap, reduceByKey","collect, count, reduce, saveAsTextFile"],
+    ["Purpose","Define computation","Compute and return result"]
+  ] },
+
+{ lec:"L7", type:"DIFF", q:"Compare Narrow vs Wide Transformations.",
+  answer:[
+    ["Aspect","Narrow","Wide"],
+    ["Partition Mapping","Each input partition → exactly 1 output","Input partitions → multiple output partitions"],
+    ["Data Movement","None","Requires SHUFFLE across nodes"],
+    ["Cost","Fast","Expensive (network + disk I/O)"],
+    ["Examples","map, filter, union","reduceByKey, groupByKey, join"],
+    ["Causes Stage Boundary?","No","Yes (DAG scheduler splits stages here)"]
+  ] },
+
+{ lec:"L7", type:"DIFF", q:"Compare Spark vs Hadoop MapReduce.",
+  answer:[
+    ["Aspect","Spark","Hadoop MapReduce"],
+    ["Speed","Faster (in-memory)","Slower (disk I/O)"],
+    ["Latency","Low","High"],
+    ["Interactive Queries","Yes","No"],
+    ["RAM Cost","Higher","Lower (disk-based)"],
+    ["Scalability","Scalable","Highly scalable (thousands of nodes)"],
+    ["Processing","Batch + Real-Time","Mainly Batch"],
+    ["Data Persistence","In-memory caching","Always to disk"],
+    ["Fault Tolerance","RDD lineage","HDFS replication"],
+    ["ML","MLlib built-in","Needs Mahout"],
+    ["Compatibility","YARN/HDFS/Mesos/S3/Standalone","Native HDFS"]
+  ] },
+
+{ lec:"L7", type:"DIFF", q:"Compare Driver vs Executor in Spark.",
+  answer:[
+    ["Aspect","Driver Program","Executor"],
+    ["Role","Brain / coordinator","Worker"],
+    ["Quantity","One per application","Multiple per app"],
+    ["Location","Runs on driver node","Runs on worker nodes"],
+    ["Responsibility","Creates DAG, schedules tasks, monitors","Runs tasks in parallel, caches RDDs, handles shuffle"],
+    ["Talks To","Cluster Manager, Executors","Driver, other Executors"]
+  ] },
+
+// FILL
+{ lec:"L7", type:"FILL", q:"The Spark ecosystem includes: Spark ______, Spark ______, Spark ______, ______, and ______.",
+  blanks:["Core","SQL","Streaming","MLlib","GraphX"],
+  exp:"Core (foundation), SQL (queries), Streaming (real-time), MLlib (ML), GraphX (graphs)." },
+
+{ lec:"L7", type:"FILL", q:"Spark architecture has 4 main components: ______, ______, ______, and ______.",
+  blanks:["Driver Program","Cluster Manager","Worker Nodes","Executors"],
+  exp:"Driver (brain) + Cluster Manager (resources) + Worker Nodes (machines) + Executors (workers)." },
+
+{ lec:"L7", type:"FILL", q:"The DAG Scheduler breaks a job into ______; the Task Scheduler assigns ______ to ______.",
+  blanks:["Stages","Tasks","Executors"],
+  exp:"DAG Scheduler → Stages (by shuffle). Task Scheduler → Tasks → Executors." },
+
+// FLOW
+{ lec:"L7", type:"FLOW", q:"Describe the complete Spark Application Execution Flow.",
+  answer:["Step 1 — APPLICATION SUBMISSION & RESOURCE NEGOTIATION: User submits Spark app, launching the Driver Program. Driver negotiates with Cluster Manager (e.g., YARN) to request RAM/CPU.",
+    "Step 2 — JOB CREATION & DAG CONSTRUCTION: Driver translates user code to logical plan. Logical Optimizer creates physical plan as an unexecuted DAG.",
+    "Step 3 — STAGE DIVISION & TASK SCHEDULING: DAG Scheduler breaks DAG into Stages based on SHUFFLE BOUNDARIES. Task Scheduler assigns parallel Tasks to Executors per stage.",
+    "Step 4 — DISTRIBUTED TASK EXECUTION & RESULTS: Executors run tasks on distributed worker nodes, processing data local to that node. Results returned to Driver, aggregated, and presented to user."] },
+
+{ lec:"L7", type:"FLOW", q:"Trace the flow from user code → final output in Spark.",
+  answer:["User writes transformations (lazy) — code is just defining steps, nothing runs.",
+    "Spark builds a LINEAGE GRAPH (logical plan) internally as you add more transformations.",
+    "User calls an ACTION (e.g., collect, count, save).",
+    "Spark creates a JOB from the action.",
+    "DAG SCHEDULER analyzes the lineage and constructs a DAG. Splits the DAG into STAGES based on shuffle boundaries.",
+    "TASK SCHEDULER divides each stage into TASKS (one task per partition).",
+    "Tasks are distributed to EXECUTORS via the Cluster Manager (e.g., YARN).",
+    "Executors process partitions IN MEMORY (caching where possible). Wide transformations trigger shuffles.",
+    "Results are returned to the DRIVER (for collect/count) or written to storage (saveAsTextFile).",
+    "If a partition is lost, Spark uses the LINEAGE to recompute only that partition (fault tolerance via lineage, not replication)."] },
+
+// SCENARIO
+{ lec:"L7", type:"SCENARIO", q:"Scenario: Log analysis use case — TBs of server logs in HDFS, need to detect errors quickly. Compare MapReduce vs Spark solutions.",
+  answer:"MAPREDUCE SOLUTION:\n• Multiple jobs chained: each writes intermediate results to disk.\n• Slow due to repeated disk I/O.\n• Cannot easily iterate.\n• High latency.\n\nSPARK SOLUTION:\n• Load logs into RDD once (read from HDFS).\n• Apply filter transformations (e.g., filter for 'ERROR' lines) — lazy.\n• Cache the filtered RDD in memory.\n• Run multiple analyses (count by error type, group by hour, top hosts, etc.) — all using the cached RDD.\n• Each analysis reuses the in-memory data → no disk re-read.\n• Use DAG optimization for efficient plans.\n\nResult: Spark is significantly faster for this pattern (iterative + interactive queries on cached data). Up to 100× faster than MapReduce in memory." },
+
+{ lec:"L7", type:"SCENARIO", q:"Scenario: You write rdd.map(...).filter(...).count(). When does each operation actually execute? Explain.",
+  answer:"Step-by-step:\n\n1. rdd.map(...) — Transformation. Spark adds 'map' to the lineage. NO COMPUTATION HAPPENS YET. Returns a new RDD reference.\n\n2. .filter(...) — Transformation. Spark adds 'filter' after map in the lineage. STILL NO COMPUTATION. Returns yet another new RDD reference.\n\n3. .count() — ACTION. NOW Spark:\n   • Builds the DAG from the full lineage: source → map → filter → count\n   • DAG Scheduler analyzes: all narrow transformations (map, filter) — no shuffle — so just one stage.\n   • Task Scheduler creates one task per partition.\n   • Executors run tasks: load partition → apply map → apply filter → count locally.\n   • Local counts sent back to Driver.\n   • Driver aggregates → final count returned.\n\nKey insight: This is lazy execution — the entire pipeline (map + filter + count) executes in a single fused pass over each partition, not three separate passes. THIS is one major optimization Spark gains from laziness." },
+
+/* ================================================================
+   MATCH THE FOLLOWING
+================================================================ */
+{ lec:"L1", type:"MATCH", q:"Match each NoSQL type to its data model:",
+  pairs:[["Key-Value","Each key maps to a single value (BLOB)"],["Document","JSON / XML documents"],["Column-Family","Rows with dynamic columns"],["Graph","Nodes + edges + properties"]],
+  exp:"4 NoSQL types each with distinct data models for different use cases." },
+
+{ lec:"L1", type:"MATCH", q:"Match each load balancing algorithm to its rule:",
+  pairs:[["Round Robin","Distribute requests equally in order"],["Least Connections","Server with fewest active connections gets next"],["Resource-Based","Server with most available CPU/RAM"],["IP Hash","Client IP mapped to fixed server"]],
+  exp:"Different LB strategies have different trade-offs for stickiness, fairness, and resource awareness." },
+
+{ lec:"L2H", type:"MATCH", q:"Match each Hadoop ecosystem tool to its purpose:",
+  pairs:[["HBase","Column-oriented NoSQL on HDFS"],["Hive","SQL-like query (HiveQL) on HDFS"],["Pig","High-level scripting"],["Flume","Real-time log/event ingestion"],["Sqoop","RDBMS ↔ Hadoop bulk transfer"],["Oozie","Workflow scheduler"],["ZooKeeper","Coordination, config, synchronization"],["Mahout","Scalable ML library"]],
+  exp:"Each ecosystem tool fills a specific role in storage, querying, processing, ingestion, workflow, or coordination." },
+
+{ lec:"L5", type:"MATCH", q:"Match each YARN component to its analogy/role:",
+  pairs:[["Client","Job submitter"],["Resource Manager","Cluster boss"],["Node Manager","Per-machine worker / Building Supervisor"],["Application Master","Job-specific manager"],["Container","Resource bundle (RAM/CPU/disk on a node)"]],
+  exp:"5 YARN components with distinct roles." },
+
+{ lec:"L5", type:"MATCH", q:"Match each YARN failure to its recovery mechanism:",
+  pairs:[["Container failure","AM retries (default 4 attempts)"],["Node Manager failure","RM marks BLACKLISTED, reschedules containers"],["Application Master failure","RM restarts AM in new container"],["Resource Manager failure","ZooKeeper triggers failover to Standby RM"]],
+  exp:"Each failure type has a specific automated recovery mechanism." },
+
+{ lec:"L7", type:"MATCH", q:"Match each Spark component to its role:",
+  pairs:[["Driver Program","Brain — creates DAG, schedules tasks, monitors"],["Cluster Manager","Allocates CPU/memory, decides node placement"],["Worker Nodes","Machines that host Executors"],["Executors","Run tasks in parallel, cache RDDs, handle shuffle"]],
+  exp:"Spark = Driver (coordinator) + Cluster Manager (resources) + Workers (machines) + Executors (workers)." },
+
+{ lec:"L7", type:"MATCH", q:"Match each Spark operation to its type:",
+  pairs:[["map","Narrow transformation"],["filter","Narrow transformation"],["flatMap","Narrow transformation"],["reduceByKey","Wide transformation (shuffle)"],["collect","Action"],["count","Action"],["saveAsTextFile","Action"]],
+  exp:"Transformations build the DAG; actions trigger execution. Wide transformations cause shuffles → stage boundaries." },
+
+/* ================================================================
+   ARCHITECTURE QUESTIONS
+================================================================ */
+{ lec:"L2H", type:"ARCH", q:"Describe the complete HDFS Architecture (master-worker design, components, communication).",
+  answer:"HDFS = MASTER-WORKER architecture with 1 master (NameNode) and many workers (DataNodes).\n\nMASTER: NameNode (NN)\n• Manages filesystem namespace and metadata (dirs, permissions, file→block mapping).\n• Tracks which DataNodes store each block.\n• Coordinates client access; monitors DataNode health.\n• Stores: FsImage (snapshot) + Edit Log (recent changes).\n• Block locations rebuilt from DataNodes at startup.\n• Single point of failure (unless HA is enabled).\n\nWORKERS: DataNodes (DN)\n• Commodity hardware.\n• Store and serve actual data BLOCKS on local disks.\n• Handle read/write requests from clients.\n• Send heartbeats (~3 sec) and periodic block reports to NN.\n\nHELPER: Secondary NameNode\n• NOT a backup.\n• Periodically merges FsImage + Edit Log into new FsImage (checkpointing).\n• Sends updated FsImage back to NN.\n• Prevents Edit Log from growing too large.\n\nCOMMUNICATION:\n• Client → NN: metadata operations (file create/delete/open).\n• Client ↔ DN: direct data transfer (read/write).\n• DN → NN: heartbeats + block reports.\n• NN → DN: instructions (replicate, delete blocks).\n\nRELIABILITY:\n• Replication (default RF=3) with rack awareness.\n• Erasure Coding (Hadoop 3) for less overhead.\n• HDFS Federation for namespace scalability.\n• HDFS HA (Active + Standby NN) for fault tolerance." },
+
+{ lec:"L5", type:"ARCH", q:"Describe the complete YARN Architecture.",
+  answer:"YARN = MASTER-SLAVE architecture, separating resource management from job scheduling.\n\nMASTER: Resource Manager (RM) — Cluster boss.\nTwo sub-components:\n• SCHEDULER: pure scheduler. Allocates resources by capacity/queues (Capacity, Fair).\n• APPLICATION MANAGER: accepts submissions, negotiates first container for AM, restarts AM if it fails.\n\nSLAVE: Node Manager (NM) — Per-machine worker.\n• Runs on EVERY worker node.\n• Registers with RM, sends heartbeats.\n• Resource monitoring (CPU/memory/disk).\n• Container management (create, launch, kill).\n\nPER-JOB: Application Master (AM)\n• ONE per application.\n• Negotiates containers from RM (Resource Requests: name + priority + capability).\n• Schedules and coordinates task execution.\n• Monitors progress, handles failed tasks.\n• Launches containers via Container Launch Context (CLC).\n\nRESOURCE UNIT: Container\n• Logical bundle of RAM + CPU + disk on a single node.\n• Provides isolation between applications.\n• Invoked via CLC from AM.\n\nCLIENT: Job submitter.\n• Submits app to RM.\n• Monitors via RM or directly via AM.\n\nHA: ZooKeeper coordinates Active/Standby RM (leader election + state storage).\n\nMulti-tenancy: Spark, Flink, MR, Tez all run concurrently on same cluster." },
+
+{ lec:"L7", type:"ARCH", q:"Describe the complete Spark Architecture and how it integrates with YARN.",
+  answer:"SPARK ARCHITECTURE: A central coordinator (Driver) and many workers (Executors) distributed across the cluster.\n\nCOMPONENTS:\n\n1. DRIVER PROGRAM (Brain):\n• Runs main application.\n• Translates user code to logical plan.\n• Creates execution plan (DAG).\n• DAG Scheduler: breaks DAG into Stages (by shuffle boundaries).\n• Task Scheduler: assigns parallel Tasks to Executors.\n• Monitors progress.\n\n2. CLUSTER MANAGER:\n• Allocates CPU/memory.\n• Decides which nodes run the job.\n• Examples: YARN, Mesos, Standalone, Kubernetes.\n\n3. WORKER NODES:\n• Cluster machines that host Executors.\n\n4. EXECUTORS (Workers):\n• Execute tasks in parallel.\n• Store data in memory (RDD caching).\n• Handle shuffle operations.\n• Send results back to Driver.\n\nINTEGRATION WITH YARN:\n1. User submits Spark app → launches Driver.\n2. Driver negotiates with YARN's Resource Manager for resources.\n3. RM allocates a container on a Node Manager to start the Spark AM (which contains the Driver in cluster mode).\n4. Spark AM requests more containers for Executors.\n5. NMs launch Executor containers using Container Launch Context (CLC).\n6. Driver schedules tasks on Executors; Executors process data locally.\n7. Results aggregated by Driver.\n8. On completion, AM unregisters, containers released, logs aggregated to HDFS.\n\nKey: Spark abstractions (RDD + DAG) sit on top of YARN's resource scheduling." },
+
+{ lec:"L2M", type:"ARCH", q:"Describe the MapReduce processing pipeline (full architecture).",
+  answer:"FULL MAPREDUCE PIPELINE:\n\n1. INPUT FILES (in HDFS).\n\n2. INPUTSPLIT: Logical division of input data. 1 InputSplit → 1 Map task. Doesn't physically split file.\n\n3. RECORDREADER: Converts raw data to (key, value) records. Default: Key = byte offset, Value = line content. Feeds records to Mapper.\n\n4. MAP PHASE (Mapper): User-defined function. (k1, v1) → list(k2, v2). Keys need not be unique. Runs in parallel on TaskTrackers (MRv1) / Containers (YARN).\n\n5. COMBINER (optional, mini-Reducer):\n• On the map machine, BEFORE network.\n• Same logic as Reducer.\n• Reduces network traffic.\n• Safe only when Reduce is associative + commutative.\n\n6. PARTITIONER: Determines which Reducer gets each key. Default: hash(key) % num_reducers. Handles data skew via custom strategies (key salting, range, frequency-aware).\n\n7. SHUFFLE PHASE: Network transfer of intermediate (k, v) from Mappers to Reducers. Groups by key. Starts before all mappers finish (overlapping). Most expensive phase.\n\n8. SORT PHASE: Sorts intermediate keys before reaching reducer. Combines sorted lists into one sorted stream per Reducer. Groups identical keys.\n\n9. REDUCE PHASE (Reducer): User-defined function. (k2, list(v2)) → list(v3). Reducers run in parallel; default count = 1.\n\n10. RECORDWRITER (OutputFormat): Writes final output to HDFS. One output file per Reducer.\n\nFAULT TOLERANCE:\n• Task re-execution on failure.\n• Speculative execution for stragglers.\n• Built into model, not manual." },
+
+/* ================================================================
+   ADVANCED CROSS-LECTURE QUESTIONS
+================================================================ */
+{ lec:"L7", type:"DIFF", q:"Compare the THREE Big Data eras (Hadoop, Spark, Kafka) and their key innovations.",
+  answer:[
+    ["Era","Years","Crisis","Solution"],
+    ["Hadoop Era","2003–2006","Storage crisis: too much data for single servers","HDFS + MapReduce (store everything first)"],
+    ["Spark Era","2009–2012","Speed crisis: disk-based processing was slow","In-memory processing (Spark) — up to 100× faster"],
+    ["Kafka Era","2011–Present","Integration crisis: systems couldn't talk to each other","Streaming backbone (Kafka, Spark Streaming) — from batch files to live streams"]
+  ] },
+
+{ lec:"L7", type:"EXPLAIN", q:"Explain the evolution of Big Data tools across the 3 eras (Hadoop → Spark → Kafka).",
+  answer:"2003–2006 — HADOOP ERA (Storage Crisis):\n• Single machines couldn't store TBs/PBs of data.\n• Relational DBs struggled with unstructured data.\n• Solution: HDFS (distributed storage) + MapReduce (batch processing).\n• Key idea: 'Store everything first.'\n\n2009–2012 — SPARK ERA (Speed Crisis):\n• Disk-based MR was too slow.\n• Batch jobs took hours/days.\n• Solution: In-memory processing with Spark.\n• Key idea: 'Move compute to data and keep data in memory.'\n• Result: Up to 100× faster than MapReduce.\n\n2011–Present — KAFKA ERA (Integration Crisis):\n• Real-time data explosion (clicks, sensors, logs).\n• Systems couldn't talk to each other.\n• Solution: Streaming backbone (Kafka, Spark Streaming).\n• Key idea: 'Data is a continuous stream, not a static file.'\n• Shift: from batch files → live streams.\n\nKEY LESSON: One tool ≠ solves everything. Big Data is a STACK of tools, each for a certain problem. There is no 'best' tool — only the right tool for the job." },
+
+{ lec:"L2M", type:"EXPLAIN", q:"Explain how Data Locality is achieved across HDFS, MapReduce, and YARN.",
+  answer:"Data Locality = move computation to where the data is stored.\n\nHDFS (Storage):\n• Data is replicated across DataNodes with rack awareness.\n• NameNode knows which blocks are on which DataNodes.\n• Block caching keeps hot blocks in DataNode RAM.\n\nMAPREDUCE:\n• JobTracker (MRv1) schedules Map tasks on TaskTrackers that already hold the input data blocks.\n• Tries to assign each Map task to a node hosting the block.\n• If not possible, falls back to: same rack → different rack (with increased cost).\n\nYARN:\n• Application Master requests containers with locality preferences (specific node/rack).\n• Resource Manager uses scheduling DELAY: waits briefly for a node-local container before falling back to rack-local.\n• YARN communicates with HDFS to know where blocks are located.\n\nSPARK:\n• Task Scheduler is optimized to minimize data movement across the network.\n• Executors are placed near data partitions.\n\nWHY IT MATTERS:\n• Network is the slowest resource in a cluster.\n• Local reads ~10× faster than remote reads.\n• Reduces network traffic and improves cluster utilization." },
+
+{ lec:"L7", type:"DIFF", q:"Compare fault tolerance mechanisms across HDFS, MapReduce, YARN, and Spark.",
+  answer:[
+    ["System","Failure Type","Mechanism"],
+    ["HDFS","DataNode failure","Replication + rack awareness; NameNode re-replicates lost blocks"],
+    ["HDFS","NameNode failure","HA (Active/Standby) with ZooKeeper failover"],
+    ["MapReduce","Task failure","Master re-executes task on another node"],
+    ["MapReduce","Slow task","Speculative execution (duplicate, use fastest)"],
+    ["YARN","Container failure","AM retries (default 4 attempts)"],
+    ["YARN","Node Manager failure","RM blacklists node; reschedules containers"],
+    ["YARN","AM failure","RM restarts AM in new container"],
+    ["YARN","RM failure","ZooKeeper triggers failover to Standby RM"],
+    ["Spark","Partition loss","Recompute from LINEAGE GRAPH (no replication)"],
+    ["Spark","Slow task","Speculative execution"]
+  ] },
+
+/* ================================================================
+   L8 — SPARK SQL & DATAFRAMES
+================================================================ */
+// MCQ
+{ lec:"L8", type:"MCQ", q:"Structured APIs (DataFrames and Datasets) were introduced in Spark:",
+  options:["1.0","1.3","2.0","3.0"], answer:1,
+  exp:"Spark 1.3 introduced DataFrames and Datasets to simplify analytics and enable automatic optimization." },
+
+{ lec:"L8", type:"MCQ", q:"A Spark DataFrame is best described as:",
+  options:["A low-level RDD","A structured, distributed dataset with schema","A relational database","A streaming engine"], answer:1,
+  exp:"DataFrame = structured, distributed dataset with schema; provides a high-level abstraction with optimized processing." },
+
+{ lec:"L8", type:"MCQ", q:"Which is NOT a limitation of RDDs that DataFrames solve?",
+  options:["Verbose code for simple queries","No automatic query optimization","Harder SQL integration","Cannot be distributed across nodes"], answer:3,
+  exp:"RDDs ARE distributed across nodes. Their limitations are verbosity, no auto-optimization, and SQL integration." },
+
+{ lec:"L8", type:"MCQ", q:"What does Project Tungsten provide?",
+  options:["Distributed scheduling","Custom Memory Management (reduces RAM + GC overhead)","SQL parsing","Automatic schema inference only"], answer:1,
+  exp:"Project Tungsten = custom memory management for Spark DataFrames; reduces RAM usage and GC overhead." },
+
+{ lec:"L8", type:"MCQ", q:"Catalyst Optimizer is for:",
+  options:["RDD low-level transformations","Automatic query optimization on Structured APIs","Stream processing","Disk I/O"], answer:1,
+  exp:"Catalyst = Spark SQL's query optimizer; works only with Structured APIs (DataFrames, Datasets, SQL)." },
+
+{ lec:"L8", type:"MCQ", q:"Which is NOT a step in the Catalyst optimization pipeline?",
+  options:["Query Analysis","Logical Optimization","Physical Planning","Memory Compression"], answer:3,
+  exp:"Catalyst pipeline: Query Analysis → Logical Optimization → Physical Planning → Code Generation." },
+
+{ lec:"L8", type:"MCQ", q:"Predicate Pushdown means:",
+  options:["Moving aggregation to driver","Moving filtering as close to data source as possible","Sorting before filtering","Compressing predicates"], answer:1,
+  exp:"Predicate Pushdown = push filters down to the data source; removes irrelevant rows early, reducing data scanned." },
+
+{ lec:"L8", type:"MCQ", q:"Column Pruning means:",
+  options:["Compressing columns","Loading ONLY required columns, not full table","Sorting columns","Renaming columns"], answer:1,
+  exp:"Column Pruning loads only the columns needed by the query. Less memory, faster serialization, reduced network." },
+
+{ lec:"L8", type:"MCQ", q:"Which is NOT a Spark join strategy?",
+  options:["Broadcast Join","Shuffle Hash Join","Sort Merge Join","Recursive Tree Join"], answer:3,
+  exp:"Spark join strategies: Broadcast (small table to all nodes), Shuffle Hash, Sort Merge. No 'Recursive Tree Join'." },
+
+{ lec:"L8", type:"MCQ", q:"Broadcast Join is used when:",
+  options:["Both tables are huge","One table is small enough to be sent to all nodes","Tables are sorted","Tables have no schema"], answer:1,
+  exp:"Broadcast Join = small table sent to all nodes; avoids shuffle." },
+
+{ lec:"L8", type:"MCQ", q:"Catalyst Optimizer uses which two optimization approaches?",
+  options:["Rule-Based + Cost-Based","Hash-Based + Tree-Based","Memory-Based + Disk-Based","Online + Offline"], answer:0,
+  exp:"Catalyst combines Rule-Based Optimization (RBO) with Cost-Based Optimization (CBO)." },
+
+{ lec:"L8", type:"MCQ", q:"Cost-Based Optimization (CBO) uses:",
+  options:["Random plans","Statistics (row counts, data size) to choose efficient plan","Time of day","Number of executors"], answer:1,
+  exp:"CBO uses statistics like row counts and data size to pick best plan (e.g., broadcast vs shuffle join)." },
+
+{ lec:"L8", type:"MCQ", q:"The flow from DataFrame code to execution is:",
+  options:["Code → Physical Plan → RDD","Code → Logical Plan → Optimized Logical Plan → Physical Plan → RDD","Code → RDD → Execution","Code → SQL → Execution"], answer:1,
+  exp:"DataFrame/SQL Code → Logical Plan → Optimized Logical Plan → Physical Plan → RDD Transformations → Execution." },
+
+{ lec:"L8", type:"MCQ", q:"select() in DataFrame operations:",
+  options:["Filters rows","Picks columns","Joins datasets","Sorts data"], answer:1,
+  exp:"select() picks columns. filter()/where() narrows rows. join() combines datasets." },
+
+{ lec:"L8", type:"MCQ", q:"Which is an action in DataFrames?",
+  options:["select","filter","show(n)","groupBy"], answer:2,
+  exp:"show(n) prints first n rows — it's an action. select/filter/groupBy are transformations." },
+
+// TF
+{ lec:"L8", type:"TF", q:"True or False: DataFrames are immutable like RDDs.",
+  answer:"TRUE", exp:"Both DataFrames and RDDs are immutable — to modify, you create a new DataFrame/RDD." },
+
+{ lec:"L8", type:"TF", q:"True or False: Catalyst Optimizer works on both RDDs and DataFrames.",
+  answer:"FALSE", exp:"Catalyst works ONLY on Structured APIs (DataFrames, Datasets, SQL). It cannot optimize RDDs because RDDs are 'black boxes' without schema." },
+
+{ lec:"L8", type:"TF", q:"True or False: Spark SQL and DataFrame API use the same Catalyst + Tungsten engine, so performance is the same.",
+  answer:"TRUE", exp:"Spark SQL and DataFrames share the same underlying engine — performance is identical." },
+
+{ lec:"L8", type:"TF", q:"True or False: DAG Scheduler and Catalyst Optimizer do the same job.",
+  answer:"FALSE", exp:"Catalyst = optimizes LOGIC (the 'What'); DAG Scheduler = optimizes EXECUTION (the 'How'). They work TOGETHER, not duplicating." },
+
+// EXPLAIN
+{ lec:"L8", type:"EXPLAIN", q:"Explain WHY DataFrames are preferred over RDDs.",
+  answer:"DataFrames are one step ahead of RDDs (higher-level abstraction).\n\nWHY:\n1. Schema awareness — RDD is a collection of generic objects; DataFrame is a distributed TABLE with named columns and types. This structured view lets Spark 'peek' into data and apply optimizations impossible with the 'black box' nature of RDDs.\n\n2. 'What' vs 'How' — DataFrames enable developers to focus on WHAT to process instead of HOW (low-level programming).\n\n3. Two critical low-level enhancements:\n   a. Custom Memory Management (Project Tungsten): reduces RAM and GC overhead.\n   b. Optimized Execution Plans (Catalyst Optimizer): automatically determines fastest way to run query.\n\nBoth DataFrame and RDD share: In-Memory, Resilient (lineage), Distributed, Immutable.\n\nThe difference: DataFrames add SCHEMA → enabling AUTOMATIC optimization, CONCISE syntax, and HIGHER performance. RDDs require manual tuning." },
+
+{ lec:"L8", type:"EXPLAIN", q:"Explain the Catalyst Optimizer's pipeline (4 phases).",
+  answer:"Catalyst Optimizer = core engine powering Spark SQL query optimization. Built using functional programming principles in Scala; uses immutable data structures and pattern matching. Operates on a TREE representation of queries.\n\n4 PHASES:\n\n1. QUERY ANALYSIS:\n• Resolve tables & columns (verify names exist, types match).\n\n2. LOGICAL OPTIMIZATION (Rule-Based):\n• Predicate pushdown — push filters near data source.\n• Column pruning — load only needed columns.\n• Constant folding — pre-compute constants.\n\n3. PHYSICAL PLANNING (Cost-Based):\n• Generate multiple physical plans.\n• Choose best plan using statistics (cost-based).\n• Picks join strategy (broadcast vs shuffle).\n\n4. CODE GENERATION:\n• Convert plan to optimized bytecode (Whole-Stage Code Generation).\n\nOUTPUT: Efficient execution plan.\n\nOPTIMIZATION TYPES:\n• Rule-Based (RBO): deterministic rewrite rules.\n• Cost-Based (CBO): uses statistics (row counts, sizes) to choose efficient plan." },
+
+{ lec:"L8", type:"EXPLAIN", q:"Explain the 3 logical plan optimizations: Predicate Pushdown, Column Pruning, and Join Optimization.",
+  answer:"1. PREDICATE PUSHDOWN:\n• Moves filtering as close to the data source as possible.\n• Removes irrelevant rows early.\n• Example: 'SELECT * WHERE country = Egypt' → Spark filters BEFORE loading fully into memory.\n• Benefits: reduces data scanned from storage, less disk I/O, faster query start.\n\n2. COLUMN PRUNING:\n• Loads only required columns, not full table.\n• Example: If query needs product_id, price → Spark does NOT load customer_name, address, timestamps.\n• Benefits: less memory, faster serialization/deserialization, reduced network transfer.\n\n3. JOIN OPTIMIZATION STRATEGY:\n• Spark chooses best join method based on data size:\n  - Broadcast Join → small table sent to all nodes (no shuffle)\n  - Shuffle Hash Join → partition-based join\n  - Sort Merge Join → for large sorted datasets\n• Benefits: avoids expensive shuffling, reduces network overhead, speeds up distributed joins." },
+
+// DIFF
+{ lec:"L8", type:"DIFF", q:"Compare RDDs vs DataFrames.",
+  answer:[
+    ["Aspect","RDDs","DataFrames"],
+    ["Data Type","Unstructured/semi-structured collection of objects","Structured, tabular with schema"],
+    ["Control Level","Low-level, fine-grained","High-level, declarative"],
+    ["Schema","None","Yes (named columns + types)"],
+    ["Optimization","Manual tuning","Automatic via Catalyst"],
+    ["Syntax","Verbose","Concise, SQL-like"],
+    ["Performance","Lower","Higher"],
+    ["Best For","Custom algorithms, unstructured data","Analytical, ETL, SQL workloads"]
+  ] },
+
+{ lec:"L8", type:"DIFF", q:"Compare Spark SQL vs DataFrame API.",
+  answer:[
+    ["Aspect","Spark SQL","DataFrame API"],
+    ["Interface","SQL queries via spark.sql()","Programmatic API (Scala/Python/Java/R)"],
+    ["Ease of Use","Concise for complex queries","Flexible for dynamic logic"],
+    ["Audience","Analysts, BI users","Developers, data engineers"],
+    ["Integration","Hive, external DBs, SQL views","MLlib, streaming, programmatic workflows"],
+    ["Performance","Same Catalyst + Tungsten engine","Same Catalyst + Tungsten engine"]
+  ] },
+
+{ lec:"L8", type:"DIFF", q:"Compare Catalyst Optimizer vs DAG Scheduler.",
+  answer:[
+    ["Aspect","Catalyst Optimizer","DAG Scheduler"],
+    ["Primary Goal","Optimize LOGIC (the 'What')","Optimize EXECUTION (the 'How')"],
+    ["Understands Data?","Yes (via schema/types)","No (sees data as generic objects)"],
+    ["Works On","Structured APIs only (DataFrames/SQL)","Everything (incl. RDDs)"],
+    ["When It Runs","BEFORE execution (planning phase)","WHEN Action is called"],
+    ["Output","Optimized physical plan (RDDs)","Set of Stages and Tasks"],
+    ["Main Trick","Predicate Pushdown / Column Pruning","Stage Pipelining / Task Scheduling"]
+  ] },
+
+{ lec:"L8", type:"DIFF", q:"Compare Rule-Based vs Cost-Based Optimization.",
+  answer:[
+    ["Aspect","Rule-Based (RBO)","Cost-Based (CBO)"],
+    ["Approach","Predefined rewrite rules","Uses statistics to choose plan"],
+    ["Decisions","Deterministic","Data-driven"],
+    ["Examples","Push filters before joins, remove redundant projections","Selects join strategy (broadcast vs shuffle) based on data size"],
+    ["Phase","Logical Optimization","Physical Planning"]
+  ] },
+
+// FILL
+{ lec:"L8", type:"FILL", q:"DataFrame's two critical low-level enhancements: ______ for memory management and ______ for optimized execution plans.",
+  blanks:["Project Tungsten","Catalyst Optimizer"],
+  exp:"Tungsten = custom memory mgmt (reduces RAM/GC). Catalyst = automatic query optimization." },
+
+{ lec:"L8", type:"FILL", q:"Three logical plan optimizations in Catalyst: ______, ______, and ______.",
+  blanks:["Predicate Pushdown","Column Pruning","Join Optimization"],
+  exp:"Push filters early, load only needed columns, pick best join strategy." },
+
+{ lec:"L8", type:"FILL", q:"Catalyst pipeline: Query Analysis → ______ → ______ → ______.",
+  blanks:["Logical Optimization","Physical Planning","Code Generation"],
+  exp:"4 phases ending in optimized bytecode." },
+
+// FLOW
+{ lec:"L8", type:"FLOW", q:"Describe the FLOW from DataFrame code to execution.",
+  answer:["DataFrame / SQL Code: user writes high-level query.",
+    "Logical Plan: Catalyst analyzes the query, resolves tables/columns.",
+    "Optimized Logical Plan: rule-based optimizations applied (predicate pushdown, column pruning, constant folding).",
+    "Physical Plan: cost-based optimizer generates multiple physical plans and chooses the best (join strategy, etc.).",
+    "Code Generation: physical plan compiled to optimized bytecode.",
+    "RDD Transformations: physical plan becomes a chain of RDD operations.",
+    "DAG Scheduler: takes RDDs, groups them into Stages (by shuffle boundaries), hands them to Task Scheduler.",
+    "Executors: run tasks on data partitions; results returned to driver."] },
+
+// SCENARIO
+{ lec:"L8", type:"SCENARIO", q:"Scenario: You write 'spark.table(sales).filter(country==Egypt).select(product_id, price)'. Walk through how Catalyst optimizes this query.",
+  answer:"1. QUERY ANALYSIS: Catalyst resolves 'sales' table, verifies columns (country, product_id, price) exist.\n\n2. LOGICAL OPTIMIZATION (Rule-Based):\n  - PREDICATE PUSHDOWN: pushes filter 'country=Egypt' down to the data source (e.g., Parquet/HDFS scan). Instead of loading all sales and filtering, Spark uses Parquet's built-in filter to skip irrelevant data.\n  - COLUMN PRUNING: only loads 'country' (for filter) + 'product_id' + 'price' columns. Skips customer_name, address, timestamps, etc.\n\n3. PHYSICAL PLANNING (Cost-Based):\n  - Catalyst chooses a physical plan that uses partition pruning if the table is partitioned by country.\n\n4. CODE GENERATION:\n  - Plan compiled into optimized bytecode.\n\n5. EXECUTION:\n  - DAG Scheduler creates Stages (no shuffle here → single stage).\n  - Task Scheduler assigns tasks to Executors.\n  - Executors read minimal data, filter, project → return result.\n\nResult: massive reduction in I/O vs. naive 'read all, filter later'." },
+
+/* ================================================================
+   L9 — SPARK ML & GRAPHX
+================================================================ */
+// MCQ
+{ lec:"L9", type:"MCQ", q:"Why does a single machine fail for modern-scale data?",
+  options:["Software bugs","Memory limits, CPU limits, no parallelism","Network only","OS issues"], answer:1,
+  exp:"Single machine: data exceeds RAM → frequent disk I/O; CPU bound; no parallelism." },
+
+{ lec:"L9", type:"MCQ", q:"MLlib has two packages:",
+  options:["spark.ml (RDDs) and spark.rdd (DataFrames)","spark.mllib (RDDs) and spark.ml (DataFrames)","spark.ml (SQL) and spark.mllib (Streaming)","spark.algo and spark.train"], answer:1,
+  exp:"spark.mllib = RDD-based (older). spark.ml = DataFrame-based (newer, recommended)." },
+
+{ lec:"L9", type:"MCQ", q:"In MLlib, a Transformer:",
+  options:["Trains a model","Takes a DataFrame and produces a new DataFrame (.transform())","Aggregates data","Loads files"], answer:1,
+  exp:"Transformers implement .transform() — DataFrame → DataFrame. Examples: feature transformations, trained models." },
+
+{ lec:"L9", type:"MCQ", q:"In MLlib, an Estimator:",
+  options:["Takes DataFrame → DataFrame","Fits a model on data via .fit()","Saves models to disk","Visualizes results"], answer:1,
+  exp:"Estimators implement .fit() — abstraction of a learning algorithm. Learning algorithms = estimators. Estimators produce models (which are transformers)." },
+
+{ lec:"L9", type:"MCQ", q:"A Pipeline in Spark MLlib is:",
+  options:["A single algorithm","A sequence of stages run in order","A data store","An RDD partition"], answer:1,
+  exp:"Pipeline = sequence of stages (transformers and/or estimators) executed in order." },
+
+{ lec:"L9", type:"MCQ", q:"Which is NOT a typical MLlib pipeline stage?",
+  options:["Data Input","Feature Engineering","Model Training","Network Routing"], answer:3,
+  exp:"Pipeline stages: Data Input, Feature Engineering, Model Training, Evaluation, Prediction. No 'Network Routing'." },
+
+{ lec:"L9", type:"MCQ", q:"When .fit() is called on a Pipeline, what does it produce?",
+  options:["A new RDD","A PipelineModel where estimators are replaced by transformers","A SparkSession","A DAG"], answer:1,
+  exp:"Pipeline.fit() produces a PipelineModel — all estimators replaced by the transformers they produced." },
+
+{ lec:"L9", type:"MCQ", q:"In distributed training, what does the driver do?",
+  options:["Stores all data","Initializes weights, broadcasts to workers, aggregates gradients","Runs tasks","Stores logs"], answer:1,
+  exp:"Driver (master): initializes weights, broadcasts to workers, aggregates gradients. Executors: store partitions, compute local gradients." },
+
+{ lec:"L9", type:"MCQ", q:"In SGD on Spark, what's the difference from GD?",
+  options:["SGD uses entire partition; GD uses sample","SGD samples a subset; GD uses full local partition","SGD doesn't use gradients","SGD doesn't broadcast"], answer:1,
+  exp:"In SGD, each worker samples a SMALL SUBSET of its local partition. In GD, each worker uses the ENTIRE local partition." },
+
+{ lec:"L9", type:"MCQ", q:"How does Spark aggregate gradients efficiently?",
+  options:["collect()","treeAggregate","reduceByKey","groupBy"], answer:1,
+  exp:"Workers use treeAggregate to efficiently reduce (sum) the local gradients." },
+
+{ lec:"L9", type:"MCQ", q:"In distributed decision trees on Spark, the BEST split is chosen:",
+  options:["Locally by each worker","Globally — Spark combines partial statistics from all nodes","Randomly","Only by the driver from one partition"], answer:1,
+  exp:"Each worker evaluates splits on its partition, then results are AGGREGATED globally; Spark combines partial results and selects the best split." },
+
+{ lec:"L9", type:"MCQ", q:"In a graph, vertices represent:",
+  options:["Relationships","Real-world entities (users, products, pages)","Edges","Storage blocks"], answer:1,
+  exp:"Vertices = entities (users, products, pages). Edges = relationships (friendship, purchase, hyperlink)." },
+
+{ lec:"L9", type:"MCQ", q:"GraphX is built on:",
+  options:["Streaming","RDDs (extends Spark RDD with new Graph abstraction)","DataFrames only","Pure SQL"], answer:1,
+  exp:"GraphX extends Spark RDDs with a new Graph abstraction (Property Graph)." },
+
+{ lec:"L9", type:"MCQ", q:"GraphX's data model is:",
+  options:["Undirected graph","Directed multigraph with properties on vertices and edges","Tree structure","DAG only"], answer:1,
+  exp:"Property Graph = directed multigraph (multiple edges allowed between same nodes) with properties on vertices and edges." },
+
+{ lec:"L9", type:"MCQ", q:"In GraphX, Graph =",
+  options:["VertexRDD only","EdgeRDD only","VertexRDD + EdgeRDD","DataFrame + RDD"], answer:2,
+  exp:"Graph in GraphX is composed of VertexRDD[VD] + EdgeRDD[ED]." },
+
+{ lec:"L9", type:"MCQ", q:"A GraphX Triplet contains:",
+  options:["Only edges","Only vertices","(srcId, srcAttr, dstId, dstAttr, edgeAttr)","(VertexId, attribute)"], answer:2,
+  exp:"Triplet = single edge with its source and destination vertex properties: (srcId, srcAttr, dstId, dstAttr, edgeAttr)." },
+
+{ lec:"L9", type:"MCQ", q:"Which is NOT a GraphX operator category?",
+  options:["Property Operators","Structural Operators","Join Operators","Sorting Operators"], answer:3,
+  exp:"Categories: Property (mapVertices/mapEdges/mapTriplets), Structural (reverse, subgraph, groupEdges), Join (joinVertices, outerJoinVertices), Neighborhood Aggregation (aggregateMessages)." },
+
+{ lec:"L9", type:"MCQ", q:"In Edge-Based Partitioning:",
+  options:["Edges live in one partition; vertices replicate","Vertices unique to one machine; edges may cross machines","Both edges and vertices replicate","Random distribution"], answer:1,
+  exp:"Edge-Cut: vertices live in single partition; edges with their endpoints are stored — edges may cross machines." },
+
+{ lec:"L9", type:"MCQ", q:"In Vertex-Cut Partitioning:",
+  options:["Vertices unique; edges may cross","Each edge assigned to one partition; vertices replicated across partitions","No replication","All on one machine"], answer:1,
+  exp:"Vertex-Cut: edges stored once; vertices replicated across partitions where their edges appear. One copy = master, others = mirrors." },
+
+{ lec:"L9", type:"MCQ", q:"GraphX uses ______ partitioning because of better load balancing for power-law graphs.",
+  options:["Edge-Cut","Vertex-Cut","Random","Hash-Cut"], answer:1,
+  exp:"GraphX uses Vertex-Cut — high-degree hub vertices are split across machines, avoiding bottlenecks." },
+
+{ lec:"L9", type:"MCQ", q:"GraphX physical storage uses THREE RDDs:",
+  options:["VertexTable, EdgeTable, RoutingTable","SourceTable, DestTable, EdgeTable","Vertex, Edge, Graph","Master, Worker, Driver"], answer:0,
+  exp:"3 RDDs: VertexTable (id, data), EdgeTable (pid, src, dst, data), RoutingTable (id, pid)." },
+
+{ lec:"L9", type:"MCQ", q:"PageRank's core idea:",
+  options:["A page is important if many pages link to it","A page is important if IMPORTANT pages link to it","A page is important if it has many outgoing links","A page is important if it has the most words"], answer:1,
+  exp:"PageRank: a page is important if important pages link to it. Each link = vote. Votes from high-rank pages count more." },
+
+{ lec:"L9", type:"MCQ", q:"In PageRank, the 'random surfer' model says:",
+  options:["User always clicks links","User clicks links with probability d, jumps to random page with probability (1-d)","User never jumps","User opens new tab"], answer:1,
+  exp:"Random surfer: prob d → follow links; prob (1-d) → jump to random page. PageRank = probability of landing on a page." },
+
+{ lec:"L9", type:"MCQ", q:"PageRank score range:",
+  options:["0 to 100","-1 to 1","0 to 1 (probability distribution)","Any value"], answer:2,
+  exp:"PageRank is a probability distribution → score in 0 to 1." },
+
+// TF
+{ lec:"L9", type:"TF", q:"True or False: Spark makes ML algorithms smarter.",
+  answer:"FALSE", exp:"Spark doesn't make ML algorithms smarter — it makes them SCALABLE. It splits data, computes partial results in parallel, then combines them." },
+
+{ lec:"L9", type:"TF", q:"True or False: In Spark MLlib, an Estimator produces a Model, which is a Transformer.",
+  answer:"TRUE", exp:"Estimators (algorithms) produce Models. Models are Transformers (they take DataFrame → DataFrame with predictions)." },
+
+{ lec:"L9", type:"TF", q:"True or False: Decision Tree splits in Spark are chosen locally at each worker.",
+  answer:"FALSE", exp:"Workers evaluate splits locally, but the BEST split is chosen GLOBALLY after aggregating statistics across all workers." },
+
+{ lec:"L9", type:"TF", q:"True or False: Edge-Cut partitioning is best for power-law (social network) graphs.",
+  answer:"FALSE", exp:"Edge-Cut causes data skew on power-law graphs (hubs overload one machine). Vertex-Cut is better." },
+
+{ lec:"L9", type:"TF", q:"True or False: In a GraphX vertex-cut, vertices may exist in multiple partitions.",
+  answer:"TRUE", exp:"Vertex-Cut: vertices replicated across partitions; one copy = master, others = mirrors." },
+
+// EXPLAIN
+{ lec:"L9", type:"EXPLAIN", q:"Explain WHY distributed analytics is needed.",
+  answer:"THE DATA EXPLOSION PROBLEM:\n• Data is no longer small or static.\n• Scale increases rapidly: GB → TB → PB and beyond.\n• Data from: social media, sensors, IoT, logs, transactions.\n• Data is not only LARGE — it's also highly CONNECTED (graphs).\n\nTRADITIONAL ML / SINGLE MACHINE FAILS BECAUSE:\n• Memory limits: data cannot fit in RAM → frequent disk I/O.\n• CPU limits: training becomes extremely slow.\n• No parallelism: work processed sequentially.\n\nHOW DISTRIBUTED SYSTEMS SOLVE THIS:\n• Split data (tabular or graph) across machines → parallel processing.\n• Process data simultaneously.\n• Bring computation closer to data (data locality).\n• Scale horizontally (add more nodes).\n• Support iterative algorithms (ML or Graph) efficiently.\n\nKey insight: At scale, performance is no longer about better algorithms — it's about DISTRIBUTED COMPUTATION." },
+
+{ lec:"L9", type:"EXPLAIN", q:"Explain the Spark MLlib pipeline architecture and workflow.",
+  answer:"A Pipeline = sequence of STAGES run in order, each performing a transformation or model training step.\n\nSpark MLlib uses pipeline architecture designed for distributed data. Provides uniform high-level APIs built on DataFrames.\n\nPIPELINE consists of TRANSFORMERS and/or ESTIMATORS:\n• Transformer: implements .transform(); DataFrame → DataFrame.\n• Estimator: implements .fit(); fits a model on data. Estimators produce models (which are Transformers).\n\nWhen Pipeline.fit() is called:\n• Stages run in specified order.\n• If stage is a Transformer → .transform() is called.\n• If stage is an Estimator → .fit() is called.\n• Result: PipelineModel — all estimators replaced by the transformers they produced.\n\nPIPELINE STAGES:\n1. Data Input — load from CSV, Parquet, Hive into a DataFrame.\n2. Feature Engineering — convert raw data to numerical features.\n3. Model Training — fit ML model (Logistic Regression, Decision Tree).\n4. Evaluation — assess performance (accuracy, precision, recall).\n5. Prediction — apply trained model to new data for inference.\n\nResult: reusable, modular workflow Spark executes in sequence." },
+
+{ lec:"L9", type:"EXPLAIN", q:"Explain how Spark parallelizes Gradient Descent (GD) and SGD.",
+  answer:"GD and SGD are distributed optimization algorithms in Spark MLlib. They minimize a loss function by iteratively updating model weights across a cluster.\n\nMASTER-WORKER ARCHITECTURE:\n• Driver (Master): initializes weights, broadcasts to workers, aggregates gradients.\n• Executors (Workers): store partitions of dataset (RDDs), compute local gradients, send back.\n\nSTEPS:\n1. INITIALIZATION: driver initializes w_0 (random or zero). Data partitioned across workers as RDDs.\n2. BROADCAST WEIGHTS (iteration t): driver broadcasts w_t to all executors. Ensures all workers use same model version.\n3. PARALLEL GRADIENT COMPUTATION:\n  - GD: each worker uses ENTIRE local partition.\n  - SGD: each worker samples a SMALL SUBSET of its local partition.\n  - Workers compute partial gradients based on their data + current weights.\n4. AGGREGATION: workers use treeAggregate to efficiently SUM local gradients.\n5. UPDATE WEIGHTS: driver averages aggregated gradients and updates global weights using learning rate.\n6. ITERATE: steps 2–5 repeat until convergence (minimal loss change or max iterations).\n\nResponsibilities:\n• Steps 1-2: Driver\n• Step 3: Executors\n• Step 4: Driver + Executors\n• Steps 5-6: Driver" },
+
+{ lec:"L9", type:"EXPLAIN", q:"Explain WHY GraphX uses Vertex-Cut partitioning.",
+  answer:"GraphX uses Vertex-Cut for these reasons:\n\n1. LOAD BALANCING:\n• High-degree nodes (hubs) are SPLIT across machines.\n• Work is evenly distributed.\n• No single executor becomes a hotspot.\n\n2. PARALLELISM BOOST:\n• More partitions can process edges simultaneously.\n• Better CPU utilization.\n\n3. REDUCED STRAGGLERS:\n• Avoids slow tasks caused by overloaded partitions.\n• More predictable execution time.\n\n4. OPTIMIZED FOR ITERATIVE COMPUTATION:\n• GraphX caches structure.\n• Only vertex values are updated per iteration.\n\nWHY NOT EDGE-CUT?\n• Real-world graphs (social networks, web graphs) have power-law degree distribution: a few hub vertices with MANY connections.\n• Edge-Cut places entire vertex in one partition → hubs overload one machine.\n• Causes data skew, poor parallelism, computation bottlenecks.\n\nTrade-off: Vertex-Cut trades extra memory + synchronization for massive gains in parallelism and load balancing." },
+
+{ lec:"L9", type:"EXPLAIN", q:"Explain the distributed PageRank algorithm in Spark.",
+  answer:"PageRank assigns a score to each node reflecting its relative importance. Core idea: a node is important if other important nodes link to it.\n\nDISTRIBUTED ALGORITHM:\n\nINITIALIZATION:\n• Assign each vertex an initial rank (usually 1 or 1/N where N = total vertices).\n\nMAIN ITERATION (repeated until convergence):\n\n1. MAP PHASE — Local Contribution Calculation:\n  - For each edge u → v, calculate contribution = PR(u) / outdegree(u).\n  - Emit message (v, contribution).\n\n2. SHUFFLE PHASE — Message Exchange:\n  - Messages routed across cluster so all contributions for vertex v arrive at the node(s) holding v.\n  - Routing table ensures replicated vertices receive consistent updates.\n\n3. REDUCE PHASE — Aggregation:\n  - For each vertex, aggregate inbound contributions and update its PageRank.\n  - PR(v) = (1-d)/N + d × Σ contributions.\n\n4. BROADCAST:\n  - New ranks broadcast to all nodes holding replicas.\n\nSTOPPING: when ranks converge (changes < tolerance) or after fixed number of iterations.\n\nResult: PageRank is a probability distribution (0 → 1)." },
+
+// DIFF
+{ lec:"L9", type:"DIFF", q:"Compare Transformer vs Estimator in Spark MLlib.",
+  answer:[
+    ["Aspect","Transformer","Estimator"],
+    ["Method","transform()","fit()"],
+    ["Input","DataFrame","DataFrame"],
+    ["Output","DataFrame","Model (which is a Transformer)"],
+    ["Purpose","Transform data (e.g., scale, encode, predict)","Learn from data, produce a trained model"],
+    ["Examples","StringIndexer, VectorAssembler, trained LR model","LogisticRegression, DecisionTreeClassifier"]
+  ] },
+
+{ lec:"L9", type:"DIFF", q:"Compare GD vs SGD in Spark.",
+  answer:[
+    ["Aspect","Gradient Descent (GD)","Stochastic Gradient Descent (SGD)"],
+    ["Data Per Iteration","ENTIRE local partition","SMALL SUBSET (sample)"],
+    ["Convergence","More stable","Faster per iteration, noisier path"],
+    ["Cost Per Step","High","Lower"],
+    ["Use Case","Smaller datasets, stable gradients","Very large datasets, fast learning"]
+  ] },
+
+{ lec:"L9", type:"DIFF", q:"Compare Edge-Cut vs Vertex-Cut Partitioning.",
+  answer:[
+    ["Aspect","Edge-Cut","Vertex-Cut"],
+    ["Partition unit","Vertex","Edge"],
+    ["Vertex placement","Unique to one machine","Replicated across machines"],
+    ["Edge placement","May cross partitions","Assigned to one partition"],
+    ["Communication cost","∝ number of cut edges","∝ number of machines per vertex"],
+    ["Performance","POOR on power-law graphs","Efficient on power-law graphs"],
+    ["Load balance","Skewed by hubs","Balanced by spreading hub edges"]
+  ] },
+
+{ lec:"L9", type:"DIFF", q:"Compare spark.mllib vs spark.ml packages.",
+  answer:[
+    ["Aspect","spark.mllib","spark.ml"],
+    ["Built On","RDDs","DataFrames"],
+    ["Age","Original (older)","Newer (recommended)"],
+    ["API","Lower-level","High-level pipeline API"],
+    ["Optimization","Manual","Benefits from Catalyst"],
+    ["Status","Maintenance mode","Active development"]
+  ] },
+
+// FILL
+{ lec:"L9", type:"FILL", q:"MLlib pipeline stages: ______ → ______ → ______ → ______ → ______.",
+  blanks:["Data Input","Feature Engineering","Model Training","Evaluation","Prediction"],
+  exp:"5 stages: ingest, engineer features, train, evaluate, predict." },
+
+{ lec:"L9", type:"FILL", q:"GraphX physical storage uses 3 RDDs: ______, ______, and ______.",
+  blanks:["VertexTable","EdgeTable","RoutingTable"],
+  exp:"VertexTable(id, data), EdgeTable(pid, src, dst, data), RoutingTable(id, pid)." },
+
+{ lec:"L9", type:"FILL", q:"GraphX Triplet = (______, ______, ______, ______, ______).",
+  blanks:["srcId","srcAttr","dstId","dstAttr","edgeAttr"],
+  exp:"Triplet joins edge with source + destination vertex properties." },
+
+// FLOW
+{ lec:"L9", type:"FLOW", q:"Describe the distributed training workflow in Spark.",
+  answer:["Step 1 — BROADCAST MODEL: Initial model parameters sent to all worker nodes from the driver.",
+    "Step 2 — COMPUTE PARTIAL RESULTS: Each worker computes locally: gradients (for regression) OR splits (for trees) on its data partition.",
+    "Step 3 — AGGREGATE UPDATES: Results sent back to driver (or aggregated across nodes via treeAggregate).",
+    "Step 4 — UPDATE MODEL: Global model updated by driver.",
+    "Repeat until convergence."] },
+
+{ lec:"L9", type:"FLOW", q:"Describe how Spark parallelizes Decision Tree training.",
+  answer:["Step 1 — Data is Partitioned: dataset split across nodes.",
+    "Step 2 — Parallel Split Evaluation: each worker evaluates splits on its partition.",
+    "Step 3 — Aggregate Statistics: workers compute counts, label distributions; Spark aggregates results across nodes.",
+    "Step 4 — Choose Best Split Globally: Spark combines all partial results; selects the best split for the node.",
+    "Step 5 — Repeat Recursively: data split into subsets; process repeats for each branch."] },
+
+// SCENARIO
+{ lec:"L9", type:"SCENARIO", q:"Scenario: A 2-partition dataset with Age vs Label. Node A has: Young(0Y,2N), Middle(2Y,0N), Old(1Y,0N). Node B has: Young(1Y,0N), Middle(0Y,1N), Old(2Y,1N). Compute the GLOBAL aggregation after shuffle for evaluating splits.",
+  answer:"From Node A:\n• Young → (0 Yes, 2 No)\n• Middle → (2 Yes, 0 No)\n• Old → (1 Yes, 0 No)\n\nFrom Node B:\n• Young → (1 Yes, 0 No)\n• Middle → (0 Yes, 1 No)\n• Old → (2 Yes, 1 No)\n\nAFTER SHUFFLE (Global Aggregation):\n• Young → (1 Yes, 2 No)\n• Middle → (2 Yes, 1 No)\n• Old → (3 Yes, 1 No)\n\nDriver now computes Gini impurity for the root using global counts:\n• Total Yes = 6, Total No = 4 (out of 10)\n• Then evaluate each split (e.g., 'Age=Young vs Others'):\n  - Left (Young): (1, 2) → 3 samples → Gini computed\n  - Right (Others): (5, 2) → 7 samples → Gini computed\n  - Weighted Gini score compared with root.\n• Repeat for all candidate splits; choose split with lowest weighted Gini." },
+
+/* ================================================================
+   L10 — SPARK STREAMING & KAFKA
+================================================================ */
+// MCQ
+{ lec:"L10", type:"MCQ", q:"Data Streaming is:",
+  options:["Periodic batch jobs","Real-time processing of continuous streams of data in motion","Static data loading","One-time batch"], answer:1,
+  exp:"Data streaming = process data continuously as it is generated. Data is unbounded, real-time, never-ending." },
+
+{ lec:"L10", type:"MCQ", q:"Which is NOT an example of streaming data?",
+  options:["User clicks on website","Banking transactions","Monthly payroll report","IoT sensor data"], answer:2,
+  exp:"Payroll = batch (monthly). Clicks, banking transactions, IoT, GPS, logs, social media → streaming." },
+
+{ lec:"L10", type:"MCQ", q:"Batch processing focuses on:",
+  options:["Immediate response","Throughput","Single records","Memory only"], answer:1,
+  exp:"Batch = throughput. Stream = immediate response." },
+
+{ lec:"L10", type:"MCQ", q:"Micro-batching is:",
+  options:["Real-time processing of one event","Data processed in small, fixed-size batches","No batching","Random batching"], answer:1,
+  exp:"Micro-batch = data processed in small fixed-size batches at fixed intervals. Real-time streaming = continuous, unbounded processing." },
+
+{ lec:"L10", type:"MCQ", q:"Apache Kafka is a:",
+  options:["Database","Distributed event streaming platform","ML library","File system"], answer:1,
+  exp:"Kafka = open-source distributed event streaming software platform. Designed for real-time data feeds at scale." },
+
+{ lec:"L10", type:"MCQ", q:"Kafka was originally developed by:",
+  options:["Google","LinkedIn","Apache","Facebook"], answer:1,
+  exp:"Originally developed by LinkedIn; now part of Apache ecosystem." },
+
+{ lec:"L10", type:"MCQ", q:"Kafka does NOT:",
+  options:["Publish streams","Store streams reliably","Deliver streams to consumers","Analyze data"], answer:3,
+  exp:"Kafka moves data efficiently — it does NOT analyze it. It publishes, stores, and delivers." },
+
+{ lec:"L10", type:"MCQ", q:"In Kafka, a Producer:",
+  options:["Reads messages from topics","Sends messages to brokers","Stores data","Coordinates the cluster"], answer:1,
+  exp:"Producer = sends data (messages) to Kafka brokers. Automatically detects brokers and routes accordingly." },
+
+{ lec:"L10", type:"MCQ", q:"In Kafka, a Consumer:",
+  options:["Sends messages","Reads and processes messages from topics","Stores data","Manages partitions"], answer:1,
+  exp:"Consumer = subscribes to topics, fetches data from brokers, processes data." },
+
+{ lec:"L10", type:"MCQ", q:"A Kafka Topic is:",
+  options:["A server","A logical channel where producers publish and consumers read","A database table","An ML algorithm"], answer:1,
+  exp:"Topic = logical channel; specific category of data. Topics are uniquely named within a Kafka cluster. Once published, messages are immutable." },
+
+{ lec:"L10", type:"MCQ", q:"A Kafka Broker is:",
+  options:["A producer","A server that stores and manages streaming data","A coordinator","A schema"], answer:1,
+  exp:"Broker = server that stores/manages data. Handles incoming writes from producers and reads to consumers. Brokers form a cluster." },
+
+{ lec:"L10", type:"MCQ", q:"ZooKeeper's role in Kafka:",
+  options:["Stores all data","Manages and coordinates brokers; tracks availability","Runs Spark jobs","Routes messages directly"], answer:1,
+  exp:"ZooKeeper manages brokers — tracks broker availability, notifies producers/consumers when brokers join/fail." },
+
+{ lec:"L10", type:"MCQ", q:"In Kafka partitions, the Leader role:",
+  options:["Backs up the data","Handles all read and write operations","Only stores replicas","Sends heartbeats"], answer:1,
+  exp:"Leader = handles all read/write. Replica = maintains a copy for fault tolerance." },
+
+{ lec:"L10", type:"MCQ", q:"Why does Kafka use partitions?",
+  options:["To save disk space","To enable parallel consumption + improve scalability","To compress data","For security"], answer:1,
+  exp:"Partitions enable parallel consumption and improve scalability. Each partition is ordered, append-only." },
+
+{ lec:"L10", type:"MCQ", q:"If a Kafka consumer is offline longer than retention period:",
+  options:["Messages are saved forever","Messages may be permanently lost","Consumer is automatically restarted","Kafka pauses producers"], answer:1,
+  exp:"Kafka retains messages for a configurable period. If consumer is offline longer (e.g., 24h), messages can be lost." },
+
+{ lec:"L10", type:"MCQ", q:"Spark Streaming converts streaming data into:",
+  options:["Single records","Small batches (micro-batches)","SQL queries","RDD trees"], answer:1,
+  exp:"Spark Streaming converts streaming data into small batches (DStream model). Each batch processed as an RDD." },
+
+{ lec:"L10", type:"MCQ", q:"DStream (Discretized Stream) treats streams as:",
+  options:["One big RDD","Continuous sequence of small RDDs","DataFrames only","Pure Kafka messages"], answer:1,
+  exp:"DStream = continuous sequence of small RDDs in micro-batch model. Spark 1.x model." },
+
+{ lec:"L10", type:"MCQ", q:"Which is NOT a DStream transformation?",
+  options:["map()","filter()","repartition(n)","aggregateMessages()"], answer:3,
+  exp:"DStream: map, flatMap, filter, repartition, union, count, reduce, countByValue. aggregateMessages is a GraphX operator." },
+
+{ lec:"L10", type:"MCQ", q:"Stateless transformations:",
+  options:["Use history","Process current batch only — no memory of past data","Maintain state per key","Use windows"], answer:1,
+  exp:"Stateless: each batch processed independently; no memory of past data. Examples: map, filter, flatMap, reduceByKey." },
+
+{ lec:"L10", type:"MCQ", q:"Stateful transformations:",
+  options:["Process current data only","Depend on current + previous batches; maintain state across time","Are deterministic","Are faster than stateless"], answer:1,
+  exp:"Stateful: use history. Enables tracking trends, running counts. Examples: window ops, updateStateByKey." },
+
+{ lec:"L10", type:"MCQ", q:"Structured Streaming was introduced in:",
+  options:["Spark 1.x","Spark 2.x","Spark 3.0","DataBricks only"], answer:1,
+  exp:"Structured Streaming introduced in Spark 2.x. Built on SQL engine; uses DataFrame/Dataset API." },
+
+{ lec:"L10", type:"MCQ", q:"In Structured Streaming, a live data stream is treated as:",
+  options:["A continuous sequence of RDDs","An append-only table that gets updated in real-time","A static DataFrame","A graph"], answer:1,
+  exp:"Structured Streaming: stream = append-only table updated in real-time. Query runs on Input Table to produce Result Table." },
+
+{ lec:"L10", type:"MCQ", q:"Output Mode 'Complete':",
+  options:["Writes only new rows","Writes only changed rows","Writes the ENTIRE Result Table every trigger","Doesn't write anything"], answer:2,
+  exp:"Complete Mode: writes entire Result Table every trigger. Used when full results needed (e.g., aggregations)." },
+
+{ lec:"L10", type:"MCQ", q:"Output Mode 'Append':",
+  options:["Writes only changed rows","Writes only NEW rows since last trigger","Writes entire table","Updates existing rows"], answer:1,
+  exp:"Append Mode: writes only new rows since last trigger. Works when data is only added (no updates)." },
+
+{ lec:"L10", type:"MCQ", q:"Output Mode 'Update':",
+  options:["Writes all rows","Writes only CHANGED rows since last trigger","Writes only new rows","Doesn't write at all"], answer:1,
+  exp:"Update Mode: writes only changed rows since last trigger. Efficient for incremental updates." },
+
+{ lec:"L10", type:"MCQ", q:"In Event-Time Window Operations, data is grouped by:",
+  options:["Arrival time only","Event time (timestamp) into time windows","Vertex ID","Partition number"], answer:1,
+  exp:"Event-time windows: data grouped by timestamp into time windows for aggregation." },
+
+{ lec:"L10", type:"MCQ", q:"Watermarking in Structured Streaming:",
+  options:["Encrypts data","Defines how to handle late data + manages memory","Compresses data","Adds metadata"], answer:1,
+  exp:"Watermarking: keeps system from storing data forever; defines how to handle late data. Within threshold → processed; too late → dropped." },
+
+{ lec:"L10", type:"MCQ", q:"Which is NOT a type of time window?",
+  options:["Tumbling (fixed, non-overlapping)","Sliding (overlapping)","Session (dynamic size)","Stratified"], answer:3,
+  exp:"3 types: Tumbling (fixed-size, non-overlapping), Sliding (can overlap), Session (dynamic, expands with input within gap)." },
+
+{ lec:"L10", type:"MCQ", q:"Checkpointing in Spark Streaming:",
+  options:["Saves application state to reliable storage for fault tolerance","Compresses data","Sends data faster","Replaces RDD lineage"], answer:0,
+  exp:"Checkpointing = saving application state to reliable storage (e.g., HDFS). Used for fault tolerance in long-running streaming jobs." },
+
+{ lec:"L10", type:"MCQ", q:"Two types of Checkpointing:",
+  options:["Manual + Auto","Metadata + Data","Driver + Worker","Local + Remote"], answer:1,
+  exp:"Two types: Metadata Checkpointing + Data Checkpointing." },
+
+{ lec:"L10", type:"MCQ", q:"Which is an alternative to Spark Streaming?",
+  options:["Apache Flink","HDFS","YARN","Hive"], answer:0,
+  exp:"Other streaming services: Apache Flink (real-time + batch), Apache Storm (real-time), Kafka Streams." },
+
+// TF
+{ lec:"L10", type:"TF", q:"True or False: Kafka analyzes data as it moves it through the pipeline.",
+  answer:"FALSE", exp:"Kafka moves data efficiently — it does NOT analyze it. Analysis is done by Spark or other consumers." },
+
+{ lec:"L10", type:"TF", q:"True or False: Once data is published to a Kafka topic, it can be modified.",
+  answer:"FALSE", exp:"Kafka messages are IMMUTABLE once published. Topics organize messages in append-only logs." },
+
+{ lec:"L10", type:"TF", q:"True or False: DStream is built on RDDs.",
+  answer:"TRUE", exp:"DStream = continuous sequence of small RDDs. Built on Spark's core execution engine." },
+
+{ lec:"L10", type:"TF", q:"True or False: Structured Streaming requires learning a completely new API.",
+  answer:"FALSE", exp:"Structured Streaming uses the SAME APIs as batch processing (DataFrames/Datasets). No new paradigm needed — major advantage over DStream." },
+
+{ lec:"L10", type:"TF", q:"True or False: In Kafka, if the leader of a partition fails, a replica is automatically promoted to become the new leader.",
+  answer:"TRUE", exp:"Kafka replicas continuously sync with leader. On leader failure, a replica is auto-promoted." },
+
+// EXPLAIN
+{ lec:"L10", type:"EXPLAIN", q:"Explain WHY we need streaming over batch processing.",
+  answer:"BATCH PROCESSING limitations:\n• High latency (minutes → hours).\n• Cannot react to events instantly.\n• Misses real-time insights.\n\nBENEFITS OF STREAMING:\n• Real-time decision making.\n• Immediate insights.\n• Faster response to events.\n• Handles continuous data growth.\n\nUSE CASES:\n• User clicks on website (web analytics).\n• Banking transactions (fraud detection).\n• GPS updates from ride apps.\n• Sensor/IoT data.\n• Server log files.\n• Social media activities.\n\nKey insight: Real-time systems don't wait for data to accumulate — they react INSTANTLY. In a competitive world, the value of data decays rapidly; processing it in real-time captures business value that batch processing would miss." },
+
+{ lec:"L10", type:"EXPLAIN", q:"Explain Kafka's core concepts: Producer, Consumer, Topic, Broker, Cluster, ZooKeeper, Partitions.",
+  answer:"PRODUCER:\n• Sends data (messages) to Kafka brokers.\n• Automatically detects available brokers, routes messages.\n• Continuously sends at broker speed; no ACK by default.\n\nCONSUMER:\n• Reads/processes messages from topics.\n• Subscribes to topics; fetches from brokers.\n• Handles data in real-time or stores for downstream systems.\n\nTOPIC:\n• Logical channel where producers publish, consumers read.\n• Each topic = specific category of data.\n• Uniquely named within a Kafka cluster.\n• Messages are immutable once published.\n\nBROKER:\n• Server that stores and manages streaming data.\n• Handles writes (producers) and reads (consumers).\n• Multiple brokers form a cluster.\n\nCLUSTER:\n• Group of brokers working together.\n• Provides scalability, load balancing, fault tolerance.\n\nZOOKEEPER:\n• Manages and coordinates brokers in cluster.\n• Tracks broker availability.\n• Notifies producers/consumers when broker joins/fails.\n• Producers/consumers automatically switch to healthy brokers.\n\nPARTITIONS:\n• Topics are divided into partitions; multiple per topic per broker.\n• Roles: Leader (handles read/write) and Replica (backup).\n• If leader fails, replica auto-promoted.\n• Ordered, append-only.\n• Enable parallel consumption + scalability." },
+
+{ lec:"L10", type:"EXPLAIN", q:"Explain Spark Streaming's two models: DStream vs Structured Streaming.",
+  answer:"1. DSTREAM (Discretized Stream) — Spark 1.x:\n• Original streaming engine.\n• Processes streaming data as continuous sequence of small RDDs.\n• Micro-batch model: incoming data split into time-based batches; each batch processed as RDD.\n• Execution flow: Data arrives continuously → Spark chops into batches → processes each as RDD → outputs continuously.\n• Can be created from input sources (Kafka, Flume, Twitter) or other DStreams.\n• Operates on mini-batches.\n• Supports windowing and stateful computations.\n• Requires explicit schema management.\n• Built on RDDs + Spark's core execution engine.\n\n2. STRUCTURED STREAMING — Spark 2.x:\n• High-level DataFrame/Dataset API for streaming.\n• Treats live data stream as an APPEND-ONLY TABLE updated in real-time.\n• A query runs on the Input Table to produce a Result Table.\n• New data appended at each trigger interval; system incrementally updates Result Table.\n• Only updated results written to output sink.\n• Built on SQL engine for better optimization.\n• Uses SAME APIs as batch (no new paradigm).\n• Continuous processing model.\n• Built-in windowing/aggregation support." },
+
+{ lec:"L10", type:"EXPLAIN", q:"Explain the three Output Modes in Structured Streaming.",
+  answer:"Output Modes determine what data is written to the external sink (storage):\n\n1. COMPLETE MODE:\n• Writes the ENTIRE Result Table every trigger.\n• Used when full results are needed (e.g., aggregations).\n• Example: running total counts → write all counts every batch.\n\n2. APPEND MODE:\n• Writes only NEW ROWS since last trigger.\n• Works when data is only added (no updates).\n• Example: appending raw events to a log.\n\n3. UPDATE MODE:\n• Writes only CHANGED ROWS since last trigger.\n• Efficient for incremental updates.\n• Example: only emit the rows whose aggregated value changed.\n\nChoice depends on the type of query: aggregations → Complete; raw event streams → Append; incremental updates → Update." },
+
+{ lec:"L10", type:"EXPLAIN", q:"Explain Event-Time Windowing and Watermarking in Structured Streaming.",
+  answer:"EVENT-TIME WINDOW OPERATIONS:\n• Streaming data includes a timestamp (event time).\n• Data is GROUPED into time windows (e.g., last 10 seconds) instead of individual rows.\n• Each window acts like a group for aggregation.\n• Data is grouped by Window (time range).\n\nHANDLING LATE DATA:\n• Events may arrive late (generated at 12:04 but arrives at 12:11).\n• Spark still updates the correct past window using EVENT TIME, not arrival time.\n\nWATERMARKING (State Control):\n• Keeps system from storing data forever (memory management).\n• Defines how to handle late data.\n• Late data WITHIN threshold → processed.\n• Late data TOO LATE → dropped.\n\nTYPES OF TIME WINDOWS:\n1. Tumbling Windows: fixed-sized, non-overlapping, contiguous time intervals.\n2. Sliding Windows: fixed-sized, but CAN overlap (if slide duration < window duration).\n3. Session Windows: dynamic size — starts with an input, expands if next input arrives within gap duration." },
+
+// DIFF
+{ lec:"L10", type:"DIFF", q:"Compare Batch vs Stream Processing.",
+  answer:[
+    ["Aspect","Batch","Stream"],
+    ["Data","High volume, finite","Continuous, unbounded, real-time"],
+    ["Latency","High (mins-hours)","Low (immediate response)"],
+    ["Focus","Throughput","Immediate response"],
+    ["Use","Periodic reports, ETL","Real-time analytics, monitoring"],
+    ["Example","Overnight bank reports","Stock market analysis, IoT sensors"]
+  ] },
+
+{ lec:"L10", type:"DIFF", q:"Compare Real-Time Streaming vs Micro-Batch.",
+  answer:[
+    ["Aspect","Real-Time Streaming","Micro-Batch"],
+    ["Latency","Low (as data arrives)","Higher (batch intervals)"],
+    ["Processing Model","Continuous stream","Fixed-interval batches"],
+    ["Use Case","Real-time analytics, event-driven","Periodic analytics, fault-tolerant"],
+    ["Example","Apache Flink","Spark Streaming (DStream)"]
+  ] },
+
+{ lec:"L10", type:"DIFF", q:"Compare DStream vs Structured Streaming.",
+  answer:[
+    ["Aspect","DStream","Structured Streaming"],
+    ["Spark Version","1.x","2.x+"],
+    ["API","RDD-based","DataFrame/Dataset-based"],
+    ["Abstraction","Continuous sequence of small RDDs","Append-only Input Table → Result Table"],
+    ["Schema","Explicit management","Built-in"],
+    ["Engine","Spark Core","SQL engine (Catalyst)"],
+    ["Optimization","Limited","Better (Catalyst optimization)"],
+    ["Same as Batch?","Different paradigm","Same APIs as batch"]
+  ] },
+
+{ lec:"L10", type:"DIFF", q:"Compare Stateless vs Stateful Transformations.",
+  answer:[
+    ["Aspect","Stateless","Stateful"],
+    ["Memory","No history","Maintains state across time"],
+    ["Each Batch","Independent","Depends on current + previous"],
+    ["Examples","map, filter, flatMap, reduceByKey","Window ops, updateStateByKey"],
+    ["Use","Process current data only","Track trends, running counts"]
+  ] },
+
+{ lec:"L10", type:"DIFF", q:"Compare the 3 Window Types (Tumbling, Sliding, Session).",
+  answer:[
+    ["Window Type","Description","Overlap?"],
+    ["Tumbling","Fixed-sized, non-overlapping, contiguous","No"],
+    ["Sliding","Fixed-sized; can overlap if slide < window duration","Yes (if slide < window)"],
+    ["Session","Dynamic size; expands with input within gap duration","N/A (depends on data)"]
+  ] },
+
+// FILL
+{ lec:"L10", type:"FILL", q:"Kafka core concepts: ______ sends messages; ______ reads messages; ______ is a logical channel; ______ is a server that stores data.",
+  blanks:["Producer","Consumer","Topic","Broker"],
+  exp:"Producer/Consumer/Topic/Broker are the 4 core concepts." },
+
+{ lec:"L10", type:"FILL", q:"Three Structured Streaming output modes: ______, ______, and ______.",
+  blanks:["Complete","Append","Update"],
+  exp:"Complete = entire table; Append = new rows only; Update = changed rows only." },
+
+{ lec:"L10", type:"FILL", q:"Three types of time windows: ______, ______, and ______.",
+  blanks:["Tumbling","Sliding","Session"],
+  exp:"Tumbling (fixed, non-overlapping), Sliding (can overlap), Session (dynamic size)." },
+
+{ lec:"L10", type:"FILL", q:"Two types of checkpointing in Spark Streaming: ______ and ______.",
+  blanks:["Metadata","Data"], exp:"Metadata Checkpointing + Data Checkpointing." },
+
+// FLOW
+{ lec:"L10", type:"FLOW", q:"Describe the DStream micro-batch execution flow.",
+  answer:["Data arrives continuously from sources (Kafka, Flume, Twitter, etc.).",
+    "Spark chops up the data streams into small time-based batches.",
+    "Each batch is processed as an RDD using Spark's core execution engine.",
+    "Transformations (map, filter, reduceByKey) applied to the RDDs.",
+    "Results are output continuously to dashboards, databases, files."] },
+
+{ lec:"L10", type:"FLOW", q:"Describe Structured Streaming's programming model.",
+  answer:["A query runs on the Input Table (treats the stream as an append-only table).",
+    "New data arrives continuously and is appended at each trigger interval (e.g., every second).",
+    "The system incrementally updates the Result Table based on the query.",
+    "Only the updated results are written to the output sink (based on Output Mode: Complete, Append, or Update).",
+    "Process repeats for each trigger interval."] },
+
+{ lec:"L10", type:"FLOW", q:"Describe the streaming system pipeline (data sources → serving).",
+  answer:["Data Sources: IoT devices, web apps, sensors produce continuous streams.",
+    "Ingestion Layer: Apache Kafka (or similar) collects and buffers streams.",
+    "Processing Layer: Spark Streaming (DStream or Structured Streaming) consumes from Kafka, applies transformations.",
+    "Storage: results stored in HDFS, databases, or cloud storage (optional).",
+    "Serving: dashboards, APIs, alerts deliver insights to users."] },
+
+// SCENARIO
+{ lec:"L10", type:"SCENARIO", q:"Scenario: Design a Real-Time Ride-Booking Analytics System using Kafka + Spark Streaming.",
+  answer:"SYSTEM COMPONENTS:\n\n1. PRODUCER (Driver application):\nEach driver sends events:\n{ driver_id, location, timestamp, status (available/busy) }\n\nwhile True:\n  event = generate_driver_event()\n  kafka.send(topic='driver_events', value=event)\n\n2. INGESTION LAYER (Kafka Cluster):\n• Topic: driver_events\n• Partitioned by: driver_id (parallel consumption)\n• Brokers store events; ZooKeeper manages availability.\n\n3. CONSUMER (Spark Streaming):\n• Read stream:\n  df = spark.readStream.format('kafka').option('subscribe','driver_events').load()\n• Stateless processing — filter active drivers:\n  active_drivers = df.filter(status == 'available')\n• Stateful processing — count drivers per area every 10 minutes:\n  df.groupBy(window(timestamp, '10 minutes'), location).count()\n\n4. OUTPUT SINK:\n• Dashboards (live driver map).\n• Alerts (areas with low driver density).\n\nFLOW: Kafka moves data → Spark analyzes it." },
+
+{ lec:"L10", type:"SCENARIO", q:"Scenario: Design a Real-Time Fraud Detection System using Spark + Kafka.",
+  answer:"SYSTEM GOALS:\n• Learn normal vs abnormal patterns (batch ML).\n• Process live transactions (streaming).\n• Flag anomalies dynamically.\n\nARCHITECTURE:\n\n1. BATCH ML COMPONENT:\n• Train anomaly detection model on HISTORICAL transactions.\n• Learn what 'normal' looks like.\n• Store model for streaming pipeline.\n\n2. STREAMING COMPONENT:\nEach transaction sent as JSON from producer:\n{ user_id, transaction_id, amount, location, device_type, timestamp }\n\n3. SPARK PROCESSING LAYERS:\n• Input Layer: Spark reads Kafka messages; parses JSON; extracts fields.\n• Processing Layer: applies stateless + stateful operations.\n• Output Layer: sends results to alerts, dashboards, or Kafka alert topic.\n\n4. METRICS:\n• Transaction Amount Validation (Stateless): df.filter(amount > 0 && amount < 10000)\n• Device Type Check (Stateless): df.filter(device_type isin 'mobile','web','pos')\n• Average Amount per user (Stateful, 30s window): df.groupBy(window(timestamp,'30s'), user_id).agg(avg(amount))\n• Transaction Count per Location (Stateful, sliding window 30s/10s): df.groupBy(window(timestamp,'30s','10s'), location).agg(count(transaction_id))\n\n5. ALERT GENERATION: anomaly score > threshold → emit alert to dashboard/Kafka alert topic." },
+
+/* ================================================================
+   L11 — DATA WAREHOUSES, DATA LAKES, LAKEHOUSES
+================================================================ */
+// MCQ
+{ lec:"L11", type:"MCQ", q:"A Data Warehouse uses which modeling approach?",
+  options:["Schema-on-Read","Schema-on-Write","No schema","Dynamic schema"], answer:1,
+  exp:"Data Warehouse = Schema-on-Write. Data cleaned, transformed, validated BEFORE storage." },
+
+{ lec:"L11", type:"MCQ", q:"A Data Lake uses which modeling approach?",
+  options:["Schema-on-Write","Schema-on-Read","No schema","Compressed schema"], answer:1,
+  exp:"Data Lake = Schema-on-Read. Data stored raw; schema applied at query time." },
+
+{ lec:"L11", type:"MCQ", q:"Which is NOT a strength of Data Warehouses?",
+  options:["Fast queries","High reliability","Strong governance","Flexibility for unstructured data"], answer:3,
+  exp:"Data Warehouses are RIGID with strict schema. They're FAST, RELIABLE, governed, but NOT flexible for raw/unstructured data." },
+
+{ lec:"L11", type:"MCQ", q:"Which is a Data Warehouse LIMITATION?",
+  options:["Rigid schema, not suitable for raw/unstructured data, expensive storage","Slow queries","Poor reliability","No SQL support"], answer:0,
+  exp:"DW limitations: rigid schema, not for raw/unstructured, expensive storage." },
+
+{ lec:"L11", type:"MCQ", q:"Which is a Data Lake STRENGTH?",
+  options:["Strong governance","Flexible, cheap storage, ideal for ML","Fast SQL queries always","Strict schema"], answer:1,
+  exp:"Data Lake: flexible, cheap storage, ideal for ML. But poor quality/reliability, hard to manage, difficult analytics." },
+
+{ lec:"L11", type:"MCQ", q:"A Lakehouse combines:",
+  options:["Data Mart + Data Warehouse","Data Lake + Data Warehouse","Two Data Lakes","Streaming + Batch"], answer:1,
+  exp:"Lakehouse = Data Lake ('cheap storage for everything') + Data Warehouse ('clean, structured, fast analytics')." },
+
+{ lec:"L11", type:"MCQ", q:"Which is NOT a key feature of a Lakehouse?",
+  options:["ACID transactions","Schema enforcement","Unified analytics","Rigid schema-on-write only"], answer:3,
+  exp:"Lakehouse features: ACID transactions, schema enforcement, unified analytics. It's flexible — NOT rigid schema-on-write only." },
+
+{ lec:"L11", type:"MCQ", q:"In a Lakehouse, the 'Table Layer' is:",
+  options:["A physical disk","A software layer on top of Data Lake organizing raw files into reliable tables","A database","An ML model"], answer:1,
+  exp:"Table Layer = software layer on top of Data Lake that organizes raw files into reliable analytical tables. Acts as DB interface + metadata manager + transaction manager." },
+
+{ lec:"L11", type:"MCQ", q:"Which is NOT a Lakehouse Table Layer capability?",
+  options:["Transaction logs (ACID)","Metadata management","Schema evolution","CPU scheduling"], answer:3,
+  exp:"Table Layer: transaction logs, metadata, schema evolution, time travel, partition pruning. NOT CPU scheduling." },
+
+{ lec:"L11", type:"MCQ", q:"'Time Travel' in a Lakehouse means:",
+  options:["Encrypting historical data","Accessing any previous version of your data","Compressing old data","Deleting data"], answer:1,
+  exp:"Time Travel = access any previous version of your data. Powered by transaction logs." },
+
+{ lec:"L11", type:"MCQ", q:"In a Lakehouse, raw data is physically stored:",
+  options:["In a traditional DB","As files (Parquet, JSON, CSV) in cheap distributed/cloud storage","Only in HDFS","In RAM"], answer:1,
+  exp:"Physically still a Data Lake — files in formats like Parquet, JSON, CSV stored in Amazon S3, Azure Data Lake Storage, or HDFS." },
+
+{ lec:"L11", type:"MCQ", q:"Amazon Redshift is a:",
+  options:["Data Lake","Data Warehouse (cloud)","Streaming platform","ML framework"], answer:1,
+  exp:"Amazon Redshift = AWS's fully managed cloud Data Warehouse." },
+
+{ lec:"L11", type:"MCQ", q:"Google BigQuery is:",
+  options:["A Data Lake","A serverless Data Warehouse on GCP","A streaming engine","An ML library"], answer:1,
+  exp:"BigQuery = GCP's serverless cloud Data Warehouse." },
+
+{ lec:"L11", type:"MCQ", q:"Amazon S3 is primarily used as:",
+  options:["A Data Warehouse","A Data Lake storage backbone","A streaming engine","A relational DB"], answer:1,
+  exp:"S3 = storage backbone for AWS Data Lakes." },
+
+{ lec:"L11", type:"MCQ", q:"Azure Databricks (Delta Lake) is an example of:",
+  options:["Data Warehouse","Data Lake","Lakehouse","Streaming only"], answer:2,
+  exp:"Azure Databricks with Delta Lake provides Lakehouse capabilities (ACID, schema, time travel on top of Data Lake)." },
+
+{ lec:"L11", type:"MCQ", q:"In real-world systems, the role of Hadoop HDFS is:",
+  options:["Cluster resource management","Distributed storage","Stream processing","SQL queries"], answer:1,
+  exp:"HDFS = distributed storage. YARN = resource mgmt. MapReduce = legacy batch. Spark = computation. Kafka = streaming ingestion." },
+
+// TF
+{ lec:"L11", type:"TF", q:"True or False: Data Warehouses are ideal for storing raw, unstructured data.",
+  answer:"FALSE", exp:"Data Warehouses require structured data with schema-on-write. Use Data Lake for raw/unstructured." },
+
+{ lec:"L11", type:"TF", q:"True or False: Data Lakes have strong governance and data quality by default.",
+  answer:"FALSE", exp:"Data Lakes have poor data quality and reliability by default; hard to manage. Lakehouse adds governance via the Table Layer." },
+
+{ lec:"L11", type:"TF", q:"True or False: In a Lakehouse, you need to move data between Data Lake and Data Warehouse.",
+  answer:"FALSE", exp:"Lakehouse eliminates data duplication and complex pipelines — analyze everything in ONE place." },
+
+{ lec:"L11", type:"TF", q:"True or False: In real systems, companies typically use a single tool for everything.",
+  answer:"FALSE", exp:"Real companies build LAYERED architectures where each technology solves a specific problem (Hadoop + Spark + Kafka + cloud services)." },
+
+{ lec:"L11", type:"TF", q:"True or False: A Lakehouse provides ACID transactions on top of file-based Data Lake storage.",
+  answer:"TRUE", exp:"The Lakehouse Table Layer adds ACID transactions via transaction logs to raw file storage." },
+
+// EXPLAIN
+{ lec:"L11", type:"EXPLAIN", q:"Explain Data Warehouse: storage approach, strengths, and limitations.",
+  answer:"DATA WAREHOUSE:\n• Stores STRUCTURED data.\n• Schema-on-Write (schema defined BEFORE storage).\n• ETL pipeline (Extract, Transform, Load) → data cleaned/validated before entering.\n• Optimized for SQL queries.\n\nSTRENGTHS:\n• Fast queries (highly optimized).\n• High reliability.\n• Strong governance (clean, validated data).\n\nLIMITATIONS:\n• Rigid schema — everything must fit the schema before entering.\n• Not suitable for raw/unstructured data.\n• Expensive storage.\n\nArchitecture: Data is CLEANED before storage → stored in structured tables → accessed via SQL.\n\nKey insight: Warehouses are CLEAN but INFLEXIBLE." },
+
+{ lec:"L11", type:"EXPLAIN", q:"Explain Data Lake: storage approach, strengths, and limitations.",
+  answer:"DATA LAKE:\n• Stores RAW data in ORIGINAL format.\n• Schema-on-Read.\n• Supports: Structured (CSV), Semi-structured (JSON), Unstructured (images, videos).\n\nSTRENGTHS:\n• Flexible.\n• Cheap storage.\n• Ideal for ML (raw data, diverse formats).\n\nLIMITATIONS:\n• Poor data quality and reliability.\n• Hard to manage.\n• Difficult analytics.\n\nPhilosophy: 'Don't worry about structure now — store everything, analyze later.'\n\nKey insight: Lakes are FLEXIBLE but MESSY. Risk becoming 'data swamps' without governance." },
+
+{ lec:"L11", type:"EXPLAIN", q:"Explain Lakehouse: what it is, what it combines, and why it matters.",
+  answer:"LAKEHOUSE combines:\n• Data Lake ('cheap storage for everything').\n• Data Warehouse ('clean, structured, fast analytics').\n\nKEY FEATURES:\n• ACID transactions.\n• Schema enforcement.\n• Unified analytics (BI + ML on same data).\n\nKEY INNOVATION: 'Table Layer' added on top of Data Lake:\n• Software layer that organizes raw files into reliable analytical tables.\n• Acts as: database interface, metadata manager, transaction manager.\n• Organizes files logically into tables WITHOUT moving everything into a traditional DB.\n\nTABLE LAYER CAPABILITIES:\n1. Transaction logs → ACID guarantees.\n2. Metadata management.\n3. Schema evolution → add columns without rewriting.\n4. Time travel → access any previous data version.\n5. Partition pruning → skip irrelevant files in queries.\n\nWHY LAKEHOUSE MATTERS:\nEliminates:\n• Data duplication.\n• Complex pipelines (moving data between Lake and Warehouse).\n\nEnables:\n• BI + ML on SAME data.\n• Single source of truth.\n\nPhysical storage: still a Data Lake (files in Parquet/JSON/CSV on S3, Azure Data Lake Storage, HDFS). The Table Layer adds structure and transactions on top." },
+
+{ lec:"L11", type:"EXPLAIN", q:"Explain WHEN to use Data Warehouse, Data Lake, or Lakehouse.",
+  answer:"DATA WAREHOUSE — use when:\n• You have STRUCTURED data only.\n• You need FAST SQL queries.\n• You require HIGH RELIABILITY and STRONG GOVERNANCE.\n• Use cases: BI dashboards, traditional analytics, financial reporting.\n• Examples: Amazon Redshift, Azure Synapse, Google BigQuery.\n\nDATA LAKE — use when:\n• You have DIVERSE data (structured + semi + unstructured).\n• You need CHEAP storage at SCALE.\n• ML workloads need RAW data access.\n• Schema may evolve over time.\n• Use cases: data science, ML training, exploratory analytics.\n• Examples: Amazon S3, Azure Data Lake Storage Gen2, GCS.\n\nLAKEHOUSE — use when:\n• You want BOTH the flexibility of a Lake AND the reliability of a Warehouse.\n• You need BI + ML on the SAME data.\n• You want to AVOID maintaining two separate systems.\n• ACID transactions and schema enforcement are needed.\n• Use cases: modern analytics, unified data platforms.\n• Examples: Azure Databricks (Delta Lake), Microsoft Fabric, BigLake + BigQuery." },
+
+// DIFF
+{ lec:"L11", type:"DIFF", q:"Compare Data Warehouse vs Data Lake.",
+  answer:[
+    ["Aspect","Data Warehouse","Data Lake"],
+    ["Data Type","Structured only","Structured + Semi + Unstructured"],
+    ["Schema","Schema-on-Write (before storage)","Schema-on-Read (at query time)"],
+    ["Processing","ETL pipeline","Store raw, transform on read"],
+    ["Strengths","Fast queries, reliable, governed","Flexible, cheap, ideal for ML"],
+    ["Limitations","Rigid schema, expensive, no raw data","Poor quality, hard to manage"],
+    ["Motto","Think first, store later (clean)","Store everything first, think later"],
+    ["Cost","Expensive storage","Cheap storage"]
+  ] },
+
+{ lec:"L11", type:"DIFF", q:"Compare Data Lake vs Lakehouse.",
+  answer:[
+    ["Aspect","Data Lake","Lakehouse"],
+    ["Structure","Raw files only","Files + Table Layer"],
+    ["Transactions","None","ACID transactions"],
+    ["Schema","Loose","Schema enforcement"],
+    ["Time Travel","No","Yes"],
+    ["Governance","Weak","Strong"],
+    ["Analytics","Difficult","Unified BI + ML"],
+    ["Risk","Can become 'data swamp'","Reliable + flexible"]
+  ] },
+
+{ lec:"L11", type:"DIFF", q:"Compare Data Warehouse vs Lakehouse.",
+  answer:[
+    ["Aspect","Data Warehouse","Lakehouse"],
+    ["Storage","Expensive structured DB","Cheap file storage (S3, ADLS, HDFS)"],
+    ["Data Types","Structured","Structured + Semi + Unstructured"],
+    ["ML Support","Limited","Native (single source for BI + ML)"],
+    ["Pipelines","Complex ETL into separate DB","Simpler (analyze in place)"],
+    ["ACID","Yes","Yes (via Table Layer)"],
+    ["Flexibility","Low","High"]
+  ] },
+
+{ lec:"L11", type:"DIFF", q:"Compare the cloud services for Data Warehouse, Data Lake, Lakehouse across AWS, Azure, GCP.",
+  answer:[
+    ["Platform","Data Warehouse","Data Lake","Lakehouse"],
+    ["AWS","Amazon Redshift, Redshift Spectrum","Amazon S3, AWS Glue","AWS Lake Formation + Redshift, S3 + Athena"],
+    ["Azure","Synapse Analytics, Azure SQL DB","Azure Data Lake Storage Gen2, Synapse","Azure Databricks (Delta Lake), Microsoft Fabric"],
+    ["GCP","BigQuery","Google Cloud Storage, BigLake, Dataproc","BigLake + BigQuery, Databricks on GCP"]
+  ] },
+
+// FILL
+{ lec:"L11", type:"FILL", q:"A Lakehouse combines ______ and ______.",
+  blanks:["Data Lake","Data Warehouse"], exp:"Lakehouse = Data Lake (cheap, flexible storage) + Data Warehouse (clean, fast analytics)." },
+
+{ lec:"L11", type:"FILL", q:"The Lakehouse Table Layer enables: ______, ______, ______, ______, and ______.",
+  blanks:["transaction logs (ACID)","metadata management","schema evolution","time travel","partition pruning"],
+  exp:"5 capabilities of the Table Layer in a Lakehouse." },
+
+{ lec:"L11", type:"FILL", q:"Modern systems separate 4 concerns: ______, ______, ______, and ______.",
+  blanks:["Ingestion","Storage","Processing","Analytics"],
+  exp:"Modular architecture: ingest → store → process → analyze. Each layer can be scaled independently." },
+
+// FLOW
+{ lec:"L11", type:"FLOW", q:"Describe the Data Warehouse architecture (data flow).",
+  answer:["Data Sources: various source systems (CRM, ERP, transactional DBs).",
+    "ETL Pipeline: Extract from sources, Transform (clean, validate, format), Load into warehouse.",
+    "Schema-on-Write: data must fit the predefined schema BEFORE storage.",
+    "Storage: structured tables (highly optimized for SQL).",
+    "Access: BI tools query via SQL.",
+    "Output: reports, dashboards, analytics."] },
+
+{ lec:"L11", type:"FLOW", q:"Describe the Lakehouse architecture.",
+  answer:["Data Sources: structured + semi + unstructured (logs, JSON, CSV, images).",
+    "Ingestion: raw data loaded into Lake storage (files in S3/ADLS/HDFS).",
+    "Storage: raw files in Parquet, JSON, CSV (cheap distributed storage).",
+    "Table Layer (key addition): software layer on top of Lake — transaction logs, metadata, schema enforcement.",
+    "Compute Engines: Spark, SQL engines access tables via the Table Layer.",
+    "Unified Access: BI tools + ML frameworks read from the same Lakehouse tables.",
+    "Output: dashboards, reports, ML models."] },
+
+// SCENARIO
+{ lec:"L11", type:"SCENARIO", q:"Scenario: Your company stores TBs of structured sales data, JSON event logs, and product images. You need both BI dashboards and ML model training. Which architecture should you choose and why?",
+  answer:"RECOMMENDATION: LAKEHOUSE.\n\nWHY:\n1. Diverse data types — structured sales, semi-structured JSON, unstructured images → Lake's flexibility needed.\n2. BI dashboards on same data — need Warehouse-like reliability, schema enforcement, fast SQL.\n3. ML training requires raw data access — Lake provides this.\n4. Avoid duplicating data across separate Warehouse + Lake systems.\n\nIMPLEMENTATION:\n• Storage: cloud Lake (S3/ADLS/GCS) for raw files (Parquet, JSON, image files).\n• Table Layer: Delta Lake, Apache Iceberg, or Apache Hudi → adds ACID transactions, schema enforcement, time travel.\n• Compute: Spark for both batch analytics and ML training.\n• BI: SQL queries via Spark SQL / Athena / BigQuery against Lakehouse tables.\n• ML: MLlib pipelines reading from the same tables.\n\nCONCRETE CLOUD OPTIONS:\n• Azure: Azure Databricks (Delta Lake) + Microsoft Fabric.\n• AWS: S3 + Lake Formation + Athena + EMR.\n• GCP: BigLake + BigQuery.\n\nResult: ONE platform for BI + ML; lower cost than separate Warehouse + Lake; ACID guarantees." },
+
+{ lec:"L11", type:"SCENARIO", q:"Scenario: Map all the Big Data technologies learned in the course to their roles in a real-world system.",
+  answer:"COMPLETE REAL-WORLD BIG DATA STACK:\n\n• Hadoop HDFS → DISTRIBUTED STORAGE: stores massive datasets reliably across commodity hardware.\n\n• YARN → CLUSTER RESOURCE MANAGEMENT: allocates CPU/memory; supports multi-tenancy (Spark, MR, Flink).\n\n• MapReduce → LEGACY BATCH PROCESSING: rarely used for new workloads; foundational concept.\n\n• Spark RDDs → DISTRIBUTED COMPUTATION: low-level, flexible, for custom algorithms.\n\n• Spark DataFrames → STRUCTURED ANALYTICS: optimized via Catalyst; SQL-like operations, ETL.\n\n• Spark Streaming → REAL-TIME PROCESSING: micro-batch (DStream) or continuous (Structured Streaming).\n\n• Kafka → STREAMING INGESTION BACKBONE: collects, buffers, distributes real-time event data.\n\nLAYERED ARCHITECTURE:\n1. INGESTION: Kafka (streaming) + Sqoop (batch from RDBMS) + Flume (log ingestion).\n2. STORAGE: HDFS, S3, Azure Data Lake (Lake/Lakehouse).\n3. RESOURCE MGMT: YARN, Kubernetes.\n4. PROCESSING: Spark (batch + streaming + ML + graph).\n5. ANALYTICS: BI tools, ML models, dashboards.\n\nKEY INSIGHT: Real companies don't use a single tool. They build LAYERED architectures where each technology solves a specific problem." },
+
+/* ================================================================
+   CROSS-LECTURE INTEGRATION QUESTIONS
+================================================================ */
+{ lec:"L11", type:"ARCH", q:"Describe a complete end-to-end Big Data architecture combining all course technologies for an e-commerce platform.",
+  answer:"E-COMMERCE BIG DATA ARCHITECTURE:\n\n1. DATA SOURCES:\n• Clickstream events (web/mobile).\n• Transaction events (purchases).\n• Product catalog (structured).\n• Customer reviews (text).\n• Images (product photos).\n\n2. INGESTION LAYER:\n• Kafka: real-time event streaming (clicks, purchases) → topics partitioned by user_id.\n• Sqoop: bulk transfer from MySQL/Postgres (catalog, orders) into HDFS.\n• Flume: server logs.\n\n3. STORAGE LAYER:\n• HDFS / S3: distributed file storage for raw data.\n• Lakehouse (Delta Lake): adds ACID, schema enforcement on top.\n• HBase: real-time random access to customer profile data.\n\n4. RESOURCE MANAGEMENT:\n• YARN: schedules containers for Spark, MR; multi-tenancy.\n• ZooKeeper: HA coordination.\n\n5. PROCESSING LAYER:\n• Spark SQL/DataFrames: ETL, batch analytics, reports (using Catalyst).\n• Spark Streaming: real-time fraud detection, live dashboards.\n• Spark MLlib: recommendation models, churn prediction, anomaly detection.\n• Spark GraphX: customer-product relationship analysis (PageRank for product importance).\n\n6. ANALYTICS / SERVING:\n• BI dashboards (Power BI/Tableau) → Spark SQL.\n• Real-time alerts (fraud, low stock) → Kafka alert topic.\n• ML serving for personalized recommendations.\n\nDATA FLOW:\nUsers → Producers send to Kafka → Spark Streaming consumes → results into Lakehouse → Spark batch jobs on Lakehouse → BI / ML outputs → user-facing services." },
+
+{ lec:"L11", type:"DIFF", q:"Compare ALL processing paradigms learned (Batch, Stream, Iterative, Interactive, Graph).",
+  answer:[
+    ["Paradigm","Latency","Tool","Use Case"],
+    ["Batch","High (mins-hours)","Hadoop MR, Spark batch","ETL, reports, historical analysis"],
+    ["Stream","Low (real-time)","Spark Streaming, Kafka, Flink","Fraud detection, live monitoring"],
+    ["Iterative","Medium","Spark MLlib (in-memory)","ML training, optimization"],
+    ["Interactive","Low-Medium","Spark SQL, Hive, Presto","Ad-hoc queries, BI dashboards"],
+    ["Graph","Medium","GraphX, GraphFrames","PageRank, social network analysis"]
+  ] }
+
+];
+
+// ====================================================
+const container = document.getElementById('quizContainer');
+const lectureNames = {
+  L1: "Lecture 1: Big Data Introduction",
+  L2H: "Lecture 2: Hadoop Ecosystem & HDFS",
+  L2M: "Lecture 2: MapReduce",
+  L5: "Lecture 5: YARN",
+  L7: "Lecture 7: Spark",
+  L8: "Lecture 8: Spark SQL & DataFrames",
+  L9: "Lecture 9: Spark ML & GraphX",
+  L10: "Lecture 10: Spark Streaming & Kafka",
+  L11: "Lecture 11: Data Warehouses, Data Lakes, Lakehouses"
+};
+
+let userAnswers = {};
+let mcqAnswered = 0;
+let mcqCorrect = 0;
+let currentLecFilter = "all";
+let currentTypeFilter = "all";
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function render() {
+  container.innerHTML = "";
+  const grouped = {};
+  questions.forEach((q, i) => {
+    if (currentLecFilter !== "all" && q.lec !== currentLecFilter) return;
+    if (currentTypeFilter !== "all" && q.type !== currentTypeFilter) return;
+    if (!grouped[q.lec]) grouped[q.lec] = [];
+    grouped[q.lec].push({ ...q, idx: i });
+  });
+
+  if (Object.keys(grouped).length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#7f8c8d;padding:40px;">No questions match filter.</p>';
+    return;
+  }
+
+  Object.keys(grouped).forEach(lec => {
+    const section = document.createElement('div');
+    section.className = 'lecture-section';
+    section.innerHTML = `<div class="lecture-title">${lectureNames[lec] || lec}</div>`;
+    grouped[lec].forEach((q, n) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'question';
+      qDiv.dataset.idx = q.idx;
+      const qNum = n + 1;
+      const typeTag = `<span class="qtype-tag qtype-${q.type}">${q.type}</span>`;
+      let body = '';
+      if (q.type === 'MCQ') {
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <ul class="options" data-idx="${q.idx}">
+            ${q.options.map((opt, i) => `<li data-opt="${i}">${String.fromCharCode(65+i)}) ${escapeHtml(opt)}</li>`).join('')}
+          </ul>
+          <div class="explanation" id="exp-${q.idx}"><strong>Explanation:</strong> ${escapeHtml(q.exp || '')}</div>
+        `;
+      } else if (q.type === 'TF') {
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <ul class="options" data-idx="${q.idx}">
+            <li data-opt="TRUE">TRUE</li>
+            <li data-opt="FALSE">FALSE</li>
+          </ul>
+          <div class="explanation" id="exp-${q.idx}"><strong>Answer: ${q.answer}.</strong> ${escapeHtml(q.exp || '')}</div>
+        `;
+      } else if (q.type === 'EXPLAIN') {
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <textarea placeholder="Type your answer here..."></textarea>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Model Answer</button>
+          <div class="answer-box" id="ans-${q.idx}"><strong>Model Answer:</strong>\n${escapeHtml(q.answer)}</div>
+        `;
+      } else if (q.type === 'DIFF') {
+        let table = '<table class="compare-table"><thead><tr>';
+        q.answer[0].forEach(h => table += `<th>${escapeHtml(h)}</th>`);
+        table += '</tr></thead><tbody>';
+        for (let r = 1; r < q.answer.length; r++) {
+          table += '<tr>';
+          q.answer[r].forEach(cell => table += `<td>${escapeHtml(cell)}</td>`);
+          table += '</tr>';
+        }
+        table += '</tbody></table>';
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <p class="hint">Think through your answer before revealing the comparison table.</p>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Comparison</button>
+          <div class="answer-box" id="ans-${q.idx}">${table}</div>
+        `;
+      } else if (q.type === 'FILL') {
+        const blankCount = q.blanks.length;
+        let inputs = '';
+        for (let i = 0; i < blankCount; i++) {
+          inputs += `<input type="text" class="fill-blank-input" placeholder="blank ${i+1}" />`;
+        }
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <div>${inputs}</div>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Answers</button>
+          <div class="answer-box" id="ans-${q.idx}"><strong>Answers:</strong> ${q.blanks.map(b => '"' + escapeHtml(b) + '"').join(', ')}.\n${escapeHtml(q.exp || '')}</div>
+        `;
+      } else if (q.type === 'FLOW') {
+        let stepsHtml = '';
+        q.answer.forEach((s, i) => {
+          stepsHtml += `<div class="flow-step"><strong>${i+1}.</strong> ${escapeHtml(s)}</div>`;
+        });
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <textarea placeholder="Walk through the steps before revealing..." style="min-height:80px"></textarea>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Flow</button>
+          <div class="answer-box" id="ans-${q.idx}">${stepsHtml}</div>
+        `;
+      } else if (q.type === 'SCENARIO') {
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <textarea placeholder="Work through your scenario answer..." style="min-height:90px"></textarea>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Solution</button>
+          <div class="answer-box" id="ans-${q.idx}"><strong>Solution:</strong>\n${escapeHtml(q.answer)}</div>
+        `;
+      } else if (q.type === 'MATCH') {
+        let leftItems = q.pairs.map(p => `<li>${escapeHtml(p[0])}</li>`).join('');
+        let rightItems = q.pairs.map(p => `<li>${escapeHtml(p[1])}</li>`).join('');
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <div style="display:flex;gap:30px;margin:10px 0;">
+            <div><strong>Items:</strong><ul class="bullet-list">${leftItems}</ul></div>
+            <div><strong>Definitions (shuffled):</strong><ul class="bullet-list">${rightItems}</ul></div>
+          </div>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Matches</button>
+          <div class="answer-box" id="ans-${q.idx}"><strong>Correct Matches:</strong>\n${q.pairs.map(p => '• ' + escapeHtml(p[0]) + ' → ' + escapeHtml(p[1])).join('\n')}\n\n${escapeHtml(q.exp || '')}</div>
+        `;
+      } else if (q.type === 'ARCH') {
+        body = `
+          <div class="question-text">${typeTag}<span class="q-num">Q${qNum}.</span>${escapeHtml(q.q)}</div>
+          <textarea placeholder="Describe the architecture (components + relationships + flow)..." style="min-height:120px"></textarea>
+          <button class="reveal-btn-small" onclick="toggleAnswer('${q.idx}')">Show Full Description</button>
+          <div class="answer-box" id="ans-${q.idx}"><strong>Architecture:</strong>\n${escapeHtml(q.answer)}</div>
+        `;
+      }
+      qDiv.innerHTML = body;
+      section.appendChild(qDiv);
+    });
+    container.appendChild(section);
+  });
+
+  // attach MCQ/TF handlers
+  document.querySelectorAll('.options').forEach(ul => {
+    const idx = parseInt(ul.dataset.idx);
+    ul.querySelectorAll('li').forEach(li => {
+      li.addEventListener('click', () => {
+        const optAttr = li.dataset.opt;
+        const opt = (questions[idx].type === 'TF') ? optAttr : parseInt(optAttr);
+        handleAnswer(idx, opt, ul);
+      });
+    });
+  });
+  // restore
+  Object.keys(userAnswers).forEach(idx => {
+    const ans = userAnswers[idx];
+    const ul = document.querySelector(`.options[data-idx="${idx}"]`);
+    if (ul) showResult(ul, parseInt(idx), ans);
+  });
+
+  updateScore();
+}
+
+function handleAnswer(idx, opt, ul) {
+  if (userAnswers[idx] !== undefined) return;
+  userAnswers[idx] = opt;
+  const q = questions[idx];
+  mcqAnswered++;
+  const correct = (q.type === 'TF') ? (opt === q.answer) : (opt === q.answer);
+  if (correct) mcqCorrect++;
+  showResult(ul, idx, opt);
+  updateScore();
+}
+
+function showResult(ul, idx, opt) {
+  const q = questions[idx];
+  ul.querySelectorAll('li').forEach((li, i) => {
+    li.classList.add('disabled');
+    const itemKey = (q.type === 'TF') ? li.dataset.opt : i;
+    const correctVal = q.answer;
+    if (itemKey == correctVal) li.classList.add('correct');
+    if (itemKey == opt && opt != correctVal) li.classList.add('wrong');
+  });
+  const exp = document.getElementById('exp-' + idx);
+  if (exp) exp.classList.add('show');
+}
+
+function toggleAnswer(idx) {
+  const a = document.getElementById('ans-' + idx);
+  if (a) a.classList.toggle('show');
+}
+
+function updateScore() {
+  const totalMcq = questions.filter(q => q.type === 'MCQ' || q.type === 'TF').length;
+  document.getElementById('scoreBox').textContent = `MCQ/TF: ${mcqCorrect}/${mcqAnswered}  (Total: ${totalMcq})`;
+  const pct = totalMcq > 0 ? (mcqAnswered / totalMcq) * 100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function resetQuiz() {
+  if (!confirm('Reset all answers?')) return;
+  userAnswers = {};
+  mcqAnswered = 0;
+  mcqCorrect = 0;
+  render();
+}
+
+function revealAll() {
+  questions.forEach((q, i) => {
+    if (q.type === 'MCQ' || q.type === 'TF') {
+      if (userAnswers[i] === undefined) {
+        const ul = document.querySelector(`.options[data-idx="${i}"]`);
+        if (ul) {
+          ul.querySelectorAll('li').forEach((li, j) => {
+            li.classList.add('disabled');
+            const itemKey = (q.type === 'TF') ? li.dataset.opt : j;
+            if (itemKey == q.answer) li.classList.add('correct');
+          });
+          const exp = document.getElementById('exp-' + i);
+          if (exp) exp.classList.add('show');
+        }
+      }
+    } else {
+      const a = document.getElementById('ans-' + i);
+      if (a) a.classList.add('show');
+    }
+  });
+}
+
+document.querySelectorAll('[data-filter-lec]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter-lec]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentLecFilter = btn.dataset.filterLec;
+    render();
+  });
+});
+document.querySelectorAll('[data-filter-type]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter-type]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTypeFilter = btn.dataset.filterType;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>

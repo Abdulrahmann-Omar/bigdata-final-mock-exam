@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Big Data Final Mock Exam - DSAI 427</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #2c3e50;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 14px;
+    padding: 30px 40px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+  h1 {
+    text-align: center;
+    color: #1e3a5f;
+    margin-bottom: 8px;
+    font-size: 2.1em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+    font-size: 1em;
+  }
+  .meta {
+    text-align: center;
+    color: #95a5a6;
+    margin-bottom: 25px;
+    font-size: 0.9em;
+  }
+  .section {
+    background: #f8f9fa;
+    border-left: 6px solid #2980b9;
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 22px;
+  }
+  .section h2 {
+    color: #1e3a5f;
+    margin-bottom: 6px;
+    font-size: 1.4em;
+  }
+  .section-desc {
+    color: #7f8c8d;
+    font-size: 0.92em;
+    margin-bottom: 14px;
+  }
+  .question {
+    background: white;
+    padding: 14px 18px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #e0e6ed;
+  }
+  .qid {
+    display: inline-block;
+    background: #2980b9;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 0.9em;
+  }
+  .question p { margin: 5px 0; line-height: 1.55; }
+  .options { margin: 8px 0 8px 22px; line-height: 1.7; }
+  .options label { display: block; cursor: pointer; padding: 3px 6px; border-radius: 4px; }
+  .options label:hover { background: #ecf0f1; }
+  input[type="radio"], input[type="checkbox"] { margin-right: 8px; }
+  input[type="text"] {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.95em;
+    margin-top: 6px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 70px;
+    padding: 8px 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.95em;
+    resize: vertical;
+    margin-top: 6px;
+  }
+  textarea.large { min-height: 130px; }
+  table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    width: 100%;
+    background: #fdfdfd;
+  }
+  th, td {
+    border: 1px solid #bdc3c7;
+    padding: 6px 10px;
+    text-align: center;
+    font-size: 0.92em;
+  }
+  th { background: #34495e; color: white; }
+  code {
+    background: #2d3436;
+    color: #dfe6e9;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.88em;
+  }
+  pre {
+    background: #2d3436;
+    color: #dfe6e9;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.88em;
+    overflow-x: auto;
+    margin: 8px 0;
+  }
+  .tf-options { margin-left: 8px; }
+  .tf-options label { display: inline-block; margin-right: 18px; }
+  .controls {
+    position: sticky;
+    top: 10px;
+    background: #1e3a5f;
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .controls button {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.92em;
+  }
+  .controls button:hover { background: #1e8449; }
+  .controls .reset { background: #c0392b; }
+  .controls .reset:hover { background: #922b21; }
+  .controls .save { background: #f39c12; }
+  .controls .save:hover { background: #b9770e; }
+  .controls span { color: white; font-size: 0.95em; }
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e6ed;
+    color: #7f8c8d;
+    font-size: 0.9em;
+  }
+  .hint {
+    background: #fffbea;
+    border-left: 3px solid #f39c12;
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 0.88em;
+    color: #7d6608;
+  }
+  #exportBox {
+    display: none;
+    background: #2d3436;
+    color: #dfe6e9;
+    padding: 14px;
+    border-radius: 6px;
+    margin-top: 16px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.85em;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📝 Big Data Final Mock Exam</h1>
+<p class="subtitle">DSAI 427 — Dr. Mayada Hadhoud — Spring 2026</p>
+<p class="meta">52 Questions · 7 Sections · Covers Lectures 1–11</p>
+
+<div class="controls">
+  <span>💾 Answers auto-saved to your browser</span>
+  <div>
+    <button class="save" onclick="exportAnswers()">📋 Copy All Answers</button>
+    <button class="save" onclick="downloadAnswers()" style="background:#16a085;">💾 Download my_answers.txt</button>
+    <button onclick="window.print()">🖨️ Print</button>
+    <button class="reset" onclick="resetAll()">🗑️ Reset All</button>
+  </div>
+</div>
+
+<div id="exportBox"></div>
+
+<!-- ============ SECTION A ============ -->
+<div class="section">
+  <h2>📌 SECTION A — Multiple Choice (15 Questions)</h2>
+  <p class="section-desc">Pick one option per question.</p>
+
+  <div class="question"><p><span class="qid">A1</span>The default HDFS block size is:</p>
+    <div class="options">
+      <label><input type="radio" name="A1" value="a"> (a) 64 MB</label>
+      <label><input type="radio" name="A1" value="b"> (b) 128 MB</label>
+      <label><input type="radio" name="A1" value="c"> (c) 256 MB</label>
+      <label><input type="radio" name="A1" value="d"> (d) 512 MB</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A2</span>Which is NOT stored in the NameNode's FsImage?</p>
+    <div class="options">
+      <label><input type="radio" name="A2" value="a"> (a) Directory structure</label>
+      <label><input type="radio" name="A2" value="b"> (b) File→block mapping</label>
+      <label><input type="radio" name="A2" value="c"> (c) Actual block data</label>
+      <label><input type="radio" name="A2" value="d"> (d) File permissions</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A3</span>In MapReduce, the Record Reader outputs:</p>
+    <div class="options">
+      <label><input type="radio" name="A3" value="a"> (a) (filename, content)</label>
+      <label><input type="radio" name="A3" value="b"> (b) (byte offset, line content)</label>
+      <label><input type="radio" name="A3" value="c"> (c) (block id, data)</label>
+      <label><input type="radio" name="A3" value="d"> (d) (line number, line)</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A4</span>The Combiner can be used ONLY if the reduce function is:</p>
+    <div class="options">
+      <label><input type="radio" name="A4" value="a"> (a) Linear</label>
+      <label><input type="radio" name="A4" value="b"> (b) Sorted</label>
+      <label><input type="radio" name="A4" value="c"> (c) Associative AND Commutative</label>
+      <label><input type="radio" name="A4" value="d"> (d) Idempotent</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A5</span>YARN's Resource Manager has 2 sub-components:</p>
+    <div class="options">
+      <label><input type="radio" name="A5" value="a"> (a) Scheduler + Container Launcher</label>
+      <label><input type="radio" name="A5" value="b"> (b) Scheduler + Application Manager</label>
+      <label><input type="radio" name="A5" value="c"> (c) Job Tracker + Task Tracker</label>
+      <label><input type="radio" name="A5" value="d"> (d) Driver + Executor</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A6</span>Which YARN scheduler can cause starvation?</p>
+    <div class="options">
+      <label><input type="radio" name="A6" value="a"> (a) Fair</label>
+      <label><input type="radio" name="A6" value="b"> (b) Capacity</label>
+      <label><input type="radio" name="A6" value="c"> (c) FIFO</label>
+      <label><input type="radio" name="A6" value="d"> (d) None</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A7</span>Spark's RDD stands for:</p>
+    <div class="options">
+      <label><input type="radio" name="A7" value="a"> (a) Reliable Data Distribution</label>
+      <label><input type="radio" name="A7" value="b"> (b) Resilient Distributed Datasets</label>
+      <label><input type="radio" name="A7" value="c"> (c) Replicated Data Domain</label>
+      <label><input type="radio" name="A7" value="d"> (d) Random Distributed Data</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A8</span>Which is a wide transformation?</p>
+    <div class="options">
+      <label><input type="radio" name="A8" value="a"> (a) map</label>
+      <label><input type="radio" name="A8" value="b"> (b) filter</label>
+      <label><input type="radio" name="A8" value="c"> (c) reduceByKey</label>
+      <label><input type="radio" name="A8" value="d"> (d) flatMap</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A9</span>Spark builds the DAG:</p>
+    <div class="options">
+      <label><input type="radio" name="A9" value="a"> (a) At code submission</label>
+      <label><input type="radio" name="A9" value="b"> (b) Continuously</label>
+      <label><input type="radio" name="A9" value="c"> (c) When an action is called</label>
+      <label><input type="radio" name="A9" value="d"> (d) Every transformation</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A10</span>Catalyst Optimizer works on:</p>
+    <div class="options">
+      <label><input type="radio" name="A10" value="a"> (a) RDDs only</label>
+      <label><input type="radio" name="A10" value="b"> (b) DataFrames/SQL only</label>
+      <label><input type="radio" name="A10" value="c"> (c) All Spark</label>
+      <label><input type="radio" name="A10" value="d"> (d) Streaming only</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A11</span>Which is NOT a Catalyst optimization?</p>
+    <div class="options">
+      <label><input type="radio" name="A11" value="a"> (a) Predicate Pushdown</label>
+      <label><input type="radio" name="A11" value="b"> (b) Column Pruning</label>
+      <label><input type="radio" name="A11" value="c"> (c) Stage Pipelining</label>
+      <label><input type="radio" name="A11" value="d"> (d) Constant Folding</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A12</span>In MLlib, Estimators produce:</p>
+    <div class="options">
+      <label><input type="radio" name="A12" value="a"> (a) DataFrames</label>
+      <label><input type="radio" name="A12" value="b"> (b) Predictions</label>
+      <label><input type="radio" name="A12" value="c"> (c) Transformers (trained models)</label>
+      <label><input type="radio" name="A12" value="d"> (d) Pipelines</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A13</span>GraphX uses which partitioning to balance load on power-law graphs?</p>
+    <div class="options">
+      <label><input type="radio" name="A13" value="a"> (a) Edge-Cut</label>
+      <label><input type="radio" name="A13" value="b"> (b) Vertex-Cut</label>
+      <label><input type="radio" name="A13" value="c"> (c) Random</label>
+      <label><input type="radio" name="A13" value="d"> (d) Round-robin</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A14</span>A Kafka partition has these roles:</p>
+    <div class="options">
+      <label><input type="radio" name="A14" value="a"> (a) Master + Slave</label>
+      <label><input type="radio" name="A14" value="b"> (b) Leader + Replica</label>
+      <label><input type="radio" name="A14" value="c"> (c) Producer + Consumer</label>
+      <label><input type="radio" name="A14" value="d"> (d) Active + Standby</label>
+    </div>
+  </div>
+
+  <div class="question"><p><span class="qid">A15</span>Schema-on-Read means:</p>
+    <div class="options">
+      <label><input type="radio" name="A15" value="a"> (a) Schema defined upfront</label>
+      <label><input type="radio" name="A15" value="b"> (b) Schema applied at query time</label>
+      <label><input type="radio" name="A15" value="c"> (c) No schema at all</label>
+      <label><input type="radio" name="A15" value="d"> (d) Schema validated on write</label>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION B ============ -->
+<div class="section">
+  <h2>📌 SECTION B — True / False (10 Questions)</h2>
+  <p class="section-desc">Choose T or F, then justify in one sentence.</p>
+
+  <div class="question"><p><span class="qid">B1</span>"HDFS is optimized for millions of small files."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B1" value="T"> True</label>
+      <label><input type="radio" name="B1" value="F"> False</label>
+    </div>
+    <input type="text" name="B1_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B2</span>"In MapReduce, the keys output by Mappers must all be unique."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B2" value="T"> True</label>
+      <label><input type="radio" name="B2" value="F"> False</label>
+    </div>
+    <input type="text" name="B2_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B3</span>"Spark requires HDFS to operate."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B3" value="T"> True</label>
+      <label><input type="radio" name="B3" value="F"> False</label>
+    </div>
+    <input type="text" name="B3_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B4</span>"In YARN's Capacity Scheduler, jobs can be submitted directly to a Parent queue."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B4" value="T"> True</label>
+      <label><input type="radio" name="B4" value="F"> False</label>
+    </div>
+    <input type="text" name="B4_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B5</span>"A Combiner can safely be used to compute the AVERAGE of values per key."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B5" value="T"> True</label>
+      <label><input type="radio" name="B5" value="F"> False</label>
+    </div>
+    <input type="text" name="B5_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B6</span>"RDD transformations execute immediately when called."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B6" value="T"> True</label>
+      <label><input type="radio" name="B6" value="F"> False</label>
+    </div>
+    <input type="text" name="B6_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B7</span>"Spark SQL queries run faster than equivalent DataFrame API calls."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B7" value="T"> True</label>
+      <label><input type="radio" name="B7" value="F"> False</label>
+    </div>
+    <input type="text" name="B7_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B8</span>"In Kafka, once a message is published to a topic, it can still be modified."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B8" value="T"> True</label>
+      <label><input type="radio" name="B8" value="F"> False</label>
+    </div>
+    <input type="text" name="B8_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B9</span>"Watermarks in Spark Streaming exist primarily to make queries faster."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B9" value="T"> True</label>
+      <label><input type="radio" name="B9" value="F"> False</label>
+    </div>
+    <input type="text" name="B9_reason" placeholder="Justify in one sentence...">
+  </div>
+
+  <div class="question"><p><span class="qid">B10</span>"Lakehouses store data inside a traditional database, not in object storage."</p>
+    <div class="tf-options">
+      <label><input type="radio" name="B10" value="T"> True</label>
+      <label><input type="radio" name="B10" value="F"> False</label>
+    </div>
+    <input type="text" name="B10_reason" placeholder="Justify in one sentence...">
+  </div>
+</div>
+
+<!-- ============ SECTION C ============ -->
+<div class="section">
+  <h2>📌 SECTION C — Fill in the Blank (10 Questions)</h2>
+  <p class="section-desc">Type the exact terms.</p>
+
+  <div class="question"><p><span class="qid">C1</span>HDFS stores metadata in two files: <input type="text" name="C1a" placeholder="snapshot file"> (snapshot) and <input type="text" name="C1b" placeholder="log file"> (recent changes).</p></div>
+
+  <div class="question"><p><span class="qid">C2</span>The Secondary NameNode's main task is to <input type="text" name="C2" placeholder="what verb?"> the FsImage and Edit log.</p></div>
+
+  <div class="question"><p><span class="qid">C3</span>HDFS replication factor default = <input type="text" name="C3a" placeholder="#" style="width:80px;">. Erasure Coding policy RS-6-3 tolerates up to <input type="text" name="C3b" placeholder="#" style="width:80px;"> failures.</p></div>
+
+  <div class="question"><p><span class="qid">C4</span>In MapReduce, the most expensive phase is <input type="text" name="C4" placeholder="phase name"> because of network + disk I/O.</p></div>
+
+  <div class="question"><p><span class="qid">C5</span>YARN's max nodes ≈ <input type="text" name="C5a" placeholder="#" style="width:120px;">, while MRv1's max ≈ <input type="text" name="C5b" placeholder="#" style="width:120px;">.</p></div>
+
+  <div class="question"><p><span class="qid">C6</span>Spark's 2 core abstractions are <input type="text" name="C6a" placeholder="abstraction 1"> and <input type="text" name="C6b" placeholder="abstraction 2">.</p></div>
+
+  <div class="question"><p><span class="qid">C7</span>DataFrame = RDD + <input type="text" name="C7a" placeholder="add-on">. Spark's 2 low-level enhancements are <input type="text" name="C7b" placeholder="memory"> (memory) and <input type="text" name="C7c" placeholder="optimizer"> (queries).</p></div>
+
+  <div class="question"><p><span class="qid">C8</span>In Spark Streaming, the 3 output modes are: <input type="text" name="C8a" placeholder="mode 1" style="width:160px;">, <input type="text" name="C8b" placeholder="mode 2" style="width:160px;">, and <input type="text" name="C8c" placeholder="mode 3" style="width:160px;">.</p></div>
+
+  <div class="question"><p><span class="qid">C9</span>ZooKeeper has 2 main roles in YARN HA: <input type="text" name="C9a" placeholder="role 1"> and <input type="text" name="C9b" placeholder="role 2">.</p></div>
+
+  <div class="question"><p><span class="qid">C10</span>A Kafka <input type="text" name="C10a" placeholder="entity 1" style="width:140px;"> stores and manages streaming data; a group of them forms a <input type="text" name="C10b" placeholder="entity 2" style="width:140px;">.</p></div>
+</div>
+
+<!-- ============ SECTION D ============ -->
+<div class="section">
+  <h2>📌 SECTION D — Numerical Problems (5 worked examples)</h2>
+  <p class="section-desc">Show your work. Block size = 128 MB, metadata per block = 150 bytes unless stated otherwise.</p>
+
+  <div class="question"><p><span class="qid">D1</span><strong>HDFS Metadata Calculation (Slide-23 style)</strong></p>
+    <p>Block size = 128 MB. Metadata per block ≈ 150 bytes. Compute # of blocks and metadata for each file type, then totals.</p>
+    <table>
+      <tr><th>File Type</th><th># Files</th><th>File Size</th><th>Blocks/file</th><th>Total Blocks</th><th>Metadata</th></tr>
+      <tr><td>log</td><td>2 M</td><td>256 MB</td><td><input type="text" name="D1_log_bpf" style="width:80px;"></td><td><input type="text" name="D1_log_tot" style="width:80px;"></td><td><input type="text" name="D1_log_md" style="width:90px;"></td></tr>
+      <tr><td>image</td><td>1 M</td><td>300 MB</td><td><input type="text" name="D1_img_bpf" style="width:80px;"></td><td><input type="text" name="D1_img_tot" style="width:80px;"></td><td><input type="text" name="D1_img_md" style="width:90px;"></td></tr>
+      <tr><td>data</td><td>500 K</td><td>512 MB</td><td><input type="text" name="D1_data_bpf" style="width:80px;"></td><td><input type="text" name="D1_data_tot" style="width:80px;"></td><td><input type="text" name="D1_data_md" style="width:90px;"></td></tr>
+      <tr><td>small</td><td>3 M</td><td>1 MB</td><td><input type="text" name="D1_small_bpf" style="width:80px;"></td><td><input type="text" name="D1_small_tot" style="width:80px;"></td><td><input type="text" name="D1_small_md" style="width:90px;"></td></tr>
+    </table>
+    <p style="margin-top:8px;">(a) Total blocks <strong>without</strong> small files: <input type="text" name="D1a" style="width:150px;"></p>
+    <p>(b) Total blocks <strong>with</strong> small files: <input type="text" name="D1b" style="width:150px;"></p>
+    <p>(c) Total metadata memory <strong>without</strong> small files (in GB): <input type="text" name="D1c" style="width:150px;"></p>
+    <p>(d) Total metadata memory <strong>with</strong> small files (in GB): <input type="text" name="D1d" style="width:150px;"></p>
+  </div>
+
+  <div class="question"><p><span class="qid">D2</span><strong>HDFS Balancer (Slide-27 style)</strong></p>
+    <p>Threshold T = 10%. Three nodes, capacity 100 each, used: Node1=90, Node2=60, Node3=50.</p>
+    <p>U_avg (in %) = <input type="text" name="D2_uavg" style="width:120px;"></p>
+    <p>D_1 = <input type="text" name="D2_d1" style="width:90px;"> | D_2 = <input type="text" name="D2_d2" style="width:90px;"> | D_3 = <input type="text" name="D2_d3" style="width:90px;"></p>
+    <p>Verdict — Node1: <input type="text" name="D2_v1" placeholder="over/under/balanced" style="width:160px;"> | Node2: <input type="text" name="D2_v2" style="width:160px;"> | Node3: <input type="text" name="D2_v3" style="width:160px;"></p>
+  </div>
+
+  <div class="question"><p><span class="qid">D3</span><strong>Block Replication (Slide-34 style)</strong></p>
+    <p>3 racks × 5 nodes/rack, block = 128 MB, RF = 3, dataset = 2 TB.</p>
+    <p>(a) Total blocks <strong>without</strong> replication: <input type="text" name="D3a" style="width:150px;"></p>
+    <p>(b) Total blocks <strong>with</strong> replication (physical storage): <input type="text" name="D3b" style="width:150px;"></p>
+  </div>
+
+  <div class="question"><p><span class="qid">D4</span><strong>MapReduce Word Count Trace</strong></p>
+    <p>For input record <code>(line=20, "big data big data")</code>:</p>
+    <p>(a) Map output (list of (k,v) pairs): <input type="text" name="D4a" style="width:100%;" placeholder="e.g., (big,1), (data,1), ..."></p>
+    <p>(b) After Shuffle+Sort, the Reducer receives for key "big": <input type="text" name="D4b" placeholder="(big, [...])"></p>
+  </div>
+
+  <div class="question"><p><span class="qid">D5</span><strong>Decision Tree — Spark Partitions</strong></p>
+    <p>Node A summary: Young→(0Y, 2N) | Middle→(2Y, 0N) | Old→(1Y, 0N)</p>
+    <p>Node B summary: Young→(1Y, 0N) | Middle→(0Y, 1N) | Old→(2Y, 1N)</p>
+    <p>(a) After SHUFFLE, the global aggregation:</p>
+    <table>
+      <tr><th>Age</th><th>Yes</th><th>No</th></tr>
+      <tr><td>Young</td><td><input type="text" name="D5_y_y" style="width:60px;"></td><td><input type="text" name="D5_y_n" style="width:60px;"></td></tr>
+      <tr><td>Middle</td><td><input type="text" name="D5_m_y" style="width:60px;"></td><td><input type="text" name="D5_m_n" style="width:60px;"></td></tr>
+      <tr><td>Old</td><td><input type="text" name="D5_o_y" style="width:60px;"></td><td><input type="text" name="D5_o_n" style="width:60px;"></td></tr>
+    </table>
+    <p>(b) For split "Age=Young vs Others": LEFT (Young) Yes=<input type="text" name="D5_left_y" style="width:60px;"> No=<input type="text" name="D5_left_n" style="width:60px;"> | RIGHT (Others) Yes=<input type="text" name="D5_right_y" style="width:60px;"> No=<input type="text" name="D5_right_n" style="width:60px;"></p>
+  </div>
+</div>
+
+<!-- ============ SECTION E ============ -->
+<div class="section">
+  <h2>📌 SECTION E — Tracing Questions (4)</h2>
+  <p class="section-desc">Walk through each pipeline step-by-step.</p>
+
+  <div class="question"><p><span class="qid">E1</span><strong>HDFS Write Pipeline</strong> — Trace for a 256 MB file, RF=3, from client to acknowledgment (≥6 steps).</p>
+    <textarea name="E1" class="large" placeholder="1. Client contacts NameNode... 2. ..."></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">E2</span><strong>MapReduce Pipeline</strong> — List all 10 phases in order, from Input Split to final output on HDFS.</p>
+    <textarea name="E2" class="large" placeholder="1. Input Split → 2. Record Reader → ..."></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">E3</span><strong>YARN Application Workflow</strong> — All 8 steps from client submission to job completion.</p>
+    <textarea name="E3" class="large" placeholder="1. Client submits app to RM... 2. ..."></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">E4</span><strong>PageRank Distributed Algorithm</strong> — Walk through ONE iteration (4 phases: Map → Shuffle → Reduce → Broadcast). Explain what happens at each.</p>
+    <textarea name="E4" class="large" placeholder="Map phase: For each edge u→v... | Shuffle: ... | Reduce: ... | Broadcast: ..."></textarea>
+  </div>
+</div>
+
+<!-- ============ SECTION F ============ -->
+<div class="section">
+  <h2>📌 SECTION F — Comparison / Synthesis (5)</h2>
+  <p class="section-desc">Compare across 3–4 dimensions each.</p>
+
+  <div class="question"><p><span class="qid">F1</span>Compare <strong>MRv1 JobTracker vs YARN's ResourceManager</strong> in 4 dimensions (Role, Scalability, Resource Unit, Fault Tolerance).</p>
+    <textarea name="F1" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">F2</span>Compare <strong>RDD vs DataFrame</strong> in 4 dimensions (Schema, Optimization, Syntax, Performance).</p>
+    <textarea name="F2" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">F3</span>Compare <strong>Data Warehouse vs Data Lake vs Lakehouse</strong> — when to use each, plus the 5 features the Table Layer adds.</p>
+    <textarea name="F3" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">F4</span>Compare <strong>HDFS fault tolerance vs Spark RDD fault tolerance</strong> — what each replicates / recomputes.</p>
+    <textarea name="F4"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">F5</span>Compare <strong>Edge-Cut vs Vertex-Cut partitioning</strong> for graphs — which one is used by GraphX, and why.</p>
+    <textarea name="F5"></textarea>
+  </div>
+</div>
+
+<!-- ============ SECTION G ============ -->
+<div class="section">
+  <h2>📌 SECTION G — Wildcard Questions (8)</h2>
+  <p class="section-desc">Diverse formats — scenario, design, edge cases, code-trace, cross-lecture synthesis.</p>
+
+  <div class="question"><p><span class="qid">G1</span><strong>Scenario / Design</strong>: You're designing a system to process 1 PB of credit card transactions in real-time for fraud detection. Sketch the architecture using Ingestion / Storage / Processing / Output layers — name a specific technology for each and justify in 1 sentence.</p>
+    <textarea name="G1" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G2</span><strong>What if the NameNode crashes mid-job?</strong> What happens to (a) data already in HDFS, (b) running tasks, (c) JobTracker metadata, (d) recovery — Secondary NameNode vs Standby NameNode (HA)?</p>
+    <textarea name="G2" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G3</span><strong>Deep "why?"</strong>: Spark uses LINEAGE for fault tolerance instead of REPLICATION. Give 2 reasons this is a deliberate choice + 1 case where lineage is WORSE than replication.</p>
+    <textarea name="G3" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G4</span><strong>Edge case</strong>: A student writes a Spark/MapReduce job with #reducers = 0. What happens? Trace the pipeline.</p>
+    <textarea name="G4"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G5</span><strong>Conceptual reasoning</strong>: Why does Spark force you to think in immutable RDDs instead of letting you modify data in-place? Answer in 3 sentences using <em>race conditions, lineage, and parallelism</em>.</p>
+    <textarea name="G5"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G6</span><strong>Cross-lecture synthesis</strong>: Connect YARN's <strong>Container</strong> ↔ Spark's <strong>Executor</strong> ↔ MapReduce's <strong>task slot</strong>. How do these 3 concepts relate? Which one is deprecated?</p>
+    <textarea name="G6" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G7</span><strong>Code trace</strong>:</p>
+<pre>rdd1 = sc.textFile("data.txt")
+rdd2 = rdd1.filter(lambda x: "ERROR" in x)
+rdd3 = rdd2.map(lambda x: x.upper())
+rdd3.persist()       # what does this do?
+n = rdd3.count()
+m = rdd3.count()     # does file get read again?</pre>
+    <p>Explain what happens at EACH line and when the file is actually read.</p>
+    <textarea name="G7" class="large"></textarea>
+  </div>
+
+  <div class="question"><p><span class="qid">G8</span><strong>Compare 3 "masters"</strong>: HDFS NameNode, YARN ResourceManager, Spark Driver. For each: (a) what does it manage, (b) SPOF mitigation strategy, (c) per-job vs cluster-wide scope.</p>
+    <textarea name="G8" class="large"></textarea>
+  </div>
+</div>
+
+<div class="footer">
+  <p>📋 When done — click "<strong>Export All Answers</strong>" to copy them, then paste into the Claude session for grading.</p>
+  <p>Good luck — you've got this. 💪</p>
+</div>
+
+</div>
+
+<script>
+// Auto-save to localStorage
+function saveAll() {
+  const inputs = document.querySelectorAll('input, textarea');
+  inputs.forEach(el => {
+    if (el.type === 'radio' && el.checked) localStorage.setItem(el.name, el.value);
+    else if (el.type !== 'radio' && el.type !== 'button') localStorage.setItem(el.name + '__txt', el.value);
+  });
+}
+function loadAll() {
+  const inputs = document.querySelectorAll('input, textarea');
+  inputs.forEach(el => {
+    if (el.type === 'radio') {
+      const stored = localStorage.getItem(el.name);
+      if (stored && el.value === stored) el.checked = true;
+    } else if (el.type !== 'button') {
+      const stored = localStorage.getItem(el.name + '__txt');
+      if (stored) el.value = stored;
+    }
+  });
+}
+function resetAll() {
+  if (!confirm('Clear ALL answers? This cannot be undone.')) return;
+  localStorage.clear();
+  document.querySelectorAll('input, textarea').forEach(el => {
+    if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+    else el.value = '';
+  });
+}
+function exportAnswers() {
+  const text = buildAnswersText();
+  const box = document.getElementById('exportBox');
+  box.textContent = text;
+  box.style.display = 'block';
+  navigator.clipboard.writeText(text).then(
+    () => alert('✅ All answers copied to clipboard! Paste into Claude.'),
+    () => alert('Could not auto-copy — please manually copy the text above.')
+  );
+  box.scrollIntoView({behavior: 'smooth'});
+}
+
+function buildAnswersText() {
+  const out = [];
+  out.push('=== BIG DATA FINAL MOCK EXAM — MY ANSWERS ===');
+  out.push('Generated: ' + new Date().toLocaleString());
+  out.push('');
+  out.push('--- SECTION A (MCQ) ---');
+  for (let i = 1; i <= 15; i++) {
+    const ans = document.querySelector('input[name="A'+i+'"]:checked');
+    out.push('A'+i+': '+(ans ? ans.value : '___'));
+  }
+  out.push('\n--- SECTION B (T/F + reason) ---');
+  for (let i = 1; i <= 10; i++) {
+    const tf = document.querySelector('input[name="B'+i+'"]:checked');
+    const reason = document.querySelector('input[name="B'+i+'_reason"]');
+    out.push('B'+i+': '+(tf ? tf.value : '___')+' — '+(reason ? reason.value : ''));
+  }
+  out.push('\n--- SECTION C (Fill) ---');
+  const cFields = ['C1a','C1b','C2','C3a','C3b','C4','C5a','C5b','C6a','C6b','C7a','C7b','C7c','C8a','C8b','C8c','C9a','C9b','C10a','C10b'];
+  cFields.forEach(f => {
+    const el = document.querySelector('[name="'+f+'"]');
+    out.push(f+': '+(el ? el.value : ''));
+  });
+  out.push('\n--- SECTION D (Numerical) ---');
+  document.querySelectorAll('[name^="D"]').forEach(el => out.push(el.name+': '+el.value));
+  out.push('\n--- SECTION E (Trace) ---');
+  for (let i = 1; i <= 4; i++) {
+    const el = document.querySelector('[name="E'+i+'"]');
+    out.push('E'+i+': '+(el ? el.value : ''));
+  }
+  out.push('\n--- SECTION F (Comparison) ---');
+  for (let i = 1; i <= 5; i++) {
+    const el = document.querySelector('[name="F'+i+'"]');
+    out.push('F'+i+': '+(el ? el.value : ''));
+  }
+  out.push('\n--- SECTION G (Wildcard) ---');
+  for (let i = 1; i <= 8; i++) {
+    const el = document.querySelector('[name="G'+i+'"]');
+    out.push('G'+i+': '+(el ? el.value : ''));
+  }
+  return out.join('\n');
+}
+
+function downloadAnswers() {
+  const text = buildAnswersText();
+  const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'my_answers.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  alert('✅ my_answers.txt downloaded. Move it to your Lectures folder so Claude can read it.');
+}
+
+// Hook auto-save
+document.addEventListener('DOMContentLoaded', () => {
+  loadAll();
+  document.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('change', saveAll);
+    el.addEventListener('input', saveAll);
+  });
+});
+</script>
+</body>
+</html>

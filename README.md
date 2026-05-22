@@ -1,17 +1,21 @@
-# Big Data Final Mock Exam
+# Big Data Quiz Hub
 
-A self-contained, browser-based mock exam for the **DSAI 427 — Big Data Analytics** course.
+Self-contained, browser-based study tools for the **DSAI 427 — Big Data Analytics** course.
 
-## What it is
+## What's inside
 
-A single HTML file (`index.html`) that runs entirely in your browser — no backend, no build step, no internet required after loading. Open it on any device with a modern browser.
+- **`index.html`** — landing page, lets you pick between the two quizzes.
+- **`mock.html`** — final mock exam (compact, exam-style).
+- **`prep.html`** — full prep quiz: 392 questions across 10 question types (MCQ, T/F, explain, compare, fill-in-blank, flow, scenario, match, architecture).
+
+Everything runs entirely in your browser — no backend, no build step, no internet required after loading.
 
 ## How to use
 
 - **Online:** open the GitHub Pages URL of this repo.
-- **Offline:** download `index.html` and open it locally with any browser.
+- **Offline:** download the HTML files and open `index.html` locally with any browser.
 
-The quiz covers material across all course lectures (Big Data introduction, Hadoop/HDFS, MapReduce, YARN, Spark Core, Spark SQL & DataFrames, Spark ML & GraphX, Spark Streaming & Kafka, Data Warehouses / Data Lakes / Lakehouses).
+The quizzes cover material across all course lectures (Big Data introduction, Hadoop/HDFS, MapReduce, YARN, Spark Core, Spark SQL & DataFrames, Spark ML & GraphX, Spark Streaming & Kafka, Data Warehouses / Data Lakes / Lakehouses).
 
 ## Tech
 
