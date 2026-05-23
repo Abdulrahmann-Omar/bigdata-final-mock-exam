@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big Data Terminology Cheatsheet — DSAI 427</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #0f2027;
+    color: #e8eef3;
+    margin: 0;
+    line-height: 1.55;
+  }
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(15, 32, 39, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .topbar a {
+    color: #1abc9c;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+  }
+  .topbar a:hover { color: #16a085; }
+  .topbar input[type=text] {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #e8eef3;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    width: 240px;
+  }
+  .topbar input[type=text]:focus { outline: none; border-color: #1abc9c; }
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 30px 24px 80px;
+    background: #1a2b32;
+    border-left: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  h1, h2, h3, h4 { color: #ffffff; line-height: 1.2; }
+  h1 {
+    font-size: 2.1em;
+    margin: 0 0 10px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #1abc9c;
+  }
+  h2 {
+    font-size: 1.55em;
+    margin: 36px 0 14px;
+    color: #1abc9c;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(26,188,156,0.3);
+  }
+  h3 {
+    font-size: 1.2em;
+    margin: 22px 0 10px;
+    color: #5dade2;
+  }
+  h4 { font-size: 1.05em; margin: 16px 0 8px; color: #aed6f1; }
+  p { margin: 10px 0; color: #d5dbdb; }
+  a { color: #1abc9c; text-decoration: none; }
+  a:hover { color: #16a085; text-decoration: underline; }
+  strong { color: #f4d03f; font-weight: 600; }
+  em { color: #f8c471; }
+  code {
+    background: rgba(255,255,255,0.10);
+    color: #f9e79f;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9em;
+  }
+  pre {
+    background: #0d1b20;
+    color: #e8eef3;
+    padding: 18px 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border-left: 4px solid #1abc9c;
+    line-height: 1.5;
+  }
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    font-size: 0.92em;
+  }
+  blockquote {
+    border-left: 4px solid #f1c40f;
+    background: rgba(241, 196, 15, 0.07);
+    padding: 10px 18px;
+    margin: 14px 0;
+    color: #f9e79f;
+    border-radius: 0 6px 6px 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.94em;
+  }
+  th, td {
+    border: 1px solid rgba(255,255,255,0.10);
+    padding: 9px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #16a085;
+    color: white;
+    font-weight: 600;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  td:first-child { font-weight: 600; color: #5dade2; width: 30%; }
+  td strong { color: #f4d03f; }
+  ul, ol { padding-left: 26px; margin: 8px 0; }
+  li { margin: 4px 0; color: #d5dbdb; }
+  hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    margin: 30px 0;
+  }
+  /* TOC styling */
+  main > ol:first-of-type {
+    background: rgba(26,188,156,0.05);
+    border: 1px solid rgba(26,188,156,0.2);
+    border-radius: 8px;
+    padding: 14px 14px 14px 40px;
+    margin: 18px 0 24px;
+  }
+  main > ol:first-of-type li { color: #aed6f1; }
+  main > ol:first-of-type a { font-weight: 500; }
+  /* Highlight match */
+  .highlight { background: #f1c40f; color: #0f2027; padding: 1px 3px; border-radius: 3px; }
+  /* Print */
+  @media print {
+    body { background: white; color: black; }
+    main { background: white; max-width: none; }
+    .topbar { display: none; }
+    h1, h2, h3 { color: black; }
+    code, pre { background: #f4f4f4; color: black; }
+    a { color: #006666; }
+  }
+  @media (max-width: 700px) {
+    .topbar input[type=text] { width: 130px; }
+    main { padding: 20px 14px 60px; }
+    h1 { font-size: 1.6em; }
+    h2 { font-size: 1.3em; }
+    table { font-size: 0.85em; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html">← Back to Quiz Hub</a>
+  <input type="text" id="searchBox" placeholder="🔍 Filter terms..." oninput="filterContent()">
+  <a href="#" onclick="window.print();return false;">🖨 Print</a>
+</div>
+<main id="content">
+<h1 id="big-data-complete-terminology-cheatsheet">📖 Big Data — Complete Terminology Cheatsheet</h1>
+<p><strong>Course:</strong> DSAI 427 — Dr. Mayada Hadhoud — Spring 2026
+<strong>Scope:</strong> Every term across all 9 lectures (L01 → L11). Nothing skipped.</p>
+<hr />
+<h2 id="quick-index-jump-to-section">📑 Quick Index (jump to section)</h2>
+<ol>
+<li><a href="#l01-big-data-foundations--storage">L01 — Big Data Foundations &amp; Storage</a></li>
+<li><a href="#l02-hdfs">L02 — HDFS</a></li>
+<li><a href="#l03-mapreduce">L03 — MapReduce</a></li>
+<li><a href="#l04l05-yarn">L04/L05 — YARN</a></li>
+<li><a href="#l07-spark-core--rdd">L07 — Spark Core / RDD</a></li>
+<li><a href="#l08-spark-sql--dataframes">L08 — Spark SQL &amp; DataFrames</a></li>
+<li><a href="#l09-spark-ml--graphx">L09 — Spark ML &amp; GraphX</a></li>
+<li><a href="#l10-spark-streaming--kafka">L10 — Spark Streaming &amp; Kafka</a></li>
+<li><a href="#l11-data-warehouses-data-lakes-lakehouses">L11 — Data Warehouses, Data Lakes, Lakehouses</a></li>
+<li><a href="#cross-cutting-terms">Cross-Cutting Terms</a></li>
+</ol>
+<hr />
+<h2 id="l01-big-data-foundations-storage">L01 — Big Data Foundations &amp; Storage</h2>
+<h3 id="big-data-definitions">Big Data — Definitions</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Big Data</strong></td>
+<td>Huge and complex datasets that traditional data processing tools find difficult to process. Not just about size — also about complexity and speed of generation/processing.</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>Information that can be stored and used by a computer program.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-5-vs-of-big-data">The 5 V's of Big Data</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Volume</strong></td>
+<td>Massive size of data (TB → PB → EB).</td>
+</tr>
+<tr>
+<td><strong>Velocity</strong></td>
+<td>Speed at which data is generated and processed.</td>
+</tr>
+<tr>
+<td><strong>Variety</strong></td>
+<td>Different types of data: structured, semi-structured, unstructured.</td>
+</tr>
+<tr>
+<td><strong>Veracity</strong></td>
+<td>Trustworthiness / accuracy of data.</td>
+</tr>
+<tr>
+<td><strong>Value</strong></td>
+<td>Insights and business value extracted from data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-types">Data Types</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Structured Data</strong></td>
+<td>Organized in rows/columns with a strict schema (relational tables). E.g., bank records.</td>
+</tr>
+<tr>
+<td><strong>Semi-structured Data</strong></td>
+<td>Tagged or labeled but doesn't fit a rigid schema. E.g., JSON, XML.</td>
+</tr>
+<tr>
+<td><strong>Unstructured Data</strong></td>
+<td>No predefined structure. E.g., images, videos, free text, audio.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="schema-approaches">Schema Approaches</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Schema-on-Write</strong></td>
+<td>Schema defined <strong>before</strong> data is stored; data validated/transformed at ingestion. Used in DW &amp; traditional BI.</td>
+</tr>
+<tr>
+<td><strong>Schema-on-Read</strong></td>
+<td>Data stored as-is; schema applied <strong>at query time</strong>. Used in Data Lakes / Big Data.</td>
+</tr>
+<tr>
+<td><strong>ETL</strong></td>
+<td>Extract → Transform → Load. Used with Schema-on-Write (warehouse).</td>
+</tr>
+<tr>
+<td><strong>ELT</strong></td>
+<td>Extract → Load → Transform. Used with Schema-on-Read (lake — load raw, transform at read).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="big-data-ecosystem-5-layers">Big Data Ecosystem (5 Layers)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>L1: Data Source Layer</strong></td>
+<td>Identify data sources (DBs, files, web), formats, volume; push or pull mechanism.</td>
+</tr>
+<tr>
+<td><strong>L2: Data Ingestion Layer</strong></td>
+<td>Real-time or batch ingest; ETL; preprocessing for storage/processing.</td>
+</tr>
+<tr>
+<td><strong>L3: Data Storage Layer</strong></td>
+<td>Reliable, fault-tolerant, scalable storage. HDFS, HBase, Cassandra, MongoDB.</td>
+</tr>
+<tr>
+<td><strong>L4: Data Processing Layer</strong></td>
+<td>Batch/real-time analysis. MapReduce, Spark, Hive, Pig, Mahout.</td>
+</tr>
+<tr>
+<td><strong>L5: Data Consumption Layer</strong></td>
+<td>Reporting, dashboards, real-time analytics, decisions.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="processing-techniques">Processing Techniques</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Batch Processing</strong></td>
+<td>Process large volumes of data together at scheduled times. Focus = <strong>throughput</strong>, high latency. Tools: Hadoop, Spark.</td>
+</tr>
+<tr>
+<td><strong>Stream Processing</strong></td>
+<td>Process continuous data immediately as produced. Focus = <strong>immediate response</strong>, low latency. Tools: Kafka, Spark Streaming, Flink.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scaling">Scaling</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vertical Scaling (Scale Up)</strong></td>
+<td>Upgrade a single server's CPU/RAM/storage. Concentrates power. Expensive, hard limits.</td>
+</tr>
+<tr>
+<td><strong>Horizontal Scaling (Scale Out)</strong></td>
+<td>Add multiple cheaper machines to share workload. "Divide and conquer." Used in Big Data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="load-balancing">Load Balancing</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Load Balancer</strong></td>
+<td>Distributes incoming requests/workloads across multiple servers; prevents single-machine overload.</td>
+</tr>
+<tr>
+<td><strong>Round Robin</strong></td>
+<td>Requests distributed equally in order (Server1 → 2 → 3 → repeat).</td>
+</tr>
+<tr>
+<td><strong>Least Connections</strong></td>
+<td>Routes to server with fewest active connections.</td>
+</tr>
+<tr>
+<td><strong>Resource-Based</strong></td>
+<td>Routes to server with highest available CPU/RAM.</td>
+</tr>
+<tr>
+<td><strong>IP Hash</strong></td>
+<td>Maps client IP to a fixed server for session persistence.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cluster-storage">Cluster &amp; Storage</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cluster</strong></td>
+<td>Group of interconnected servers (nodes) working together as a single system.</td>
+</tr>
+<tr>
+<td><strong>Node</strong></td>
+<td>One machine in the cluster (own CPU/RAM/storage; cooperates with others).</td>
+</tr>
+<tr>
+<td><strong>Tightly Coupled System</strong></td>
+<td>Nodes connected with high-speed interconnects, minimal latency.</td>
+</tr>
+<tr>
+<td><strong>On-Disk Storage</strong></td>
+<td>HDD/SSD; persistent, cheaper, slower. For batch + long-term storage.</td>
+</tr>
+<tr>
+<td><strong>In-Memory Storage</strong></td>
+<td>Data in RAM; very fast, expensive, volatile. For real-time/streaming.</td>
+</tr>
+<tr>
+<td><strong>File System</strong></td>
+<td>Method to store/organize data on storage devices — logical tree of files &amp; directories.</td>
+</tr>
+<tr>
+<td><strong>Distributed File System (DFS)</strong></td>
+<td>Stores large files across many nodes; appears local to users (logical view). E.g., GFS, HDFS.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-distribution-models">Data Distribution Models</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Replication</strong></td>
+<td>Storing the same data on multiple nodes. Ensures availability &amp; fault tolerance.</td>
+</tr>
+<tr>
+<td><strong>Sharding</strong></td>
+<td>Horizontally partitioning a dataset; different rows on different nodes. Improves scalability.</td>
+</tr>
+<tr>
+<td><strong>Sharding + Replication</strong></td>
+<td>Combination: dataset is sharded, and each shard is replicated. Common in production.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="replication-models">Replication Models</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Master–Slave Replication</strong></td>
+<td>Master handles all writes; slaves replicate from master and handle reads.</td>
+</tr>
+<tr>
+<td><strong>Master–Master (Peer-to-Peer)</strong></td>
+<td>Multiple nodes can accept writes; replicate to each other. Higher write throughput but harder consistency.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l02-hdfs">L02 — HDFS</h2>
+<h3 id="core-hdfs">Core HDFS</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HDFS</strong></td>
+<td><strong>Hadoop Distributed File System</strong> — distributed storage for massive files on commodity hardware.</td>
+</tr>
+<tr>
+<td><strong>Commodity Hardware</strong></td>
+<td>Cheap, off-the-shelf machines (not enterprise-grade).</td>
+</tr>
+<tr>
+<td><strong>Streaming Data Access</strong></td>
+<td>Optimized for high-throughput sequential reads, not low-latency random access.</td>
+</tr>
+<tr>
+<td><strong>Write-Once-Read-Many</strong></td>
+<td>HDFS design assumption: files are written once, then read many times.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="blocks">Blocks</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Block</strong></td>
+<td>Smallest physical storage unit in HDFS. <strong>Default size = 128 MB</strong>.</td>
+</tr>
+<tr>
+<td><strong>Block Abstraction</strong></td>
+<td>Users see files (logical); HDFS internally splits files into fixed-size blocks distributed across DataNodes.</td>
+</tr>
+<tr>
+<td><strong>Block Size Trade-off</strong></td>
+<td>Larger blocks → fewer tasks, possible idle nodes. Smaller blocks → many tasks, high scheduling overhead.</td>
+</tr>
+<tr>
+<td><strong>Sharding (vs Blocks)</strong></td>
+<td>App-level <strong>logical</strong> partitioning. Blocks are <strong>physical</strong> storage units done by HDFS.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="architecture">Architecture</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Master-Slave Architecture</strong></td>
+<td>HDFS pattern: ONE NameNode (master) + multiple DataNodes (workers).</td>
+</tr>
+<tr>
+<td><strong>NameNode</strong></td>
+<td>Master daemon that manages metadata (directory structure, file→block mapping, permissions). Single point of failure in Hadoop 1.x.</td>
+</tr>
+<tr>
+<td><strong>DataNode</strong></td>
+<td>Worker daemon that stores actual data blocks and handles all I/O operations.</td>
+</tr>
+<tr>
+<td><strong>FsImage (Filesystem Image)</strong></td>
+<td>Snapshot of the entire filesystem namespace at a point in time. Contains directory structure, file→block mapping, replication factor, permissions. <strong>No actual block data.</strong></td>
+</tr>
+<tr>
+<td><strong>Edit Log</strong></td>
+<td>Records every metadata change since the last FsImage snapshot. Examples: file create/delete/rename, permission updates.</td>
+</tr>
+<tr>
+<td><strong>Snapshot + Transaction Log</strong></td>
+<td>The two-file design (FsImage + Edit Log) — improves NameNode performance vs rewriting FsImage on every change.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="health-monitoring">Health Monitoring</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Heartbeat Messages</strong></td>
+<td>DataNode → NameNode "I'm alive" pings every few seconds.</td>
+</tr>
+<tr>
+<td><strong>Block Report</strong></td>
+<td>Complete list of blocks the DataNode currently holds. Sent periodically (longer interval than heartbeat).</td>
+</tr>
+<tr>
+<td><strong>Under-replication Detection</strong></td>
+<td>NameNode notices a block has fewer than RF replicas → initiates re-replication.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="secondary-namenode">Secondary NameNode</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Secondary NameNode</strong></td>
+<td><strong>Helper node</strong> that periodically merges FsImage + Edit log into a fresh FsImage. <strong>NOT a backup. NOT a failover.</strong> Only does checkpointing.</td>
+</tr>
+<tr>
+<td><strong>Checkpointing</strong></td>
+<td>The merge operation that produces a new FsImage from old FsImage + edit log → keeps edit log small.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="small-files-problem">Small Files Problem</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Small Files Problem</strong></td>
+<td>Each file (regardless of size) consumes ≥ 1 block + 150 bytes of NameNode RAM. Millions of small files exhaust NameNode memory.</td>
+</tr>
+<tr>
+<td><strong>Metadata RAM</strong></td>
+<td>NameNode stores all file/block metadata in RAM. ~150 bytes per block.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hdfs-balancer">HDFS Balancer</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HDFS Balancer</strong></td>
+<td>Admin tool that evenly distributes data across DataNodes to prevent imbalance.</td>
+</tr>
+<tr>
+<td><strong>Threshold (T)</strong></td>
+<td>Percentage threshold (e.g., 10%) above which a node is considered imbalanced.</td>
+</tr>
+<tr>
+<td><strong>Uᵢ (Node Usage)</strong></td>
+<td>(Used space on node / Total capacity) × 100.</td>
+</tr>
+<tr>
+<td><strong>U_avg (Cluster Average Usage)</strong></td>
+<td>(Σ used) / (Σ capacity) × 100.</td>
+</tr>
+<tr>
+<td><strong>Dᵢ (Deviation)</strong></td>
+<td>|Uᵢ − U_avg|. If &gt; T → node imbalanced (over or under-utilized).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-flow">Data Flow</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read Pipeline</strong></td>
+<td>Client → NameNode (metadata) → directly contacts DataNodes for parallel block reads.</td>
+</tr>
+<tr>
+<td><strong>Write Pipeline</strong></td>
+<td>Data flows DN1 → DN2 → DN3 (sequential pipeline) for replicas. Acks flow back DNn → DN1 → client.</td>
+</tr>
+<tr>
+<td><strong>Pipeline Recovery</strong></td>
+<td>On DataNode failure mid-write: bad node removed, write continues on remaining; NameNode later re-replicates.</td>
+</tr>
+<tr>
+<td><strong>Acknowledgment (Ack)</strong></td>
+<td>Confirmation sent back through the pipeline after a block replica is successfully written.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fault-tolerance">Fault Tolerance</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Replication Factor (RF)</strong></td>
+<td>How many copies of each block are stored. <strong>Default = 3.</strong></td>
+</tr>
+<tr>
+<td><strong>Replication Overhead</strong></td>
+<td>File size on disk = RF × original file size.</td>
+</tr>
+<tr>
+<td><strong>Rack</strong></td>
+<td>Group of DataNodes connected to the same network switch. Faster intra-rack communication.</td>
+</tr>
+<tr>
+<td><strong>Rack Awareness</strong></td>
+<td>Hadoop knows which nodes belong to which rack — used for intelligent replica placement.</td>
+</tr>
+<tr>
+<td><strong>Default Rack-Aware Placement (RF=3)</strong></td>
+<td>1st replica: local node. 2nd replica: different node in same rack. 3rd replica: different rack.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="erasure-coding-ec">Erasure Coding (EC)</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Erasure Coding (EC)</strong></td>
+<td>Feature in Hadoop 3.0 — same fault tolerance as 3× replication, but with lower storage overhead.</td>
+</tr>
+<tr>
+<td><strong>EC Policy</strong></td>
+<td>Defines how data and parity blocks are organized. Format: <strong>RS-K-M</strong>.</td>
+</tr>
+<tr>
+<td><strong>RS-K-M</strong></td>
+<td>Reed-Solomon with K data cells + M parity cells. Tolerates up to M failures; physical storage = (K+M)/K × original.</td>
+</tr>
+<tr>
+<td><strong>Data Cells</strong></td>
+<td>The K cells of original data.</td>
+</tr>
+<tr>
+<td><strong>Parity Cells</strong></td>
+<td>The M extra cells computed mathematically from data cells; used to reconstruct lost data.</td>
+</tr>
+<tr>
+<td><strong>EC vs Replication</strong></td>
+<td>EC slower writes &amp; recovery (math), much less storage. Used for <strong>warm/cold</strong> data. Replication: fast writes/recovery, 3× storage. Used for <strong>hot</strong> data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hdfs-federation-high-availability">HDFS Federation &amp; High Availability</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HDFS Federation</strong></td>
+<td>Multiple independent NameNodes in the same cluster — each manages part of the namespace. Solves scalability.</td>
+</tr>
+<tr>
+<td><strong>Block Pool</strong></td>
+<td>Set of blocks belonging to a single namespace.</td>
+</tr>
+<tr>
+<td><strong>Namespace Volume</strong></td>
+<td>Namespace + its block pool.</td>
+</tr>
+<tr>
+<td><strong>High Availability (HA)</strong></td>
+<td>Active + Standby NameNode pair — if Active fails, Standby takes over. Solves SPOF.</td>
+</tr>
+<tr>
+<td><strong>Active NameNode</strong></td>
+<td>The currently running NameNode handling all requests.</td>
+</tr>
+<tr>
+<td><strong>Standby NameNode</strong></td>
+<td>Hot backup with identical state; takes over instantly on Active's failure.</td>
+</tr>
+<tr>
+<td><strong>Failover</strong></td>
+<td>Process of switching from a failed Active to the Standby.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l03-mapreduce">L03 — MapReduce</h2>
+<h3 id="parallel-programming-models">Parallel Programming Models</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Parallel Programming Model</strong></td>
+<td>Abstraction specifying how parallel tasks are created, coordinated, and executed.</td>
+</tr>
+<tr>
+<td><strong>Shared Memory Model</strong></td>
+<td>Multiple threads/processes access common shared memory. One machine. E.g., OpenMP, pthreads.</td>
+</tr>
+<tr>
+<td><strong>Message Passing Model</strong></td>
+<td>Each processor has private local memory; communication via explicit send/receive. Programmer manages comms. E.g., MPI.</td>
+</tr>
+<tr>
+<td><strong>Data Parallel Model</strong></td>
+<td>Same operation applied concurrently on different data partitions. E.g., MapReduce.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mapreduce-concepts">MapReduce Concepts</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MapReduce</strong></td>
+<td>Google 2008 data-parallel programming model — hides parallelism, fault tolerance, data distribution from the programmer.</td>
+</tr>
+<tr>
+<td><strong>Map Function</strong></td>
+<td>User-defined function that transforms input (k,v) → list of intermediate (k2,v2).</td>
+</tr>
+<tr>
+<td><strong>Reduce Function</strong></td>
+<td>User-defined function that aggregates/summarizes all values for one key into final output.</td>
+</tr>
+<tr>
+<td><strong>Combiner ("Mini-Reducer")</strong></td>
+<td>Optional optimization — partial merging of intermediate data on the mapper side, before shuffle. Works ONLY if reduce is <strong>associative + commutative</strong> (Sum, Count, Min, Max).</td>
+</tr>
+<tr>
+<td><strong>Partitioner</strong></td>
+<td>Decides which reducer gets each key. Default: <code>hash(key) % #reducers</code>.</td>
+</tr>
+<tr>
+<td><strong>Data Skew</strong></td>
+<td>When one key dominates → one reducer overloaded.</td>
+</tr>
+<tr>
+<td><strong>Key Salting</strong></td>
+<td>Splitting hot keys into subkeys (e.g., "the_1, the_2") to distribute load.</td>
+</tr>
+<tr>
+<td><strong>Range Partitioning</strong></td>
+<td>Assign keys based on range (R1: A-F, R2: G-M, …). Works if data is uniform/sorted.</td>
+</tr>
+<tr>
+<td><strong>Frequency-Aware Partitioning</strong></td>
+<td>Distribute keys based on observed frequencies.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mapreduce-pipeline-components">MapReduce Pipeline Components</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Input Format</strong></td>
+<td>Recipe telling Hadoop how to split file + read records.</td>
+</tr>
+<tr>
+<td><strong>Input Split</strong></td>
+<td>Logical reference (pointer) to a portion of a file processed by one Mapper. Usually 1 split = 1 block. 1 split = 1 Map task.</td>
+</tr>
+<tr>
+<td><strong>Record Reader</strong></td>
+<td>Converts a split's bytes into (key, value) records. For text: key = byte offset, value = line content.</td>
+</tr>
+<tr>
+<td><strong>Byte Offset</strong></td>
+<td>Position in file (in bytes) where a record begins — unique per record.</td>
+</tr>
+<tr>
+<td><strong>Mapper</strong></td>
+<td>Component that runs the Map function on a split, producing intermediate (k,v) pairs.</td>
+</tr>
+<tr>
+<td><strong>Intermediate Key-Value Pairs</strong></td>
+<td>Output of Mappers, before Shuffle/Reduce. Keys can be duplicated.</td>
+</tr>
+<tr>
+<td><strong>Shuffle Phase</strong></td>
+<td>Network transfer of intermediate (k,v) pairs from Mappers → Reducers. Groups records by key. <strong>Most expensive phase.</strong></td>
+</tr>
+<tr>
+<td><strong>Sort Phase</strong></td>
+<td>Sorting intermediate pairs by key before sending to reducer. Enables efficient aggregation.</td>
+</tr>
+<tr>
+<td><strong>Reducer</strong></td>
+<td>Receives (key, [list of values]) and merges/aggregates into final output.</td>
+</tr>
+<tr>
+<td><strong>Record Writer</strong></td>
+<td>Writes final output to HDFS. Each Reduce task produces one output file.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mrv1-architecture-old">MRv1 Architecture (Old)</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>JobTracker</strong></td>
+<td>Centralized master daemon in MRv1 — manages scheduling, resource allocation, monitoring, task failure handling. <strong>Single point of failure.</strong></td>
+</tr>
+<tr>
+<td><strong>TaskTracker</strong></td>
+<td>Worker daemon running on DataNodes — executes Map/Reduce tasks, reports heartbeats.</td>
+</tr>
+<tr>
+<td><strong>Slot</strong></td>
+<td>Fixed bundle of resources to run a job in MRv1. Each node had fixed Map slots &amp; Reduce slots — caused inefficiency.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fault-tolerance-performance">Fault Tolerance &amp; Performance</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Task Re-Execution</strong></td>
+<td>On failure, task is re-run on another node. Data safe in HDFS.</td>
+</tr>
+<tr>
+<td><strong>Speculative Execution</strong></td>
+<td>If one task is unusually slow ("straggler"), system launches a duplicate copy; <strong>first to finish wins</strong>.</td>
+</tr>
+<tr>
+<td><strong>Straggler</strong></td>
+<td>A task running much slower than peers (overloaded node, faulty disk).</td>
+</tr>
+<tr>
+<td><strong>Data Locality</strong></td>
+<td>Run computation on the node holding the data — avoid network transfer.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-mapreduce-is-the-wrong-tool">When MapReduce is the Wrong Tool</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Iterative Algorithms</strong></td>
+<td>Algorithms that need many passes over same data (ML training, PageRank). MR rereads disk each iteration → slow.</td>
+</tr>
+<tr>
+<td><strong>Real-time / Low-Latency</strong></td>
+<td>MR is high-latency batch — can't respond in ms.</td>
+</tr>
+<tr>
+<td><strong>Interactive Queries</strong></td>
+<td>MR jobs take minutes → not interactive.</td>
+</tr>
+<tr>
+<td><strong>Sequential / Dependent Tasks</strong></td>
+<td>Tasks where step N depends on N-1 don't fit Map+Reduce shape.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l04l05-yarn">L04/L05 — YARN</h2>
+<h3 id="yarn-core">YARN Core</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>YARN</strong></td>
+<td><strong>Yet Another Resource Negotiator</strong> — separates resource management from processing, introduced in Hadoop 2.0.</td>
+</tr>
+<tr>
+<td><strong>Multi-tenancy</strong></td>
+<td>Multiple processing engines (MR, Spark, Flink, Tez) coexist on same cluster.</td>
+</tr>
+<tr>
+<td><strong>Daemon</strong></td>
+<td>A background process — RM, NM are daemons.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="components">Components</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Client</strong></td>
+<td>Job submitter — initiates jobs to RM, monitors progress.</td>
+</tr>
+<tr>
+<td><strong>Resource Manager (RM)</strong></td>
+<td>Master daemon — global resource scheduling, container allocation, manages cluster capacity. "The cluster boss."</td>
+</tr>
+<tr>
+<td><strong>Node Manager (NM)</strong></td>
+<td>Per-node daemon — manages containers and monitors resources on its node. "Building supervisor."</td>
+</tr>
+<tr>
+<td><strong>Application Master (AM)</strong></td>
+<td>Per-job daemon — runs inside a container on a worker node, negotiates resources for its app, schedules tasks. <strong>NOT same as Application Manager!</strong></td>
+</tr>
+<tr>
+<td><strong>Container</strong></td>
+<td>Logical bundle of resources (RAM + CPU + disk) on a single node — where tasks run. Not a physical machine.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rm-sub-components">RM Sub-components</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scheduler</strong></td>
+<td>Pure scheduler — allocates resources subject to capacity &amp; queues. <strong>No monitoring.</strong></td>
+</tr>
+<tr>
+<td><strong>Application Manager</strong></td>
+<td>Sub-component of RM that accepts job submissions and starts the AM. <strong>Different from Application Master!</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="resource-request-clc">Resource Request &amp; CLC</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Resource Request</strong></td>
+<td>AM → RM request with 3 fields: Resource Name (host/rack/anywhere), Priority, Capability (CPU/RAM).</td>
+</tr>
+<tr>
+<td><strong>Container Launch Context (CLC)</strong></td>
+<td>Instructions sent from AM → NM telling how to start a container: env vars, app dependencies (code/libs), security tokens.</td>
+</tr>
+<tr>
+<td><strong>Security Tokens</strong></td>
+<td>Issued by RM to authorize AM to launch containers safely.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="schedulers">Schedulers</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FIFO Scheduler</strong></td>
+<td>First-in, first-out queue. Simple. <strong>Can cause starvation.</strong> Suitable only for single-user test clusters.</td>
+</tr>
+<tr>
+<td><strong>Fair Scheduler</strong></td>
+<td>Every running app gets an equal share over time. Dynamic rebalancing. <strong>No starvation.</strong> Fairness by memory (configurable for CPU).</td>
+</tr>
+<tr>
+<td><strong>Capacity Scheduler</strong></td>
+<td>Hierarchical queues; each org/team gets a guaranteed fraction of cluster. <strong>Production standard.</strong></td>
+</tr>
+<tr>
+<td><strong>Queue</strong></td>
+<td>A bucket in the scheduler holding submitted apps.</td>
+</tr>
+<tr>
+<td><strong>Root Queue</strong></td>
+<td>Top of capacity scheduler hierarchy — 100% cluster capacity.</td>
+</tr>
+<tr>
+<td><strong>Parent Queue</strong></td>
+<td>Organizational container. <strong>Does NOT accept jobs.</strong></td>
+</tr>
+<tr>
+<td><strong>Leaf Queue</strong></td>
+<td>Bottom of hierarchy. <strong>Only leaf queues accept job submissions.</strong></td>
+</tr>
+<tr>
+<td><strong>Guaranteed Capacity</strong></td>
+<td>Minimum % of cluster dedicated to a queue.</td>
+</tr>
+<tr>
+<td><strong>Resource Elasticity</strong></td>
+<td>A queue can <strong>borrow</strong> idle capacity from other queues.</td>
+</tr>
+<tr>
+<td><strong>Starvation</strong></td>
+<td>A small job waits forever because a large job hogs all resources (FIFO problem).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="high-availability-failure-handling">High Availability &amp; Failure Handling</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ZooKeeper</strong></td>
+<td>External coordination service — manages distributed systems' "who's the leader?"</td>
+</tr>
+<tr>
+<td><strong>Leader Election (ZK role)</strong></td>
+<td>Ensures only ONE Active RM at a time; promotes Standby on failure.</td>
+</tr>
+<tr>
+<td><strong>State Storage (ZK role)</strong></td>
+<td>Stores RM's app state/metadata so new Active RM can recover running apps without data loss.</td>
+</tr>
+<tr>
+<td><strong>Active / Standby Pair</strong></td>
+<td>RM HA pattern — one Active, one Standby ready to take over.</td>
+</tr>
+<tr>
+<td><strong>Blacklisted Node</strong></td>
+<td>A node that stopped sending heartbeats → RM marks it as bad → containers rescheduled elsewhere.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="failure-recovery-memorize-the-table">Failure Recovery (memorize the table)</h3>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Container fails</strong></td>
+<td>AM retries (default 4 attempts)</td>
+</tr>
+<tr>
+<td><strong>Node Manager fails</strong></td>
+<td>RM blacklists node, containers rescheduled</td>
+</tr>
+<tr>
+<td><strong>Application Master fails</strong></td>
+<td>RM restarts AM in a new container</td>
+</tr>
+<tr>
+<td><strong>Resource Manager fails</strong></td>
+<td>ZooKeeper triggers failover to Standby RM</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-locality-in-yarn">Data Locality in YARN</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Node-local</strong></td>
+<td>Container on the exact DataNode holding the block (best).</td>
+</tr>
+<tr>
+<td><strong>Rack-local</strong></td>
+<td>Container on same rack, different node (1 hop).</td>
+</tr>
+<tr>
+<td><strong>Off-rack</strong></td>
+<td>Different rack (multi-hop, slowest).</td>
+</tr>
+<tr>
+<td><strong>Scheduling Delay</strong></td>
+<td>RM intentionally waits a few seconds for a node-local container before falling back to rack-local.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l07-spark-core-rdd">L07 — Spark Core / RDD</h2>
+<h3 id="spark-basics">Spark Basics</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apache Spark</strong></td>
+<td>Open-source, in-memory data processing engine. <strong>Up to 100× faster in memory, 10× on disk</strong> vs MapReduce.</td>
+</tr>
+<tr>
+<td><strong>In-Memory Computing</strong></td>
+<td>Keep intermediate results in RAM, avoiding disk I/O. Spark's killer feature.</td>
+</tr>
+<tr>
+<td><strong>Spark Ecosystem</strong></td>
+<td>Spark Core + Spark SQL + Spark Streaming + MLlib + GraphX.</td>
+</tr>
+<tr>
+<td><strong>Spark Core</strong></td>
+<td>Foundation — task scheduling, basic I/O, the RDD API.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sparks-2-core-abstractions">Spark's 2 Core Abstractions</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RDD (Resilient Distributed Dataset)</strong></td>
+<td>Fundamental data abstraction — distributed collection of elements processable in parallel. Not a single contiguous file; divided into partitions.</td>
+</tr>
+<tr>
+<td><strong>DAG (Directed Acyclic Graph)</strong></td>
+<td>Graph of dependencies between RDDs — represents the workflow Spark optimizes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rdd-3-pillars">RDD 3 Pillars</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Resilient</strong></td>
+<td>Fault tolerance via lineage. Lost partitions are recomputed using their lineage.</td>
+</tr>
+<tr>
+<td><strong>Distributed</strong></td>
+<td>Automatically split into partitions across cluster nodes → parallelism.</td>
+</tr>
+<tr>
+<td><strong>Datasets</strong></td>
+<td>Generic container for any object type (Scala/Java/Python).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rdd-properties">RDD Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Immutability</strong></td>
+<td>Once created, an RDD cannot be changed. Avoids race conditions.</td>
+</tr>
+<tr>
+<td><strong>Race Condition</strong></td>
+<td>Bug where multiple tasks try to update the same data simultaneously → corruption.</td>
+</tr>
+<tr>
+<td><strong>Lineage Graph</strong></td>
+<td>Recorded chain of transformations from base RDD to current RDD. Used for re-computation on failure.</td>
+</tr>
+<tr>
+<td><strong>Partition</strong></td>
+<td>Subset of an RDD's data on one node. Unit of parallelism.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rdd-operations">RDD Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transformation</strong></td>
+<td>Creates a new RDD from an existing one. <strong>Lazy</strong> — doesn't execute immediately. Returns a NEW RDD.</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td>Forces execution and returns a value or writes to storage. <strong>Eager.</strong></td>
+</tr>
+<tr>
+<td><strong>Narrow Transformation</strong></td>
+<td>Each input partition contributes to exactly ONE output partition. No shuffle. E.g., <code>map</code>, <code>filter</code>, <code>flatMap</code>.</td>
+</tr>
+<tr>
+<td><strong>Wide Transformation</strong></td>
+<td>Input partitions contribute to MULTIPLE output partitions → <strong>shuffle</strong> across cluster. E.g., <code>reduceByKey</code>, <code>groupByKey</code>, <code>join</code>.</td>
+</tr>
+<tr>
+<td><strong>Shuffle Boundary</strong></td>
+<td>A wide transformation = stage break in the DAG.</td>
+</tr>
+<tr>
+<td><strong>Common Transformations</strong></td>
+<td><code>map</code>, <code>filter</code>, <code>flatMap</code>, <code>reduceByKey</code>, <code>groupByKey</code>, <code>join</code>, <code>union</code></td>
+</tr>
+<tr>
+<td><strong>Common Actions</strong></td>
+<td><code>collect</code>, <code>count</code>, <code>reduce</code>, <code>saveAsTextFile</code>, <code>take</code>, <code>foreach</code></td>
+</tr>
+<tr>
+<td><strong>persist() / cache()</strong></td>
+<td>Save an RDD in memory (or disk) so future actions don't re-execute the lineage.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lazy-execution">Lazy Execution</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lazy Execution</strong></td>
+<td>Transformations don't run until an action triggers execution. Spark builds a logical plan first.</td>
+</tr>
+<tr>
+<td><strong>Benefits of Lazy</strong></td>
+<td>1) Whole-plan optimization. 2) Skip unused computations. 3) Easier fault tolerance via lineage.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dag-execution-model">DAG Execution Model</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Job</strong></td>
+<td>Unit of work triggered by one <strong>action</strong>.</td>
+</tr>
+<tr>
+<td><strong>Stage</strong></td>
+<td>Group of narrow transformations that run together; boundaries are wide transformations (shuffles).</td>
+</tr>
+<tr>
+<td><strong>Task</strong></td>
+<td>One unit of work on one partition. Tasks within a stage run in parallel on executors.</td>
+</tr>
+<tr>
+<td><strong>Logical Plan</strong></td>
+<td>High-level lineage graph derived from user code.</td>
+</tr>
+<tr>
+<td><strong>Physical Plan</strong></td>
+<td>Actual execution graph of stages + tasks, after optimization.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spark-architecture">Spark Architecture</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Driver Program</strong></td>
+<td>"Brain" — runs the main app, creates DAG, divides work into stages/tasks, schedules execution.</td>
+</tr>
+<tr>
+<td><strong>Cluster Manager</strong></td>
+<td>Allocates CPU/RAM. E.g., YARN, Mesos, Kubernetes, Standalone.</td>
+</tr>
+<tr>
+<td><strong>Worker Node</strong></td>
+<td>Machine in the cluster that hosts executors.</td>
+</tr>
+<tr>
+<td><strong>Executor</strong></td>
+<td>Worker process that runs tasks, stores cached RDD data in memory, handles shuffle, returns results to driver.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="optimization-techniques">Optimization Techniques</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lazy Evaluation</strong></td>
+<td>Build optimized plan, defer execution.</td>
+</tr>
+<tr>
+<td><strong>Data Locality (Spark)</strong></td>
+<td>Schedule tasks where data lives.</td>
+</tr>
+<tr>
+<td><strong>In-Memory Computing</strong></td>
+<td>Keep intermediates in RAM.</td>
+</tr>
+<tr>
+<td><strong>Speculative Execution (Spark)</strong></td>
+<td>Duplicate stragglers, fastest wins.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l08-spark-sql-dataframes">L08 — Spark SQL &amp; DataFrames</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Structured APIs</strong></td>
+<td>DataFrames + Datasets — introduced in Spark 1.3 to simplify analytics with automatic optimization.</td>
+</tr>
+<tr>
+<td><strong>DataFrame</strong></td>
+<td>Structured, distributed dataset with <strong>schema</strong> — like a relational table or pandas DataFrame.</td>
+</tr>
+<tr>
+<td><strong>Dataset</strong></td>
+<td>Typed version of DataFrame (Scala/Java).</td>
+</tr>
+<tr>
+<td><strong>Schema</strong></td>
+<td>Named columns + their data types.</td>
+</tr>
+<tr>
+<td><strong>Project Tungsten</strong></td>
+<td>Custom memory management for DataFrames — reduces RAM usage &amp; garbage collection overhead.</td>
+</tr>
+<tr>
+<td><strong>Catalyst Optimizer</strong></td>
+<td>Query optimizer for DataFrames/SQL — produces efficient execution plans automatically.</td>
+</tr>
+<tr>
+<td><strong>Rule-Based Optimization (RBO)</strong></td>
+<td>Apply deterministic rewrite rules (e.g., push filters before joins).</td>
+</tr>
+<tr>
+<td><strong>Cost-Based Optimization (CBO)</strong></td>
+<td>Choose the cheapest plan using statistics (row counts, data sizes).</td>
+</tr>
+<tr>
+<td><strong>Predicate Pushdown</strong></td>
+<td>Move filtering as close to the data source as possible — only read rows that match.</td>
+</tr>
+<tr>
+<td><strong>Column Pruning</strong></td>
+<td>Read only the columns you need from the source; skip irrelevant ones.</td>
+</tr>
+<tr>
+<td><strong>Constant Folding</strong></td>
+<td>Pre-compute constant expressions (e.g., <code>1+2</code> → <code>3</code>) at compile time.</td>
+</tr>
+<tr>
+<td><strong>Join Strategy</strong></td>
+<td>Choose the best join method based on data size: Broadcast / Shuffle Hash / Sort Merge.</td>
+</tr>
+<tr>
+<td><strong>Broadcast Join</strong></td>
+<td>Small table sent ("broadcast") to all nodes — fast when one side fits memory.</td>
+</tr>
+<tr>
+<td><strong>Shuffle Hash Join</strong></td>
+<td>Partition-based join — hash-shuffle both sides on join key.</td>
+</tr>
+<tr>
+<td><strong>Sort Merge Join</strong></td>
+<td>For large, sorted datasets — sort both sides, then merge.</td>
+</tr>
+<tr>
+<td><strong>Query Analysis</strong></td>
+<td>Catalyst stage 1: resolve tables/columns.</td>
+</tr>
+<tr>
+<td><strong>Logical Optimization</strong></td>
+<td>Catalyst stage 2: apply Predicate Pushdown, Column Pruning, Constant Folding.</td>
+</tr>
+<tr>
+<td><strong>Physical Planning</strong></td>
+<td>Catalyst stage 3: generate multiple physical plans, choose cheapest (cost-based).</td>
+</tr>
+<tr>
+<td><strong>Code Generation</strong></td>
+<td>Catalyst stage 4: compile plan to JVM bytecode (Tungsten).</td>
+</tr>
+<tr>
+<td><strong>Spark SQL Module</strong></td>
+<td>Module that lets you query DataFrames using SQL via <code>spark.sql()</code>.</td>
+</tr>
+<tr>
+<td><strong>DAG Scheduler (Spark)</strong></td>
+<td>Splits the DAG into stages at shuffle boundaries; pipelines narrow ops; generates tasks.</td>
+</tr>
+<tr>
+<td><strong>Task Scheduler</strong></td>
+<td>Assigns tasks to executors.</td>
+</tr>
+<tr>
+<td><strong>Stage Pipelining</strong></td>
+<td>Combine narrow operations (map + filter) within a single stage to avoid RAM/disk round-trips.</td>
+</tr>
+<tr>
+<td><strong>DataFrame Operations</strong></td>
+<td><code>select</code>, <code>filter</code> / <code>where</code>, <code>join</code>, <code>orderBy</code> / <code>sort</code>, <code>distinct</code>, <code>groupBy</code>, <code>union</code>, <code>show(n)</code>, <code>collect</code>, <code>count</code>, <code>take(n)</code> / <code>head(n)</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l09-spark-ml-graphx">L09 — Spark ML &amp; GraphX</h2>
+<h3 id="mllib-basics">MLlib Basics</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MLlib</strong></td>
+<td>Spark's distributed Machine Learning library.</td>
+</tr>
+<tr>
+<td><strong>spark.mllib</strong></td>
+<td>Older MLlib package — RDD-based.</td>
+</tr>
+<tr>
+<td><strong>spark.ml</strong></td>
+<td>Modern MLlib package — DataFrame-based.</td>
+</tr>
+<tr>
+<td><strong>Transformer</strong></td>
+<td>Component that converts one DataFrame → another. Implements <code>.transform()</code>. E.g., feature scalers, trained models.</td>
+</tr>
+<tr>
+<td><strong>Estimator</strong></td>
+<td>Learning algorithm. Implements <code>.fit(data) → Transformer</code>. The output Transformer is the trained model.</td>
+</tr>
+<tr>
+<td><strong>Pipeline</strong></td>
+<td>Sequence of stages (Transformers and/or Estimators) run in order.</td>
+</tr>
+<tr>
+<td><strong>PipelineModel</strong></td>
+<td>Output of <code>Pipeline.fit()</code> — pipeline where every Estimator has been replaced by its trained Transformer.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pipeline-stages">Pipeline Stages</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Stage</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Data Input</strong></td>
+<td>Load data into DataFrame (CSV, Parquet, Hive…).</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Feature Engineering</strong></td>
+<td>Convert raw data → numerical features.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Model Training</strong></td>
+<td>Fit a model (Logistic Regression, Decision Tree…).</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Evaluation</strong></td>
+<td>Measure accuracy / precision / recall.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Prediction</strong></td>
+<td>Apply trained model to new data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="distributed-training-workflow">Distributed Training Workflow</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Broadcast</strong></td>
+<td>Driver sends model parameters to all workers.</td>
+</tr>
+<tr>
+<td><strong>Partial Results</strong></td>
+<td>Each worker computes gradients (for regression) or splits (for trees) on its partition.</td>
+</tr>
+<tr>
+<td><strong>Aggregation</strong></td>
+<td>Workers send partial results back; driver combines them.</td>
+</tr>
+<tr>
+<td><strong>Model Update</strong></td>
+<td>Global model updated with aggregated info.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="optimization-algorithms">Optimization Algorithms</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gradient Descent (GD)</strong></td>
+<td>Iterative optimization that uses <strong>the entire local partition</strong> per worker per iteration.</td>
+</tr>
+<tr>
+<td><strong>Stochastic Gradient Descent (SGD)</strong></td>
+<td>Variant where each worker samples a <strong>small subset</strong> of its partition. Faster per iteration, noisier.</td>
+</tr>
+<tr>
+<td><strong>treeAggregate</strong></td>
+<td>Spark's efficient hierarchical aggregation operation — used to reduce gradients across workers.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="decision-trees">Decision Trees</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Decision Tree</strong></td>
+<td>Tree-based predictor — at each node, splits data by feature value.</td>
+</tr>
+<tr>
+<td><strong>Gini Impurity</strong></td>
+<td>Measure of node "impurity": <code>1 − Σ pᵢ²</code>. Lower = purer.</td>
+</tr>
+<tr>
+<td><strong>Entropy</strong></td>
+<td>Alternative impurity measure: <code>−Σ pᵢ log₂ pᵢ</code>.</td>
+</tr>
+<tr>
+<td><strong>Information Gain</strong></td>
+<td>Reduction in impurity from a split (parent impurity − weighted child impurity).</td>
+</tr>
+<tr>
+<td><strong>Best Split</strong></td>
+<td>The feature + threshold that maximizes information gain.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph-theory">Graph Theory</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Graph</strong></td>
+<td>Data structure representing relationships between entities.</td>
+</tr>
+<tr>
+<td><strong>Vertex (Node)</strong></td>
+<td>Real-world entity (user, product, page).</td>
+</tr>
+<tr>
+<td><strong>Edge (Link)</strong></td>
+<td>Relationship between two vertices (friendship, purchase, hyperlink).</td>
+</tr>
+<tr>
+<td><strong>Directed Multigraph</strong></td>
+<td>Graph where edges have direction AND multiple edges between same vertex pair are allowed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graphx">GraphX</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GraphX</strong></td>
+<td>Spark's component for graph processing. Extends RDD with a Graph abstraction.</td>
+</tr>
+<tr>
+<td><strong>Property Graph</strong></td>
+<td>Directed multigraph with attributes on vertices and edges.</td>
+</tr>
+<tr>
+<td><strong>VertexId</strong></td>
+<td>Unique 64-bit ID for each vertex.</td>
+</tr>
+<tr>
+<td><strong>VertexRDD[VD]</strong></td>
+<td>Optimized vertex collection: (VertexID, Attribute).</td>
+</tr>
+<tr>
+<td><strong>EdgeRDD[ED]</strong></td>
+<td>Optimized edge collection: (SourceID, DestinationID, Attribute).</td>
+</tr>
+<tr>
+<td><strong>Graph Triplet</strong></td>
+<td>(srcId, srcAttr, dstId, dstAttr, edgeAttr) — joined view of edge + endpoint vertices. Used by algorithms that need both.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph-operators-4-families">Graph Operators (4 families)</h3>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Property Operators</strong></td>
+<td><code>mapVertices</code>, <code>mapEdges</code>, <code>mapTriplets</code></td>
+</tr>
+<tr>
+<td><strong>Structural Operators</strong></td>
+<td><code>reverse</code>, <code>subgraph</code>, <code>groupEdges</code></td>
+</tr>
+<tr>
+<td><strong>Join Operators</strong></td>
+<td><code>joinVertices</code>, <code>outerJoinVertices</code></td>
+</tr>
+<tr>
+<td><strong>Neighborhood Aggregation</strong></td>
+<td><code>aggregateMessages</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph-partitioning">Graph Partitioning</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edge-Cut Partitioning (vertex-based)</strong></td>
+<td>Each vertex assigned uniquely to one machine; edges may cross machines. <strong>Bad for power-law graphs</strong> (hub hotspots).</td>
+</tr>
+<tr>
+<td><strong>Vertex-Cut Partitioning (edge-based)</strong></td>
+<td>Each edge assigned to one partition; vertices replicated. <strong>GraphX uses this</strong> — balances load.</td>
+</tr>
+<tr>
+<td><strong>Master / Mirror</strong></td>
+<td>In Vertex-Cut: one machine holds the master copy of a vertex; others hold mirrors.</td>
+</tr>
+<tr>
+<td><strong>VertexTable</strong></td>
+<td>GraphX RDD: <code>(id, data)</code> — vertex attributes.</td>
+</tr>
+<tr>
+<td><strong>EdgeTable</strong></td>
+<td>GraphX RDD: <code>(pid, src, dst, data)</code> — edges by partition.</td>
+</tr>
+<tr>
+<td><strong>Routing Table</strong></td>
+<td>GraphX RDD: <code>(id, pid)</code> — tells where vertex mirrors are; enables efficient joins.</td>
+</tr>
+<tr>
+<td><strong>Power-Law Graph</strong></td>
+<td>Real-world graph distribution where few vertices have huge degree (hubs) and most have small degree. Social networks, web.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pagerank">PageRank</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PageRank</strong></td>
+<td>Algorithm that scores a vertex's importance based on incoming links from important vertices.</td>
+</tr>
+<tr>
+<td><strong>Random Surfer</strong></td>
+<td>Mental model: user randomly clicks links (prob d) or jumps to random page (prob 1−d).</td>
+</tr>
+<tr>
+<td><strong>Damping Factor (d)</strong></td>
+<td>Probability of following a link (typically 0.85).</td>
+</tr>
+<tr>
+<td><strong>Outdegree</strong></td>
+<td>Number of outgoing edges of a vertex.</td>
+</tr>
+<tr>
+<td><strong>PageRank formula</strong></td>
+<td>PR(v) = (1−d) + d × Σ PR(u)/outdeg(u) for all u → v.</td>
+</tr>
+<tr>
+<td><strong>Convergence</strong></td>
+<td>Stop iterating when rank change &lt; tolerance OR max iterations reached.</td>
+</tr>
+<tr>
+<td><strong>PageRank Algorithm (Distributed)</strong></td>
+<td>4 phases per iteration: Map (PR(u)/outdeg(u)) → Shuffle → Reduce (aggregate) → Broadcast → repeat.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l10-spark-streaming-kafka">L10 — Spark Streaming &amp; Kafka</h2>
+<h3 id="streaming-basics">Streaming Basics</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Streaming</strong></td>
+<td>Real-time processing of continuous, unbounded data in motion.</td>
+</tr>
+<tr>
+<td><strong>Batch vs Stream</strong></td>
+<td>Batch = throughput-focused, high latency. Stream = low-latency, immediate response.</td>
+</tr>
+<tr>
+<td><strong>Micro-batch Processing</strong></td>
+<td>Process data in small, fixed-size batches (Spark Streaming approach).</td>
+</tr>
+<tr>
+<td><strong>Real-time Streaming</strong></td>
+<td>Process events as they arrive, no batching (Flink).</td>
+</tr>
+<tr>
+<td><strong>Streaming Pipeline</strong></td>
+<td>Sources → Ingestion (Kafka) → Processing (Spark) → Serving (dashboards/alerts).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="apache-kafka">Apache Kafka</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apache Kafka</strong></td>
+<td>Open-source distributed event-streaming platform. Built by LinkedIn. Moves data efficiently — <strong>does not analyze</strong>.</td>
+</tr>
+<tr>
+<td><strong>Producer</strong></td>
+<td>Application that sends (publishes) messages to Kafka brokers.</td>
+</tr>
+<tr>
+<td><strong>Consumer</strong></td>
+<td>Application that reads (consumes) messages from Kafka topics.</td>
+</tr>
+<tr>
+<td><strong>Topic</strong></td>
+<td>Logical channel where producers publish and consumers read. Messages are <strong>immutable once published</strong>.</td>
+</tr>
+<tr>
+<td><strong>Broker</strong></td>
+<td>Server that stores and manages streaming data. Handles read/write.</td>
+</tr>
+<tr>
+<td><strong>Cluster (Kafka)</strong></td>
+<td>Group of brokers working together.</td>
+</tr>
+<tr>
+<td><strong>Kafka ZooKeeper</strong></td>
+<td>Coordinates brokers, tracks availability, notifies producers/consumers when brokers fail.</td>
+</tr>
+<tr>
+<td><strong>Partition</strong></td>
+<td>Sub-division of a topic; ordered, append-only log. Enables parallel consumption and scaling.</td>
+</tr>
+<tr>
+<td><strong>Leader (partition role)</strong></td>
+<td>Handles all read &amp; write operations for that partition.</td>
+</tr>
+<tr>
+<td><strong>Replica (partition role)</strong></td>
+<td>Maintains a copy of the leader's data; syncs continuously; promoted to leader on failure.</td>
+</tr>
+<tr>
+<td><strong>Data Log</strong></td>
+<td>Kafka stores messages in a log structure for a configurable retention period.</td>
+</tr>
+<tr>
+<td><strong>Retention Period</strong></td>
+<td>How long messages are kept in Kafka. If consumer is offline longer → messages may be lost.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="spark-streaming">Spark Streaming</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Spark Streaming</strong></td>
+<td>Extension of Spark for real-time stream processing.</td>
+</tr>
+<tr>
+<td><strong>DStream (Discretized Stream)</strong></td>
+<td>Spark 1.x streaming model — continuous sequence of small RDDs (micro-batches).</td>
+</tr>
+<tr>
+<td><strong>Structured Streaming</strong></td>
+<td>Spark 2.x+ model — treats live stream as an <strong>append-only table</strong>; uses DataFrame API + SQL engine.</td>
+</tr>
+<tr>
+<td><strong>Input Table</strong></td>
+<td>In Structured Streaming, the logical table that grows as new data arrives.</td>
+</tr>
+<tr>
+<td><strong>Result Table</strong></td>
+<td>In Structured Streaming, the incrementally updated query result.</td>
+</tr>
+<tr>
+<td><strong>Output Sink</strong></td>
+<td>Destination of processed results (database, Kafka, console, file…).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="output-modes">Output Modes</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>What it writes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Complete Mode</strong></td>
+<td>Entire Result Table every trigger. For aggregations.</td>
+</tr>
+<tr>
+<td><strong>Append Mode</strong></td>
+<td>Only new rows since last trigger. For pure appends.</td>
+</tr>
+<tr>
+<td><strong>Update Mode</strong></td>
+<td>Only changed rows since last trigger. Efficient incremental.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transformations">Transformations</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stateless Transformation</strong></td>
+<td>Each batch processed independently — no memory of past. E.g., <code>map</code>, <code>filter</code>, <code>flatMap</code>.</td>
+</tr>
+<tr>
+<td><strong>Stateful Transformation</strong></td>
+<td>Uses both current + past batches. Maintains state across time. E.g., <code>updateStateByKey</code>, windowed aggs.</td>
+</tr>
+<tr>
+<td><strong>Windowed Operations</strong></td>
+<td>Aggregations over a sliding/tumbling time window (e.g., count events in last 30 sec).</td>
+</tr>
+<tr>
+<td><strong>updateStateByKey</strong></td>
+<td>DStream method that maintains state per key across all batches.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="event-time-late-data">Event-Time &amp; Late Data</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Event Time</strong></td>
+<td>The timestamp embedded in the event (when it actually happened).</td>
+</tr>
+<tr>
+<td><strong>Processing Time</strong></td>
+<td>When Spark received/processed the event.</td>
+</tr>
+<tr>
+<td><strong>Late Data</strong></td>
+<td>Events that arrive after their event-time window has been processed.</td>
+</tr>
+<tr>
+<td><strong>Watermark</strong></td>
+<td>Threshold defining how late an event can arrive and still be processed. Events beyond watermark → dropped.</td>
+</tr>
+<tr>
+<td><strong>Watermarking</strong></td>
+<td>Mechanism for bounded-memory event-time aggregation. Defines how to handle late data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="window-types">Window Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tumbling Window</strong></td>
+<td>Fixed-size, NON-overlapping, contiguous intervals. Each event in exactly one window.</td>
+</tr>
+<tr>
+<td><strong>Sliding Window</strong></td>
+<td>Fixed-size, OVERLAPPING (slide &lt; window size). Each event in multiple windows.</td>
+</tr>
+<tr>
+<td><strong>Session Window</strong></td>
+<td>Dynamic size — starts with an event, expands while next event arrives within gap.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="checkpointing">Checkpointing</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Checkpointing</strong></td>
+<td>Save app state to reliable storage (HDFS) for fault tolerance in long-running streaming jobs.</td>
+</tr>
+<tr>
+<td><strong>Metadata Checkpointing</strong></td>
+<td>Saves config, DAG, queue of unprocessed batches.</td>
+</tr>
+<tr>
+<td><strong>Data Checkpointing</strong></td>
+<td>Saves actual RDD data for stateful transformations.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-streaming-tools">Other Streaming Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apache Flink</strong></td>
+<td>True real-time stream processor (not micro-batch). Also supports batch.</td>
+</tr>
+<tr>
+<td><strong>Apache Storm</strong></td>
+<td>Real-time stream processor (older).</td>
+</tr>
+<tr>
+<td><strong>Kafka Streams</strong></td>
+<td>Streaming library inside Kafka — process streams without separate cluster.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l11-data-warehouses-data-lakes-lakehouses">L11 — Data Warehouses, Data Lakes, Lakehouses</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Warehouse (DW)</strong></td>
+<td>Stores structured data with schema-on-write. Optimized for SQL queries and BI. High reliability, expensive, rigid.</td>
+</tr>
+<tr>
+<td><strong>Data Lake (DL)</strong></td>
+<td>Stores raw data of all types (structured/semi/unstructured) with schema-on-read. Cheap, flexible, prone to "data swamp."</td>
+</tr>
+<tr>
+<td><strong>Data Lakehouse</strong></td>
+<td>Hybrid — combines Lake's flexibility + Warehouse's reliability. Uses object storage + Table Layer for ACID/structure.</td>
+</tr>
+<tr>
+<td><strong>Table Layer</strong></td>
+<td>Software layer on top of Data Lake that organizes raw files into reliable analytical tables. Provides DB-like semantics.</td>
+</tr>
+<tr>
+<td><strong>Transaction Log</strong></td>
+<td>Tracks every change for ACID guarantees (Table Layer feature).</td>
+</tr>
+<tr>
+<td><strong>Schema Evolution</strong></td>
+<td>Add columns without rewriting all existing files.</td>
+</tr>
+<tr>
+<td><strong>Time Travel</strong></td>
+<td>Query historical versions of the data.</td>
+</tr>
+<tr>
+<td><strong>Partition Pruning</strong></td>
+<td>Query optimization — skip files that don't match filter (Table Layer feature).</td>
+</tr>
+<tr>
+<td><strong>ACID Transactions</strong></td>
+<td>Atomicity, Consistency, Isolation, Durability — DB guarantees added by Table Layer.</td>
+</tr>
+<tr>
+<td><strong>Data Swamp</strong></td>
+<td>Pejorative for an unmanaged Data Lake that lost quality and discoverability.</td>
+</tr>
+<tr>
+<td><strong>Object Storage</strong></td>
+<td>Flat-file storage system (S3, ADLS, GCS, HDFS) — basis for Lakes &amp; Lakehouses.</td>
+</tr>
+<tr>
+<td><strong>Parquet</strong></td>
+<td>Columnar file format optimized for analytics.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cloud-services">Cloud Services</h3>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Warehouse</th>
+<th>Lake</th>
+<th>Lakehouse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS</strong></td>
+<td>Redshift, Redshift Spectrum</td>
+<td>S3, AWS Glue</td>
+<td>Lake Formation + Redshift, S3 + Athena</td>
+</tr>
+<tr>
+<td><strong>Azure</strong></td>
+<td>Synapse Analytics, Azure SQL DB</td>
+<td>ADLS Gen2, Synapse Analytics</td>
+<td><strong>Azure Databricks (Delta Lake)</strong>, Microsoft Fabric</td>
+</tr>
+<tr>
+<td><strong>GCP</strong></td>
+<td><strong>BigQuery</strong></td>
+<td>Google Cloud Storage, BigLake, Dataproc</td>
+<td>BigLake + BigQuery, Databricks on GCP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="real-world-layered-architecture">Real-World Layered Architecture</h3>
+<blockquote>
+<p><em>Modern systems separate Ingestion → Storage → Processing → Analytics. Real companies use multiple tools — each solves a specific problem.</em></p>
+</blockquote>
+<h3 id="tech-mapping-table-where-everything-fits">Tech Mapping Table (where everything fits)</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hadoop HDFS</td>
+<td>Distributed storage</td>
+</tr>
+<tr>
+<td>YARN</td>
+<td>Cluster resource management</td>
+</tr>
+<tr>
+<td>MapReduce</td>
+<td>Legacy batch processing</td>
+</tr>
+<tr>
+<td>Spark RDDs</td>
+<td>Distributed computation</td>
+</tr>
+<tr>
+<td>Spark DataFrames</td>
+<td>Structured analytics</td>
+</tr>
+<tr>
+<td>Spark Streaming</td>
+<td>Real-time processing</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>Streaming ingestion backbone</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cross-cutting-terms">Cross-Cutting Terms</h2>
+<p>These appear across multiple lectures.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Single Point of Failure (SPOF)</strong></td>
+<td>A component whose failure brings down the entire system. NameNode (1.x), JobTracker (MRv1), RM (pre-2.4).</td>
+</tr>
+<tr>
+<td><strong>Heartbeat</strong></td>
+<td>Periodic "I'm alive" message between worker and master. Used by HDFS, MRv1, YARN.</td>
+</tr>
+<tr>
+<td><strong>Data Locality</strong></td>
+<td>Run computation where data lives — avoids network transfer. Used by HDFS-aware MapReduce, YARN, Spark.</td>
+</tr>
+<tr>
+<td><strong>Master-Slave Architecture</strong></td>
+<td>One coordinator + many workers. HDFS, MRv1, YARN, Spark all follow this pattern.</td>
+</tr>
+<tr>
+<td><strong>Fault Tolerance</strong></td>
+<td>Continued operation despite failures. HDFS uses replication; Spark uses lineage; YARN uses HA + restarts.</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>Volume of work per unit time. Optimized by batch systems.</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>Delay between request and response. Optimized by streaming systems.</td>
+</tr>
+<tr>
+<td><strong>Shuffle</strong></td>
+<td>Network movement of intermediate data — most expensive phase in distributed compute (MapReduce + Spark).</td>
+</tr>
+<tr>
+<td><strong>Lazy Evaluation</strong></td>
+<td>Defer computation until needed. Used in Spark transformations.</td>
+</tr>
+<tr>
+<td><strong>Speculative Execution</strong></td>
+<td>Run duplicate of slow task; fastest wins. Used in MapReduce + Spark.</td>
+</tr>
+<tr>
+<td><strong>Container</strong></td>
+<td>(YARN) Resource bundle running tasks. Replaced MRv1's rigid slots.</td>
+</tr>
+<tr>
+<td><strong>Slot</strong></td>
+<td>(MRv1) Fixed resource bundle, deprecated.</td>
+</tr>
+<tr>
+<td><strong>Schema</strong></td>
+<td>(DW/DL/Spark) Definition of data structure — column names + types.</td>
+</tr>
+<tr>
+<td><strong>Partition</strong></td>
+<td>(HDFS / Spark / Kafka) Subdivision of data for parallelism. Different meaning per system: in HDFS = block, in Spark/Kafka = logical chunk.</td>
+</tr>
+<tr>
+<td><strong>Replica / Replication</strong></td>
+<td>(HDFS + Kafka) Copy of data for fault tolerance.</td>
+</tr>
+<tr>
+<td><strong>ZooKeeper</strong></td>
+<td>(YARN + Kafka) External coordinator for leader election and shared state.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="master-numerical-cheat-card-one-screen">📋 Master Numerical Cheat-Card (one screen)</h1>
+<pre><code>HDFS:
+  default block        = 128 MB
+  default RF           = 3
+  metadata per block   = 150 bytes
+  blocks/file          = ⌈ file_size / block_size ⌉
+  metadata RAM         = total_blocks × 150 B
+  physical storage     = blocks × block_size × RF
+
+BALANCER:
+  Uᵢ                   = used_i / cap_i × 100
+  U_avg                = Σ used / Σ cap × 100
+  Dᵢ                   = |Uᵢ − U_avg|
+  imbalanced if        Dᵢ &gt; T
+
+ERASURE CODING (RS-K-M):
+  K data + M parity    = K+M cells stored
+  overhead             = (K+M)/K
+  tolerates            = M failures
+  e.g., RS-6-3: 50% saved vs 3× rep; tolerates 3 failures
+  e.g., RS-10-4: ~53% saved; tolerates 4 failures
+
+YARN:
+  max nodes            ≈ 10,000+ (MRv1 ≈ 4000)
+
+SPARK:
+  speed                = 100× in memory, 10× on disk vs MR
+  partition  per       = ~one task
+
+PAGERANK:
+  contribution(u→v)    = PR(u) / outdegree(u)
+  PR(v)                = (1−d) + d × Σ contributions
+</code></pre>
+<hr />
+<h2 id="how-to-use-this-cheatsheet">💡 How to use this cheatsheet</h2>
+<ol>
+<li><strong>First read</strong> end-to-end to see everything you've covered.</li>
+<li><strong>Drill weak spots</strong> by re-reading just the sections where you stumble.</li>
+<li><strong>Bring it to the exam mentally</strong> — knowing every term gives you instant credit on definition/MCQ questions.</li>
+<li><strong>Cross-reference</strong> with the <a href="BigData_NumericalProblems_KillerComparisons.md">Numerical Problems + Killer Comparisons</a> doc.</li>
+</ol>
+<p><strong>Total terms: ~250+ across all 9 lectures. Nothing skipped.</strong> 💪</p>
+</main>
+<script>
+function filterContent() {
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  const rows = document.querySelectorAll('table tr');
+  rows.forEach(r => {
+    if (r.parentElement.tagName === 'THEAD') return;
+    if (!q) { r.style.display = ''; return; }
+    r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  // Hide H2/H3 sections with no visible rows
+  const headings = document.querySelectorAll('h2, h3');
+  headings.forEach(h => {
+    let sib = h.nextElementSibling;
+    let anyVisible = false;
+    while (sib && !['H2', 'H3'].includes(sib.tagName)) {
+      if (sib.tagName === 'TABLE') {
+        const visibleRows = Array.from(sib.querySelectorAll('tbody tr, tr')).filter(r => r.parentElement.tagName !== 'THEAD' && r.style.display !== 'none');
+        if (visibleRows.length) anyVisible = true;
+      } else if (q === '' || sib.textContent.toLowerCase().includes(q)) {
+        anyVisible = true;
+      }
+      sib = sib.nextElementSibling;
+    }
+    h.style.opacity = (q && !anyVisible) ? '0.3' : '1';
+  });
+}
+</script>
+</body>
+</html>

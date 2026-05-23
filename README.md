@@ -4,9 +4,10 @@ Self-contained, browser-based study tools for the **DSAI 427 — Big Data Analyt
 
 ## What's inside
 
-- **`index.html`** — landing page, lets you pick between the two quizzes.
+- **`index.html`** — landing page, lets you pick between the three resources.
 - **`mock.html`** — final mock exam (compact, exam-style).
 - **`prep.html`** — full prep quiz: 392 questions across 10 question types (MCQ, T/F, explain, compare, fill-in-blank, flow, scenario, match, architecture).
+- **`cheatsheet.html`** — terminology cheatsheet: ~250+ terms across all 9 lectures, searchable and printable.
 
 Everything runs entirely in your browser — no backend, no build step, no internet required after loading.
 
